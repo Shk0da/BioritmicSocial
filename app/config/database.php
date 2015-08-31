@@ -1,22 +1,17 @@
 <?php
 
 return [
-
     'default' => 'pgsql',
-
     'connections' => [
-
         'pgsql' => [
             'driver'   => 'pgsql',
-            'host'     => 'localhost',
-            'database' => 'bioritmic',
-            'username' => 'postgres',
-            'password' => 'ec0707',
+            'host'     => env('DB_HOST'),
+            'database' => env('DB_DATABASE'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
             'charset'  => 'utf8',
             'prefix'   => '',
             'schema'   => 'public',
         ],
-
     ],
-
 ];
