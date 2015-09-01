@@ -4,29 +4,39 @@
         <title>Main</title>
         <meta name="description" content="Main">
         <meta charset="utf-8">
-        <link rel="stylesheet" href="http://yastatic.net/bootstrap/3.3.4/css/bootstrap.min.css">
-        <script src="http://yastatic.net/jquery/2.1.4/jquery.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="/public/css/style.css"  media="screen,projection"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
         <div class="container">
-            <div class="row">
-                <div class="col-md-5">
-                    <h1>Welcome to Bioritmic!</h1>
-                    <label>Please Login:</label>
-                    <form>
-                        <div class="form-group">
-                            <label for="email">Email address</label>
-                            <input type="email" class="form-control" id="email" placeholder="Email">
+            <div class="row padding top15">
+                    <div class="col s7">
+                        <h1>Welcome to Bioritmic!</h1>
+                        <p>
+                            This WebApp - first <strong>FREE</strong> service 100% recruitment partner!
+                        </p>
+                    </div>
+                    <div class="col s5">
+                        <div class="card-panel">
+                            <form method="post">
+                                <div class="input-field">
+                                    <input id="email" name="email" type="email">
+                                    <label for="email">Email address</label>
+                                </div>
+                                <div class="input-field">
+                                    <input id="password" name="password" type="password">
+                                    <label for="password">Password</label>
+                                </div>
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="waves-effect waves-light btn deep-purple">
+                                    Login
+                                </button>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password">
-                        </div>
-                        <button type="submit" class="btn btn-default">Login</button>
-                    </form>
-                    <p>https://www.livecoding.tv/video/social-network-pusher-angular-laravel/</p>
-                </div>
+                    </div>
             </div>
         </div>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/public/js/materialize.min.js"></script>
     </body>
 </html>
