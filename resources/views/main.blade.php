@@ -10,13 +10,13 @@
     <body>
         <div class="container">
             <div class="row padding top15">
-                    <div class="col s7">
+                    <div class="col-md-7">
                         <h1>Welcome to Bioritmic!</h1>
                         <p>
                             This WebApp - first <strong>FREE</strong> service 100% recruitment partner!
                         </p>
                     </div>
-                    <div class="col s5">
+                    <div class="col-md-5">
                         <div class="card-panel">
                             <form method="post">
                                 <div class="input-field">
@@ -36,7 +36,6 @@
                     </div>
             </div>
         </div>
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="/public/js/materialize.min.js"></script>
+        <script type="text/javascript" src="http://yastatic.net/angularjs/1.3.16/angular.min.js"></script>
     </body>
 </html>
