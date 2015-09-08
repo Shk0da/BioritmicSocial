@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
+use App\Models\User;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 class AuthController extends MainController
 {
@@ -19,11 +20,30 @@ class AuthController extends MainController
     {
         $this->validate($request, [
             'name' => 'required|max:100',
-            'email' => 'required|unique:users|max:255',
+            'email' => 'required|email|unique:users|max:255',
             'password' => 'required|min:6',
         ]);
 
-        dd('all ok');
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        User::create([
+                'name' => $name,
+                'email' => $email,
+                'password' => bcrypt($password),
+        ]);
+
+        $this->authenticate($email, $password);
+    }
+
+    public function authenticate($email, $password)
+    {
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            return redirect()
+                ->intended('main')
+                ->with('info', 'Вы успешно зарегистрировались!');
+        }
     }
 
     public function store(Request $request)

@@ -5,19 +5,21 @@
             <div class="col-md-3">
                 <form class="form-horizontal" role="form" method="post" action="">
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                        <input type="text" name="name" class="form-control" id="inputName" placeholder="Name">
+                        <input type="text" name="name" class="form-control" id="inputName" placeholder="Name"
+                               value="{{ old('name') }}">
                         @if ($errors->has('name'))
                             <span class="help-block">{{ $errors->first('name') }}</span>
                         @endif
                     </div>
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                        <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email">
+                        <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email"
+                               value="{{ old('email') }}">
                         @if ($errors->has('email'))
                             <span class="help-block">{{ $errors->first('email') }}</span>
                         @endif
                     </div>
                     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
                         @if ($errors->has('password'))
                             <span class="help-block">{{ $errors->first('password') }}</span>
                         @endif

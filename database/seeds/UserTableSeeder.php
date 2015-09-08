@@ -9,6 +9,7 @@ class UserTableSeeder extends Seeder {
             'name' => 'user',
             'email' => 'user@user.local',
             'password' => 0,
+            'location' => '',
         ]);
     }
 

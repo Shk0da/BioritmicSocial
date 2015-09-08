@@ -10,6 +10,9 @@
     <link href="/public/css/style.css" rel="stylesheet">
 </head>
 <body class="anf">
+    @if ( isset($info) )
+        <p class="bg-info"><?= $info ?></p>
+    @endif
     @yield('content')
     @include('footer')
 </body>
