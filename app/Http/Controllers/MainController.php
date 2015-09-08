@@ -2,15 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
+use Auth;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 class MainController extends Controller
 {
+
+    protected $user;
+
+    public function boot()
+    {
+        //Auth::loginUsingId(1);
+    }
+
     public function index()
     {
-        return view('main');
+        $this->user = Auth::user();
+
+        if (Auth::check()) {
+            $view = view('home');
+            $view->with('user', $this->user->id);
+        } else {
+            $view = view('auth');
+        }
+
+        return $view;
     }
 }

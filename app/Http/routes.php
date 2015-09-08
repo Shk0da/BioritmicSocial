@@ -6,7 +6,7 @@ Route::get('/', [
 ]);
 
 Route::post('/', [
-    'uses' => 'Auth\AuthController@create',
+    'uses' => 'AuthController@create',
     'as' => 'auth'
 ]);
 
