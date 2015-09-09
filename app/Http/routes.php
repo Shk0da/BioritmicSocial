@@ -20,17 +20,21 @@ Route::post('/login', [
     'as' => 'auth.login'
 ]);
 
-Route::get('/logout', [
-    'uses' => 'AuthController@logout',
-    'as' => 'auth.logout'
-]);
+Route::group(['middleware' => 'auth'], function () {
 
-Route::get('/id{user}', [
-    'uses' => 'UserController@show',
-    'as' => 'profile'
-])->where('user', '[0-9]+');
+    Route::get('/logout', [
+        'uses' => 'AuthController@logout',
+        'as' => 'auth.logout'
+    ]);
 
-Route::get('/edit', [
-    'uses' => 'UserController@edit',
-    'as' => 'edit'
-]);
+    Route::get('/id{user}', [
+        'uses' => 'UserController@show',
+        'as' => 'profile'
+    ])->where('user', '[0-9]+');
+
+    Route::get('/edit', [
+        'uses' => 'UserController@edit',
+        'as' => 'edit'
+    ]);
+
+});

@@ -12,6 +12,10 @@ class AuthController extends MainController
 {
     public function index()
     {
+        if (Auth::check()) {
+            return redirect()->intended();
+        }
+
         return view('auth.login')->with('meta', $this->get_meta());
     }
 
