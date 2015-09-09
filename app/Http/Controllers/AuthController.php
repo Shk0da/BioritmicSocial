@@ -12,7 +12,7 @@ class AuthController extends MainController
 {
     public function index()
     {
-        return view('auth.login');
+        return view('auth.login')->with('meta', $this->get_meta());
     }
 
     public function create(Request $request)

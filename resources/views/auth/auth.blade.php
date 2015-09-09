@@ -1,11 +1,19 @@
 @extends('main')
 @section('content')
-    <div class="container">
+    <div class="container main">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-8">
+                <div class="welcome">
+                    <h1>Найди свою идеальную пару</h1>
+                    <p>
+                        Новые технологии и научный подход, помогут найти твой идеал!
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3 panel">
                 <form class="form-horizontal" role="form" method="post" action="{{ route('auth.create') }}">
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                        <input type="text" name="name" class="form-control" id="inputName" placeholder="Name"
+                        <input type="text" name="name" class="form-control" id="inputName" placeholder="Имя"
                                value="{{ old('name') }}">
                         @if ($errors->has('name'))
                             <span class="help-block">{{ $errors->first('name') }}</span>
@@ -19,7 +27,7 @@
                         @endif
                     </div>
                     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
+                        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Пароль">
                         @if ($errors->has('password'))
                             <span class="help-block">{{ $errors->first('password') }}</span>
                         @endif
@@ -29,8 +37,11 @@
                          <button type="submit" class="btn btn-default">Зарегистрироваться</button>
                     </div>
                 </form>
+                <p>
+                    Уже зарегистрированы?
+                    <a href="{{ route('auth.login') }}">Войти</a>
+                </p>
             </div>
-            <div class="col-md-3"><a href="{{ route('auth.login') }}">Войти в Bioritmic</a></div>
         </div>
     </div>
 @stop

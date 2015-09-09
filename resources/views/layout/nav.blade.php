@@ -49,7 +49,6 @@
                 <li><a href="/profile/">Profile</a></li>
                 <li><a href="/notifications/">Notifications</a></li>
                 <li><a data-toggle="modal" href="#msgModal">Messages</a></li>
-                <li><a href="/docs/">Docs</a></li>
                 <li><a href="{{ route('edit') }}">{{ $user->getName() }}</a></li>
                 <li><a href="{{ route('auth.logout') }}">Logout</a></li>
             </ul>

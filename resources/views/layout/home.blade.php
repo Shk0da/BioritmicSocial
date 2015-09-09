@@ -40,7 +40,7 @@
                                     <button class="cg fm fx eg">
                                         <span class="c aok"></span> Follow
                                     </button>
-                                    <strong>Dave Gamache</strong>
+                                    <strong>{{ $user->getName() }}</strong>
 
                                     <p>@dhg - Palo Alto</p>
                                 </div>
@@ -76,14 +76,14 @@
             <div class="qw rd aof alt">
                 <div class="qy" style="background-image: url(/public/img/iceland.jpg);"></div>
                 <div class="qx dj">
-                    <a href="/application/profile/">
+                    <a href="/id{{$user->id}}">
                         <img
                                 class="aog"
                                 src="/public/img/avatar-dhg.png">
                     </a>
 
                     <h5 class="qz">
-                        <a class="akt" href="/application/profile/">Dave Gamache</a>
+                        <a class="akt" href="/id{{$user->id}}">{{ $user->getName() }}</a>
                     </h5>
 
                     <p class="alt">I wish i was a little bit taller, wish i was a baller, wish i had a girl… also.</p>
@@ -186,7 +186,7 @@
                     <div class="qh">
                         <div class="qo">
                             <small class="eg dp">4 min</small>
-                            <h5>Dave Gamache</h5>
+                            <h5>{{ $user->getName() }}</h5>
                         </div>
 
                         <p>
@@ -308,7 +308,7 @@
                                 </a>
 
                                 <div class="qh">
-                                    <strong>Dave Gamache: </strong>
+                                    <strong>{{ $user->getName() }}: </strong>
                                     Donec id elit non mi porta gravida at eget metus. Vivamus sagittis lacus vel augue
                                     laoreet rutrum faucibus dolor auctor. Donec ullamcorper nulla non metus auctor
                                     fringilla. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed

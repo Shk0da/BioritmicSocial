@@ -18,7 +18,8 @@ class UserController extends MainController
     public function show(User $user)
     {
         $view = view('layout.profile')
-            ->with('user', $user);
+            ->with('user', $user)
+            ->with('meta', $this->get_meta());
         return $view;
     }
 

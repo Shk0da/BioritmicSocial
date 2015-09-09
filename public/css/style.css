@@ -8577,3 +8577,78 @@ img.zoom-img {
 .l img {
     width: 100%;
 }
+
+.welcome {
+    width: 70%;
+    padding: 20px;
+    margin-bottom: 14px;
+    margin-left: 10%;
+    text-align: left;
+}
+
+.welcome h1 {
+    color: #fff;
+    text-shadow: 0 2px rgba(0,0,0,.15);
+    font: 4.2em/1 "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.welcome p {
+    color: #fff;
+    text-shadow: 0 2px rgba(0,0,0,.15);
+    font: 2.167em/1.231 "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.main {
+    position: relative;
+    z-index: 0;
+    height: 820px;
+    max-height: 820px;
+    background: url(../img/bg-main.jpg) repeat-x 0 50% #3d8ca9;
+    margin-top: -50px;
+    width: auto;
+}
+
+.main .row {
+    padding-top: 7%;
+}
+
+.main .panel {
+    padding: 32px 36px 10px 36px;
+    background: rgba(255,255,255,.4)
+}
+
+.main:before {
+    position: absolute;
+    z-index: -1;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: 1500px;
+    height: 100%;
+    content: '';
+    background: url(../img/bg-people.png) no-repeat 30% 50%;
+}
+
+.login:before {
+    position: absolute;
+    z-index: -1;
+    bottom: 50px;
+    left: 15%;
+    width: 340px;
+    height: 510px;
+    margin-left: -150px;
+    content: '';
+    background: url(../img/bg-people-login.png) no-repeat 0 0;
+}
+
+.login:after {
+    position: absolute;
+    z-index: -1;
+    right: 15%;
+    bottom: 50px;
+    width: 384px;
+    height: 505px;
+    margin-right: -190px;
+    content: '';
+    background: url(../img/bg-people-login.png) no-repeat -343px 0;
+}

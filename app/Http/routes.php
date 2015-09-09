@@ -25,8 +25,10 @@ Route::get('/logout', [
     'as' => 'auth.logout'
 ]);
 
-Route::get('/id{user}', 'UserController@show')
-    ->where('user', '[0-9]+');
+Route::get('/id{user}', [
+    'uses' => 'UserController@show',
+    'as' => 'profile'
+])->where('user', '[0-9]+');
 
 Route::get('/edit', [
     'uses' => 'UserController@edit',
