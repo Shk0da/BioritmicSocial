@@ -23,4 +23,9 @@ class User extends Model implements AuthenticatableContract
         'password',
         'remember_token',
     ];
+
+    public function getName()
+    {
+        return $this->name ?: null;
+    }
 }

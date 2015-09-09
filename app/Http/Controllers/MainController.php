@@ -7,23 +7,17 @@ use App\Http\Requests;
 
 class MainController extends Controller
 {
-
     protected $user;
-
-    public function boot()
-    {
-        //Auth::loginUsingId(1);
-    }
 
     public function index()
     {
         $this->user = Auth::user();
 
         if (Auth::check()) {
-            $view = view('home');
-            $view->with('user', $this->user->id);
+            $view = view('layout.home');
+            $view->with('user', $this->user);
         } else {
-            $view = view('auth');
+            $view = view('auth.auth');
         }
 
         return $view;

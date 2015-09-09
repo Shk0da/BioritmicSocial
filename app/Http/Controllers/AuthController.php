@@ -12,9 +12,8 @@ class AuthController extends MainController
 {
     public function index()
     {
-        //
+        return view('auth.login');
     }
-
 
     public function create(Request $request)
     {
@@ -34,41 +33,39 @@ class AuthController extends MainController
                 'password' => bcrypt($password),
         ]);
 
-        $this->authenticate($email, $password);
+        $info = 'Вы успешно зарегистрировались!';
+        $this->authenticate($email, $password, true);
+        return redirect()->intended()->with('info', $info);
     }
 
-    public function authenticate($email, $password)
+    public function login(Request $request)
     {
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
-            return redirect()
-                ->intended('main')
-                ->with('info', 'Вы успешно зарегистрировались!');
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $remember = $request->has('remember');
+
+        $info = 'Добро пожаловать!';
+        $this->authenticate($email, $password, $remember);
+        if (!Auth::check()) {
+            return redirect()->back()->with('info', 'Вам не удалось войти');
         }
+        return redirect()->intended()->with('info', $info);
     }
 
-    public function store(Request $request)
+    public function authenticate($email, $password, $remember)
     {
-        //
+        Auth::attempt(['email' => $email, 'password' => $password], $remember);
     }
 
-    public function show($id)
+    public function logout()
     {
-        //
+        Auth::logout();
+        return redirect()->intended();
     }
 
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
-    }
 }

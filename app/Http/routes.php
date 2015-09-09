@@ -7,8 +7,28 @@ Route::get('/', [
 
 Route::post('/', [
     'uses' => 'AuthController@create',
-    'as' => 'auth'
+    'as' => 'auth.create'
+]);
+
+Route::get('/login', [
+    'uses' => 'AuthController@index',
+    'as' => 'auth.index'
+]);
+
+Route::post('/login', [
+    'uses' => 'AuthController@login',
+    'as' => 'auth.login'
+]);
+
+Route::get('/logout', [
+    'uses' => 'AuthController@logout',
+    'as' => 'auth.logout'
 ]);
 
 Route::get('/id{user}', 'UserController@show')
     ->where('user', '[0-9]+');
+
+Route::get('/edit', [
+    'uses' => 'UserController@edit',
+    'as' => 'edit'
+]);

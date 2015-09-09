@@ -17,12 +17,14 @@ class UserController extends MainController
 
     public function show(User $user)
     {
-        $view = view('profile')
-            ->with('user', $user->id);
+        $view = view('layout.profile')
+            ->with('user', $user);
         return $view;
     }
 
-    public function edit($id){}
+    public function edit(){
+        $user = $this->user;
+    }
 
     public function update(Request $request, $id){}
 
