@@ -1,7 +1,7 @@
 @extends('main')
-@include('layout.nav')
-@include('layout.message')
 @section('content')
+    @include('layout.nav')
+    @include('layout.message')
 <div class="anr dj"
      style="background-image: url(/public/img/iceland.jpg);">
     <div class="by">

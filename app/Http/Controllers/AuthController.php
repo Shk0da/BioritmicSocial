@@ -16,7 +16,7 @@ class AuthController extends MainController
             return redirect()->intended();
         }
 
-        return view('auth.login')->with('meta', $this->get_meta());
+        return view('auth.login')->with('meta', $this->getMeta());
     }
 
     public function create(Request $request)

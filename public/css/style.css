@@ -8652,3 +8652,23 @@ img.zoom-img {
     content: '';
     background: url(../img/bg-people-login.png) no-repeat -343px 0;
 }
+
+.search-result .qg {
+    height: 114px;
+}
+
+.search-result .qg img {
+    height: 90px;
+}
+
+.search-result .qh {
+    padding: 25px;
+}
+
+.search-result .qg {
+    background-color: #ffffff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    padding: 10px;
+}

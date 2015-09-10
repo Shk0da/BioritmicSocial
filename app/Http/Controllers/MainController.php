@@ -15,17 +15,17 @@ class MainController extends Controller
 
         if (Auth::check()) { view();
             $view = view('layout.home')
-                ->with('user', $this->user)
-                ->with('meta', $this->get_meta());
+                ->with('user', $this->getUser())
+                ->with('meta', $this->getMeta());
         } else {
             $view = view('auth.auth')
-                ->with('meta', $this->get_meta());
+                ->with('meta', $this->getMeta());
         }
 
         return $view;
     }
 
-    public function get_meta()
+    public function getMeta()
     {
         $meta = [
             'title' => 'Bioritmic',
@@ -34,5 +34,9 @@ class MainController extends Controller
         ];
 
         return $meta;
+    }
+
+    public function getUser(){
+        return $this->user;
     }
 }

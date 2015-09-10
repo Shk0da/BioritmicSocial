@@ -38,9 +38,9 @@
                 </li>
             </ul>
 
-            <form class="ox oh i" role="search">
+            <form class="ox oh i" role="search" action="{{ route('search') }}">
                 <div class="et">
-                    <input type="text" class="form-control" data-action="grow" placeholder="Search">
+                    <input type="text" name="query" class="form-control" data-action="grow" placeholder="Поиск">
                 </div>
             </form>
 

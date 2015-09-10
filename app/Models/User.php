@@ -24,8 +24,28 @@ class User extends Model implements AuthenticatableContract
         'remember_token',
     ];
 
+    public function profile()
+    {
+        return $this->hasOne('App\Models\Profile');
+    }
+
     public function getName()
     {
         return $this->name ?: null;
+    }
+
+    public function getLocation()
+    {
+        return $this->location ?: null;
+    }
+
+    public function getProfileLink()
+    {
+        return "/id{$this->id}";
+    }
+
+    public function getImageProfile()
+    {
+        return '/public/img/avatar-fat.jpg';
     }
 }
