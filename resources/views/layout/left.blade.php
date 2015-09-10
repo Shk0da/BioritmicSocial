@@ -12,19 +12,19 @@
                 <a class="akt" href="/id{{$user->id}}">{{ $user->getName() }}</a>
             </h5>
 
-            <p class="alt">I wish i was a little bit taller, wish i was a baller, wish i had a girl… also.</p>
+            <p class="alt">{{ $user->getStatus() }}</p>
 
             <ul class="aoh">
                 <li class="aoi">
                     <a href="#userModal" class="akt" data-toggle="modal">
-                        Friends
+                        Друзья
                         <h5 class="alh">12M</h5>
                     </a>
                 </li>
 
                 <li class="aoi">
                     <a href="#userModal" class="akt" data-toggle="modal">
-                        Enemies
+                        Подписчики
                         <h5 class="alh">1</h5>
                     </a>
                 </li>
@@ -34,22 +34,21 @@
 
     <div class="qw rd sn sq">
         <div class="qx">
-            <h5 class="alc">About
-                <small>· <a href="#">Edit</a></small>
+            <h5 class="alc">Информация
+                <small>· <a href="{{ route('edit') }}">Edit</a></small>
             </h5>
             <ul class="eb tc">
-                <li><span class="dp h xg alk"></span>Went to <a href="#">Oh, Canada</a>
-                <li><span class="dp h ajv alk"></span>Became friends with <a href="#">Obama</a>
-                <li><span class="dp h abt alk"></span>Worked at <a href="#">Github</a>
-                <li><span class="dp h acj alk"></span>Lives in <a href="#">San Francisco, CA</a>
-                <li><span class="dp h ads alk"></span>From <a href="#">Seattle, WA</a>
+                <li><span class="dp h xg alk"></span>Дата рождения: {{ $user->getStringBirthday() }}
+                <li><span class="dp h abt alk"></span>Вы рождены в год <a href="#">{{ $user->getChinaZodiac() }}</a>
+                <li><span class="dp h ajv alk"></span>Знак зодиака: <a href="#">{{ $user->getZodiac() }}</a>
+                <li><span class="dp h ads alk"></span>Город: <a href="#">{{ $user->getLocation() }}</a>
             </ul>
         </div>
     </div>
 
     <div class="qw rd sn sq">
         <div class="qx">
-            <h5 class="alc">Photos
+            <h5 class="alc">Фотографии
                 <small>· <a href="#">Edit</a></small>
             </h5>
             <div data-grid="images" data-target-height="150">

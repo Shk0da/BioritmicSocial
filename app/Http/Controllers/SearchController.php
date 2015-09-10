@@ -11,14 +11,15 @@ class SearchController extends MainController
 
     public function search(Request $request)
     {
+        $view = $this->view;
         $this->user = Auth::user();
         $query = $request->input('query');
 
         $result = User::where('name', 'LIKE', "%{$query}%")->get();
 
-        return view('search.result')
+        $view->with('content', view('search.result')
             ->with('user', $this->getUser())
-            ->with('meta', $this->getMeta())
-            ->with('result', $result);
+            ->with('result', $result));
+        return $view;
     }
 }

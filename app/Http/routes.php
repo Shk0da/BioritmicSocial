@@ -37,6 +37,11 @@ Route::group(['middleware' => 'auth'], function () {
         'as' => 'edit'
     ]);
 
+    Route::post('/edit', [
+        'uses' => 'UserController@save',
+        'as' => 'user.save'
+    ]);
+
     Route::get('/search', [
         'uses' => 'SearchController@search',
         'as' => 'search'

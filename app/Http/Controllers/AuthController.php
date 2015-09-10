@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
 use Illuminate\Http\Request;
 
 use Auth;
@@ -12,11 +13,14 @@ class AuthController extends MainController
 {
     public function index()
     {
+        $view = $this->view;
+
         if (Auth::check()) {
             return redirect()->intended();
         }
 
-        return view('auth.login')->with('meta', $this->getMeta());
+        $view->with('content', view('auth.login'));
+        return $view;
     }
 
     public function create(Request $request)
@@ -32,14 +36,14 @@ class AuthController extends MainController
         $password = $request->input('password');
 
         User::create([
-                'name' => $name,
-                'email' => $email,
-                'password' => bcrypt($password),
+            'name' => $name,
+            'email' => $email,
+            'password' => bcrypt($password),
         ]);
 
-        $info = 'Вы успешно зарегистрировались!';
         $this->authenticate($email, $password, true);
-        return redirect()->intended()->with('info', $info);
+        Profile::firstOrCreate(['user_id' => Auth::user()->id]);
+        return redirect()->intended();
     }
 
     public function login(Request $request)
@@ -52,13 +56,13 @@ class AuthController extends MainController
         $email = $request->input('email');
         $password = $request->input('password');
         $remember = $request->has('remember');
-
-        $info = 'Добро пожаловать!';
         $this->authenticate($email, $password, $remember);
+
         if (!Auth::check()) {
-            return redirect()->back()->with('info', 'Вам не удалось войти');
+            return redirect()->back();
         }
-        return redirect()->intended()->with('info', $info);
+
+        return redirect()->intended();
     }
 
     public function authenticate($email, $password, $remember)

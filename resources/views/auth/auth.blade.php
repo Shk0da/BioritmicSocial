@@ -1,4 +1,3 @@
-@extends('main')
 @section('content')
     <div class="container main">
         <div class="row">

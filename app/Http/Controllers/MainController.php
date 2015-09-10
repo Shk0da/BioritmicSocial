@@ -7,19 +7,22 @@ use App\Http\Requests;
 
 class MainController extends Controller
 {
-    protected $user;
+    protected $view;
+
+    public function __construct()
+    {
+        $this->view = view('main')
+            ->with('meta', $this->getMeta());
+    }
 
     public function index()
     {
-        $this->user = Auth::user();
+        $view = $this->view;
 
-        if (Auth::check()) { view();
-            $view = view('layout.home')
-                ->with('user', $this->getUser())
-                ->with('meta', $this->getMeta());
+        if (Auth::check()) {
+            $view->with('content', view('layout.home')->with('user', $this->getUser()));
         } else {
-            $view = view('auth.auth')
-                ->with('meta', $this->getMeta());
+            $view->with('content', view('auth.auth'));
         }
 
         return $view;
@@ -37,6 +40,6 @@ class MainController extends Controller
     }
 
     public function getUser(){
-        return $this->user;
+        return Auth::user();
     }
 }

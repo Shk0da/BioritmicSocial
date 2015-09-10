@@ -3,7 +3,7 @@
 
         <li class="qg b amk">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Message">
+                <input type="text" class="form-control" placeholder="Что у вас нового?">
 
                 <div class="fj">
                     <button type="button" class="cg fm">

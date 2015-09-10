@@ -2,21 +2,16 @@
     <div class="alert pw alert-dismissible st" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                     aria-hidden="true">&times;</span></button>
-        <a class="ps" href="/application/profile">Visit your profile!</a> Check your self, you aren't looking
-        too good.
+        <a class="ps" href="/application/profile">Зайдите в свой профиль!</a> Проверьте на сколько хорошо выглядит ваша страница.
     </div>
 
     <div class="qw rd alt st">
         <div class="qx">
-            <h5 class="alc">Sponsored</h5>
-
+            <h5 class="alc">Реклама</h5>
             <div data-grid="images" data-target-height="150">
                 <img class="qi" data-width="640" data-height="640" data-action="zoom"
-                     src="/public/img/instagram_2.jpg">
+                     src="">
             </div>
-            <p><strong>It might be time to visit Iceland.</strong> Iceland is so chill, and everything looks
-                cool here. Also, we heard the people are pretty nice. What are you waiting for?</p>
-            <button class="cg ts fx">Buy a ticket</button>
         </div>
     </div>
 

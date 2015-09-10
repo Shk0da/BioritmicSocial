@@ -4,17 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model
+class Photo extends Model
 {
-    protected $table = 'profiles';
+    protected $table = 'photos';
 
     protected $fillable = [
         'user_id',
-        'birthday',
-        'image_profile',
-        'location',
-        'status',
-        'about',
+        'tag',
     ];
 
     public function user()

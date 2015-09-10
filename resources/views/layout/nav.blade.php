@@ -2,7 +2,7 @@
     <div class="by">
         <div class="os">
             <button type="button" class="ov collapsed" data-toggle="collapse" data-target="#navbar-collapse-main">
-                <span class="cv">Toggle navigation</span>
+                <span class="cv">Меню</span>
                 <span class="ow"></span>
                 <span class="ow"></span>
                 <span class="ow"></span>
@@ -15,13 +15,13 @@
 
             <ul class="nav navbar-nav st">
                 <li class="active">
-                    <a href="/">Home</a>
+                    <a href="/">Новости</a>
                 </li>
                 <li>
-                    <a href="/id{{$user->id}}">Profile</a>
+                    <a href="/id{{$user->id}}">Профиль</a>
                 </li>
                 <li>
-                    <a data-toggle="modal" href="#msgModal">Messages</a>
+                    <a data-toggle="modal" href="#msgModal">Сообщения</a>
                 </li>
             </ul>
 
@@ -45,17 +45,17 @@
             </form>
 
             <ul class="nav navbar-nav su sv sw">
-                <li><a href="/">Home</a></li>
-                <li><a href="/profile/">Profile</a></li>
-                <li><a href="/notifications/">Notifications</a></li>
-                <li><a data-toggle="modal" href="#msgModal">Messages</a></li>
+                <li><a href="/">Новости</a></li>
+                <li><a href="/profile/">Профиль</a></li>
+                <li><a href="/notifications/">Обновления</a></li>
+                <li><a data-toggle="modal" href="#msgModal">Сообщения</a></li>
                 <li><a href="{{ route('edit') }}">{{ $user->getName() }}</a></li>
-                <li><a href="{{ route('auth.logout') }}">Logout</a></li>
+                <li><a href="{{ route('auth.logout') }}">Выйти</a></li>
             </ul>
 
             <ul class="nav navbar-nav hidden">
                 <li><a href="{{ route('edit') }}">{{ $user->getName() }}</a></li>
-                <li><a href="{{ route('auth.logout') }}">Logout</a></li>
+                <li><a href="{{ route('auth.logout') }}">Выйти</a></li>
             </ul>
         </div>
     </div>

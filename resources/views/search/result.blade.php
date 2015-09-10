@@ -1,4 +1,3 @@
-@extends('main')
 @section('content')
     @include('layout.nav')
     <div class="anp" id="app-growl"></div>
