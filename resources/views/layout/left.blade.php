@@ -2,10 +2,8 @@
     <div class="qw rd aof alt">
         <div class="qy" style="background-image: url(/public/img/iceland.jpg);"></div>
         <div class="qx dj">
-            <a href="/id{{$user->id}}">
-                <img
-                        class="aog"
-                        src="/public/img/avatar-dhg.png">
+            <a data-toggle="modal" href="#changeImage">
+                <img class="aog" src="/public/img/avatar-dhg.png">
             </a>
 
             <h5 class="qz">
@@ -39,7 +37,7 @@
             </h5>
             <ul class="eb tc">
                 <li><span class="dp h xg alk"></span>Дата рождения: {{ $user->getStringBirthday() }}
-                <li><span class="dp h abt alk"></span>Вы рождены в год <a href="#">{{ $user->getChinaZodiac() }}</a>
+                <li><span class="dp h abt alk"></span>Вы рождены в год <a href="#">{{ $user->getAnimal() }}</a>
                 <li><span class="dp h ajv alk"></span>Знак зодиака: <a href="#">{{ $user->getZodiac() }}</a>
                 <li><span class="dp h ads alk"></span>Город: <a href="#">{{ $user->getLocation() }}</a>
             </ul>
@@ -80,6 +78,30 @@
                 <div>
                     <img data-width="640" data-height="640" data-action="zoom"
                          src="/public/img/instagram_10.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cd fade" id="changeImage" tabindex="-1" role="dialog" aria-labelledby="changeImage" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="d">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Изменить изображение профиля</h4>
+            </div>
+
+            <div class="modal-body ame js-modalBody">
+                <div class="changeImage">
+                    <img src="/public/img/avatar-dhg.png">
+                </div>
+                <div class="ac">
+                    <div class="action">
+                        Выбрать другое изображение
+                        Сохранить
+                    </div>
+                    <button type="button" class="cg fx fp eg k js-newMsg">Сохранить</button>
                 </div>
             </div>
         </div>

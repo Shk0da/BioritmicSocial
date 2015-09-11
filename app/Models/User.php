@@ -79,31 +79,66 @@ class User extends Model implements AuthenticatableContract
         return $this->profile->about ?: null;
     }
 
+    public function getGender()
+    {
+        if (!$this->profile->gender)
+            return null;
+
+        $gender = ['мужской', 'женский'];
+        return $gender[$this->profile->gender];
+    }
+
+    public function getIntGender()
+    {
+        if (!isset($this->profile->gender))
+            return null;
+
+        return (int) $this->profile->gender;
+    }
+
     public function getZodiac()
     {
-        $data = $this->profile->birthday;
-        $day = str_replace("-", "", substr($data, 5));
-        $zodiak = array('ot' => array('0120', '0219', '0321', '0421', '0521', '0622', '0723', '0823', '0923', '1024', '1123', '1222', '0101'),
-            'do' => array('0218', '0320', '0420', '0520', '0621', '0722', '0822', '0922', '1023', '1122', '1221', '1231', '0119'),
-            'zn' => array('Водолей', 'Рыбы', 'Овен', 'Телец', 'Близнец', 'Рак', 'Лев', 'Дева', 'Весы', 'Скорпион', 'Стрелец', 'Козерог', 'Козерог'));
-        $i = 0;
-        while (empty($znak) && ($i < 13)) {
-            $znak = (($zodiak['ot'][$i] <= $day) && ($zodiak['do'][$i] >= $day)) ? $zodiak['zn'][$i] : null;
-            ++$i;
-        }
+        if (!isset($this->profile->zodiac))
+            return null;
 
+        $zodiac = ['Козерог', 'Водолей', 'Рыбы', 'Овен', 'Телец', 'Близнецы', 'Рак', 'Лев', 'Девы', 'Весы', 'Скорпион', 'Стрелец'];
+        return $zodiac[$this->profile->zodiac];
+    }
+
+    public function getAnimal()
+    {
+        if (!isset($this->profile->animal))
+            return null;
+
+        $animals = ['Крысы', 'Быка', 'Тигра', 'Кролика', 'Дракона', 'Змеи', 'Лошади', 'Овцы', 'Обезьяны', 'Петуха', 'Собаки', 'Кабана'];
+        return $animals[$this->profile->animal];
+    }
+
+    function setZodiac()
+    {
+        if (!isset($this->profile->birthday))
+            return null;
+
+        $birthday = array_reverse(explode("-", $this->profile->birthday));
+        $day = $birthday[0];
+        $month = $birthday[1];
+        $signsstart = [1=>21, 2=>20, 3=>20, 4=>20, 5=>20, 6=>20, 7=>21, 8=>22, 9=>23, 10=>23, 11=>23, 12=>23, 13=>21];
+        $znak = $day < $signsstart[$month + 1] ? $month - 1 : $month % 12;
         return $znak;
     }
 
-    public function getChinaZodiac()
+
+    public function setAnimal()
     {
-        $data = $this->profile->birthday;
-        $year = str_replace("-", "", substr($data, 0, 4));
-        $animals = ['Крысы', 'Быка', 'Тигра', 'Кролика', 'Дракона', 'Змеи', 'Лошади', 'Овцы', 'Обезьяны', 'Петуха', 'Собаки', 'Кабана'];
+        if (!isset($this->profile->birthday))
+            return null;
+
+        $birthday = $this->profile->birthday;
+        $year = str_replace("-", "", substr($birthday, 0, 4));
 
         $count = 1;
         for ($i = 1900; $i < $year; $i++) {
-            $zodiac = $animals[$count++];
+            $zodiac = $count++;
             if ($count == 12) $count = 0;
         }
 

@@ -26,8 +26,15 @@ class UserController extends MainController
 
     public function save(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required|min:2',
+            'birthday' => 'required',
+            'location' => 'required',
+        ]);
+
         $name = $request->input('name');
         $birthday = $request->input('birthday');
+        $gender = $request->input('gender');
         $status = $request->input('status');
         $location = $request->input('location');
         $about = $request->input('about');
@@ -38,6 +45,9 @@ class UserController extends MainController
         $user->profile->status = $status;
         $user->profile->location = $location;
         $user->profile->about = $about;
+        $user->profile->gender = $gender;
+        $user->profile->zodiac = $user->setZodiac();
+        $user->profile->animal = $user->setAnimal();
         $user->profile->save();
         $user->save();
 

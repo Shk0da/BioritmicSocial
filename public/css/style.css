@@ -8672,3 +8672,12 @@ img.zoom-img {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     padding: 10px;
 }
+
+.changeImage {
+    padding: 10px;
+    text-align: center;
+}
+
+.changeImage .ac{
+
+}

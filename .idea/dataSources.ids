@@ -1608,6 +1608,9 @@
       <column name="about" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="created_at" sqlType="timestamp" precision="22" scale="0" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="22" scale="0" nullable="false" jdbcType="93"/>
+      <column name="gender" sqlType="int2" precision="5" scale="0" nullable="true" jdbcType="5"/>
+      <column name="zodiac" sqlType="int2" precision="5" scale="0" nullable="true" jdbcType="5"/>
+      <column name="animal" sqlType="int2" precision="5" scale="0" nullable="true" jdbcType="5"/>
       <primary-key name="profiles_pkey" columns="id"/>
       <foreign-key name="profiles_user_id_foreign" columns="user_id" ref-table="users" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>

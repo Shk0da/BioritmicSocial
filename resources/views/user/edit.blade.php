@@ -23,6 +23,9 @@
                         <label for="name" class="col-sm-3 control-label">Имя</label>
                         <div class="col-sm-9">
                             <input id="name" name="name" type="text" class="form-control" value="{{ $user->getName() }}" placeholder="Имя">
+                            @if ($errors->has('name'))
+                                <span class="help-block">{{ $errors->first('name') }}</span>
+                            @endif
                         </div>
                     </div>
 
@@ -31,23 +34,35 @@
 
                         <div class="col-sm-9">
                             <select name="birthday[d]" class="btn dropdown-toggle">
-                                <option value="{{ (int)$user->getBirthday()[2] }}" selected>{{ $user->getBirthday()[2] or 'День' }}</option>
                                 @for($i = 1; $i <= 31; $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
+                                    <option value="{{ $i }}"{{ (isset($user->getBirthday()[2]) && $user->getBirthday()[2] == $i) ? ' selected' : '' }}>{{ $i }}</option>
                                 @endfor
                             </select>
                             <select name="birthday[m]" class="btn dropdown-toggle">
-                                <option value="{{ (int)$user->getBirthday()[1] }}" selected>{{ $month[$user->getBirthday()[1]-1] or 'Месяц' }}</option>
                                 @foreach( $month as $i => $m)
-                                    <option value="{{ $i+1 }}">{{ $m }}</option>
+                                    <option value="{{ $i+1 }}"{{ (isset($user->getBirthday()[1]) && $user->getBirthday()[1] == $i+1) ? ' selected' : '' }}>{{ $m }}</option>
                                 @endforeach
                             </select>
                             <select name="birthday[y]" class="btn dropdown-toggle">
-                                <option value="{{ (int)$user->getBirthday()[0] }}" selected>{{ $user->getBirthday()[0] or 'Год' }}</option>
-                                @for($i = 1939; $i <= date('Y')-14; $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @for($i = date('Y')-14; $i >= 1939; $i--)
+                                    <option value="{{ $i }}"{{ (isset($user->getBirthday()[0]) && $user->getBirthday()[0] == $i) ? ' selected' : '' }}>{{ $i }}</option>
                                 @endfor
                             </select>
+                            @if ($errors->has('birthday'))
+                                <span class="help-block">{{ $errors->first('birthday') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender" class="col-sm-3 control-label">Пол</label>
+                        <div class="col-sm-9">
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" value="1"{{ $user->getIntGender() === 1 ? ' checked' : '' }}> Мужской
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" value="0"{{ $user->getIntGender() === 0 ? ' checked' : '' }}> Женский
+                            </label>
                         </div>
                     </div>
 
@@ -62,6 +77,9 @@
                         <label for="location" class="col-sm-3 control-label">Город</label>
                         <div class="col-sm-9">
                             <input id="location" name="location" type="text" class="form-control" value="{{ $user->getLocation() }}" placeholder="Город">
+                            @if ($errors->has('location'))
+                                <span class="help-block">{{ $errors->first('location') }}</span>
+                            @endif
                         </div>
                     </div>
 
