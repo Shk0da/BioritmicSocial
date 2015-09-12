@@ -42,6 +42,11 @@ Route::group(['middleware' => 'auth'], function () {
         'as' => 'user.save'
     ]);
 
+    Route::post('/edit/image_profile', [
+        'uses' => 'ProfileController@saveImage',
+        'as' => 'user.save.image'
+    ]);
+
     Route::get('/search', [
         'uses' => 'SearchController@search',
         'as' => 'search'

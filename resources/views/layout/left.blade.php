@@ -85,7 +85,7 @@
 </div>
 
 <div class="cd fade" id="changeImage" tabindex="-1" role="dialog" aria-labelledby="changeImage" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog imd">
         <div class="modal-content">
             <div class="d">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -96,13 +96,23 @@
                 <div class="changeImage">
                     <img src="/public/img/avatar-dhg.png">
                 </div>
-                <div class="ac">
-                    <div class="action">
-                        Выбрать другое изображение
-                        Сохранить
+                <div class="action text-center">
+                        <span class="btn btn-link fileinput-button">
+                            <span>Загрузить другое изображение</span>
+                            <input type="file" name="image_profile" data-url="{{ route('user.save.image') }}" >
+                        </span>
+
+                    <div class="col-lg-12 text-center">
+                        <form method="post" action="{{ route('user.save.image') }}" id="my-dropzone" class="form single-dropzone">
+                        <div id="img-thumb-preview">
+                            <img id="img-thumb" class="user size-lg img-thumbnail" src="">
+                        </div>
+                            {!! csrf_field() !!}
+                        <button id="upload-submit" class="btn btn-default margin-t-5"><i class="fa fa-upload"></i> Upload Picture</button>
+                        </form>
                     </div>
-                    <button type="button" class="cg fx fp eg k js-newMsg">Сохранить</button>
                 </div>
+
             </div>
         </div>
     </div>
