@@ -10,6 +10,7 @@ class Photo extends Model
 
     protected $fillable = [
         'user_id',
+        'path',
         'tag',
     ];
 
@@ -17,4 +18,6 @@ class Photo extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+
 }

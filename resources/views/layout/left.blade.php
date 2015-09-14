@@ -3,7 +3,7 @@
         <div class="qy" style="background-image: url(/public/img/iceland.jpg);"></div>
         <div class="qx dj">
             <a data-toggle="modal" href="#changeImage">
-                <img class="aog" src="/public/img/avatar-dhg.png">
+                <img class="aog" src="{{$user->getImageProfile()}}">
             </a>
 
             <h5 class="qz">
@@ -94,23 +94,17 @@
 
             <div class="modal-body ame js-modalBody">
                 <div class="changeImage">
-                    <img src="/public/img/avatar-dhg.png">
+                    <img id="image_preview" class="image-profile-preview" src="{{$user->getImageProfile()}}">
                 </div>
                 <div class="action text-center">
+                    <form method="post" action="{{ route('user.save.image') }}" enctype="multipart/form-data">
                         <span class="btn btn-link fileinput-button">
                             <span>Загрузить другое изображение</span>
-                            <input type="file" name="image_profile" data-url="{{ route('user.save.image') }}" >
+                            <input id="image_profile" type="file" name="image" accept="image/*">
                         </span>
-
-                    <div class="col-lg-12 text-center">
-                        <form method="post" action="{{ route('user.save.image') }}" id="my-dropzone" class="form single-dropzone">
-                        <div id="img-thumb-preview">
-                            <img id="img-thumb" class="user size-lg img-thumbnail" src="">
-                        </div>
-                            {!! csrf_field() !!}
-                        <button id="upload-submit" class="btn btn-default margin-t-5"><i class="fa fa-upload"></i> Upload Picture</button>
-                        </form>
-                    </div>
+                        {!! csrf_field() !!}
+                        <button type="submit" class="btn btn-link">Сохранить</button>
+                    </form>
                 </div>
 
             </div>

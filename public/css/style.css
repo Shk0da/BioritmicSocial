@@ -8710,3 +8710,7 @@ img.zoom-img {
         height: 100%;
     }
 }
+
+.image-profile-preview {
+    width: 256px;
+}

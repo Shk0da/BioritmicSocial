@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Faker\Provider\Image;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Model implements AuthenticatableContract
 {
@@ -51,7 +53,11 @@ class User extends Model implements AuthenticatableContract
 
     public function getImageProfile()
     {
-        return '/public/img/avatar-fat.jpg';
+        $image = Photo::find($this->profile->image_profile);
+        if (!$image)
+            return '/public/img/avatar-dhg.png';
+
+        return $image->path;
     }
 
     public function getEmail()

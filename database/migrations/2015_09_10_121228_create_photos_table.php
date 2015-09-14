@@ -11,7 +11,7 @@ class CreatePhotosTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('tag', 255)->nullable();
-            $table->timestamp('created_at');
+            $table->timestamp();
         });
     }
 

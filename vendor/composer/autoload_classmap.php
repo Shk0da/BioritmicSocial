@@ -516,6 +516,7 @@ return array(
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Resources/stubs/SessionHandlerInterface.php',
     'TestCase' => $baseDir . '/tests/TestCase.php',
     'Text_Template' => $vendorDir . '/phpunit/php-text-template/src/Template.php',
-    'UpdateProfilesTable' => $baseDir . '/database/migrations/2015_09_11_090831_update_profiles_table.php',
+    'UpdatePhotosTable' => $baseDir . '/database/migrations/2015_09_14_134920_update_photos_table.php',
+    'UpdateProfilesTable' => $baseDir . '/database/migrations/2015_09_11_090832_update_profiles_table.php',
     'UserTableSeeder' => $baseDir . '/database/seeds/UserTableSeeder.php',
 );
