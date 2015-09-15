@@ -102,7 +102,44 @@
 
             <div class="go">
                 <div class="qw rd aof alt qx dj">
-                    <a href="/reset">Сбросить пароль</a>
+                    <a href="{{ route('user.password.reset') }}">Сбросить пароль</a>
+                </div>
+                <div class="qw rd aof alt qx dj">
+                    <a data-toggle="modal" href="#changeBackground">
+                        Изменить фон
+                    </a>
+                </div>
+            </div>
+
+            <div class="cd fade" id="changeBackground" tabindex="-1" role="dialog" aria-labelledby="changeBackground"
+                 aria-hidden="true">
+                <div class="modal-dialog imd">
+                    <div class="modal-content">
+                        <div class="d">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Изменить фоновое изображение</h4>
+                        </div>
+
+                        <div class="modal-body ame js-modalBody">
+                            <div class="changeImage">
+                                <img id="background_preview" class="image-profile-preview"
+                                     src="{{$user->getBackground()}}">
+                            </div>
+                            <div class="action text-center">
+                                <form method="post" action="{{ route('user.save.background') }}"
+                                      enctype="multipart/form-data">
+                        <span class="btn btn-link fileinput-button">
+                            <span>Загрузить другое изображение</span>
+                            <input id="background" type="file" name="background" accept="image/*">
+                        </span>
+                                    {!! csrf_field() !!}
+                                    <button id="save_background" type="submit" class="btn btn-link">Сохранить
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
 

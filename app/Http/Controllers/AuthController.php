@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Profile;
-use Illuminate\Http\Request;
-
 use Auth;
 use App\Models\User;
 use App\Http\Requests;
+use App\Models\Profile;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class AuthController extends MainController
 {
+
+    use ResetsPasswords;
+
     public function index()
     {
         $view = $this->view;
@@ -74,6 +77,19 @@ class AuthController extends MainController
     {
         Auth::logout();
         return redirect()->intended();
+    }
+
+    public function reset(Request $request)
+    {
+        $view = $this->view;
+        $view->with('content', view('auth.reset'));
+
+        if ($request->getMethod() == 'GET') {
+            return $view;
+        }
+
+        $this->postEmail($request);
+        return redirect()->back();
     }
 
 }

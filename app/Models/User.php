@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use Faker\Provider\Image;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-    use Authenticatable;
+    use Authenticatable, CanResetPassword;
 
     protected $table = 'users';
 
@@ -56,6 +56,15 @@ class User extends Model implements AuthenticatableContract
         $image = Photo::find($this->profile->image_profile);
         if (!$image)
             return '/public/img/avatar-dhg.png';
+
+        return $image->path;
+    }
+
+    public function getBackground()
+    {
+        $image = Photo::find($this->profile->background);
+        if (!$image)
+            return '/public/img/iceland.jpg';
 
         return $image->path;
     }

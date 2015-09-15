@@ -20,6 +20,11 @@ Route::post('/login', [
     'as' => 'auth.login'
 ]);
 
+Route::any('/reset', [
+    'uses' => 'AuthController@reset',
+    'as' => 'user.password.reset'
+]);
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/logout', [
@@ -45,6 +50,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/edit/imageprofile', [
         'uses' => 'ProfileController@saveImage',
         'as' => 'user.save.image'
+    ]);
+
+    Route::post('/edit/background', [
+        'uses' => 'ProfileController@saveBackground',
+        'as' => 'user.save.background'
     ]);
 
     Route::get('/search', [

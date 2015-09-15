@@ -1,6 +1,6 @@
 <div class="go">
     <div class="qw rd aof alt">
-        <div class="qy" style="background-image: url(/public/img/iceland.jpg);"></div>
+        <div class="qy" style="background-image: url({{$user->getBackground()}});"></div>
         <div class="qx dj">
             <a data-toggle="modal" href="#changeImage">
                 <img class="aog" src="{{$user->getImageProfile()}}">
@@ -103,7 +103,7 @@
                             <input id="image_profile" type="file" name="image" accept="image/*">
                         </span>
                         {!! csrf_field() !!}
-                        <button type="submit" class="btn btn-link">Сохранить</button>
+                        <button id="save_image_profile" type="submit" class="btn btn-link">Сохранить</button>
                     </form>
                 </div>
 

@@ -33,7 +33,7 @@
                 </li>
                 <li>
                     <button class="cg fm oy ank" data-toggle="popover">
-                        <img class="cu" src="/public/img/avatar-dhg.png">
+                        <img class="cu" src="{{$user->getImageProfile()}}">
                     </button>
                 </li>
             </ul>

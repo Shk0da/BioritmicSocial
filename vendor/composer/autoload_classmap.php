@@ -517,6 +517,7 @@ return array(
     'TestCase' => $baseDir . '/tests/TestCase.php',
     'Text_Template' => $vendorDir . '/phpunit/php-text-template/src/Template.php',
     'UpdatePhotosTable' => $baseDir . '/database/migrations/2015_09_14_134920_update_photos_table.php',
+    'UpdateProfileTable' => $baseDir . '/database/migrations/2015_09_15_120704_update_profile_table.php',
     'UpdateProfilesTable' => $baseDir . '/database/migrations/2015_09_11_090832_update_profiles_table.php',
     'UserTableSeeder' => $baseDir . '/database/seeds/UserTableSeeder.php',
 );

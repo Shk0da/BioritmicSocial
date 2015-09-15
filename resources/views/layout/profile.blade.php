@@ -2,13 +2,13 @@
     @include('layout.nav')
     @include('layout.message')
 <div class="anr dj"
-     style="background-image: url(/public/img/iceland.jpg);">
+     style="background-image: url({{$user->getBackground()}});">
     <div class="by">
         <div class="ans">
-            <img class="cu qi" src="/public/img/avatar-dhg.png">
-            <h3 class="anu">Dave Gamache</h3>
+            <img class="cu qi" src="{{$user->getImageProfile()}}">
+            <h3 class="anu">{{$user->getName()}}</h3>
             <p class="ant">
-                I wish i was a little bit taller, wish i was a baller, wish i had a girl… also.
+                {{$user->getStatus()}}
             </p>
         </div>
     </div>

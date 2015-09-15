@@ -31,4 +31,25 @@ class ProfileController extends MainController
         return redirect()->route('edit');
     }
 
+    public function saveBackground(Request $request)
+    {
+        $userId = $this->getUser()->id;
+        $file = $request->file('background');
+        $path = 'public/image/background/'.$userId.'/';
+        $fileName = md5_file($file->getRealPath());
+        $file->move($path, $fileName);
+
+        $photo = new Photo();
+        $photo->user_id = $userId;
+        $photo->tag = 'background';
+        $photo->path = $path.$fileName;
+        $photo->save();
+
+        $user = User::find($userId);
+        $user->profile->background = $photo->id;
+        $user->profile->save();
+
+        return redirect()->route('edit');
+    }
+
 }
