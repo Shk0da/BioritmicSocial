@@ -14,16 +14,16 @@
 
             <ul class="aoh">
                 <li class="aoi">
-                    <a href="#userModal" class="akt" data-toggle="modal">
+                    <a href="#friendsModal" class="akt" data-toggle="modal">
                         Друзья
-                        <h5 class="alh">12M</h5>
+                        <h5 class="alh">{{ $user->getFriends()->count() }}</h5>
                     </a>
                 </li>
 
                 <li class="aoi">
-                    <a href="#userModal" class="akt" data-toggle="modal">
+                    <a href="#subscribersModal" class="akt" data-toggle="modal">
                         Подписчики
-                        <h5 class="alh">1</h5>
+                        <h5 class="alh">{{ $user->getSubscribers()->count() }}</h5>
                     </a>
                 </li>
             </ul>

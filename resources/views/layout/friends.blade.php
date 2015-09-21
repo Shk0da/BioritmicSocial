@@ -1,62 +1,74 @@
-<div class="cd fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModal" aria-hidden="true">
+<div class="cd fade" id="friendsModal" tabindex="-1" role="dialog" aria-labelledby="friendsModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="d">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Users</h4>
+                <h4 class="modal-title">Друзья</h4>
             </div>
 
             <div class="modal-body ame">
                 <div class="up">
                     <ul class="qp cj ca">
-                        <li class="b">
-                            <div class="qg">
-                                <a class="qk" href="#">
-                                    <img class="qi cu" src="/public/img/avatar-fat.jpg">
-                                </a>
+                        @foreach($user->getFriends() as $friend)
+                            <li class="b">
+                                <div class="qg">
+                                    <a class="qk" href="#">
+                                        <img class="qi cu" src="{{ $friend->getImageProfile() }}">
+                                    </a>
 
-                                <div class="qh">
-                                    <button class="cg fm fx eg">
-                                        <span class="c aok"></span> Follow
-                                    </button>
-                                    <strong>Jacob Thornton</strong>
+                                    <div class="qh">
+                                        <button class="cg fm fx eg">
+                                            @if ($friend->hasFriend())
+                                                <span class="c aok"></span> Убрать
+                                            @endif
+                                        </button>
+                                        <strong>{{ $friend->getName() }}</strong>
 
-                                    <p>@fat - San Francisco</p>
+                                        <p>{{ $friend->getLocation() }}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="b">
-                            <div class="qg">
-                                <a class="qk" href="#">
-                                    <img class="qi cu" src="/public/img/avatar-dhg.png">
-                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                                <div class="qh">
-                                    <button class="cg fm fx eg">
-                                        <span class="c aok"></span> Follow
-                                    </button>
-                                    <strong>{{ $user->getName() }}</strong>
+<div class="cd fade" id="subscribersModal" tabindex="-1" role="dialog" aria-labelledby="subscribersModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="d">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Подписчики</h4>
+            </div>
 
-                                    <p>@dhg - Palo Alto</p>
+            <div class="modal-body ame">
+                <div class="up">
+                    <ul class="qp cj ca">
+                        @foreach($user->getSubscribers() as $friend)
+                            <li class="b">
+                                <div class="qg">
+                                    <a class="qk" href="#">
+                                        <img class="qi cu" src="{{ $friend->getImageProfile() }}">
+                                    </a>
+
+                                    <div class="qh">
+                                        <button class="cg fm fx eg">
+                                            @if (!$friend->hasFriend())
+                                                <a href="{{ route('friend.accept', $friend) }}">
+                                                    <span class="c aok"></span> Добавить
+                                                </a>
+                                            @endif
+                                        </button>
+                                        <strong>{{ $friend->getName() }}</strong>
+
+                                        <p>{{ $friend->getLocation() }}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="b">
-                            <div class="qg">
-                                <a class="qk" href="#">
-                                    <img class="qi cu" src="/public/img/avatar-mdo.png">
-                                </a>
-
-                                <div class="qh">
-                                    <button class="cg fm fx eg">
-                                        <span class="c aok"></span> Follow
-                                    </button>
-                                    <strong>Mark Otto</strong>
-
-                                    <p>@mdo - San Francisco</p>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

@@ -4,7 +4,15 @@
     </a>
     <div class="qh">
         <button class="cg ts fx eg">
-            <span class="h vb"></span> Добавить
+            @if($user->hasRequestToFriend())
+                <a href="{{ route('friend.add', $user) }}">
+                    <span class="h vb"></span> Отменить заявку
+                </a>
+            @elseif (!$user->hasFriend())
+                <a href="{{ route('friend.add', $user) }}">
+                    <span class="h vb"></span> Добавить
+                </a>
+            @endif
         </button>
         <a href="{{ $user->getProfileLink() }}"><strong>{{ $user->getName() }}</strong></a>
         <p>@город  - {{ $user->getLocation() ?: 'не указан' }}</p>

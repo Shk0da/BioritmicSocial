@@ -36,6 +36,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Models\Photo');
     }
 
+    public function friend()
+    {
+        return $this->hasMany('App\Models\Friend');
+    }
+
     public function getName()
     {
         return $this->name ?: null;
@@ -108,7 +113,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if (!isset($this->profile->gender))
             return null;
 
-        return (int) $this->profile->gender;
+        return (int)$this->profile->gender;
     }
 
     public function getZodiac()
@@ -137,7 +142,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $birthday = array_reverse(explode("-", $this->profile->birthday));
         $day = $birthday[0];
         $month = $birthday[1];
-        $signsstart = [1=>21, 2=>20, 3=>20, 4=>20, 5=>20, 6=>20, 7=>21, 8=>22, 9=>23, 10=>23, 11=>23, 12=>23, 13=>21];
+        $signsstart = [1 => 21, 2 => 20, 3 => 20, 4 => 20, 5 => 20, 6 => 20, 7 => 21, 8 => 22, 9 => 23, 10 => 23, 11 => 23, 12 => 23, 13 => 21];
         $znak = $day < $signsstart[$month + 1] ? $month - 1 : $month % 12;
         return $znak;
     }
@@ -159,4 +164,51 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         return $zodiac;
     }
+
+    public function friendsOfMine()
+    {
+        return $this->belongsToMany('App\Models\User', 'friends', 'user_id', 'friend_id');
+    }
+
+    public function friendsOf()
+    {
+        return $this->belongsToMany('App\Models\User', 'friends', 'friend_id', 'user_id');
+    }
+
+    public function getFriends()
+    {
+        $friends = $this->friendsOfMine()->wherePivot('accepted', true)->get()
+            ->merge($this->friendsOf()->wherePivot('accepted', true)->get());
+
+        return $friends;
+    }
+
+    public function getSubscribers()
+    {
+        $subscribers = $this->friendsOf()->wherePivot('accepted', false)->get();
+
+        return $subscribers;
+    }
+
+    public function hasFriend()
+    {
+        return (bool) $this->getSubscribers()->where('id', $this->id)->count();
+    }
+
+    public function hasRequestToFriend()
+    {
+        return (bool) $this->friendsOf()->wherePivot('accepted', false)->get()
+            ->where('id', $this->id)->count();
+    }
+
+    public function addFriend(User $user)
+    {
+        $this->friendsOfMine()->attach($user->id);
+    }
+
+    public function acceptFriend(User $user)
+    {
+        $this->getSubscribers()->where('id', $user->id)->first()->pivot()->update(['accepted' => true]);
+    }
+
 }
