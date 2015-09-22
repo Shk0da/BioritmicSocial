@@ -5,7 +5,7 @@
     <div class="qh">
         <button class="cg ts fx eg">
             @if($user->hasRequestToFriend())
-                <a href="{{ route('friend.add', $user) }}">
+                <a href="{{ route('friend.remove.request', $user) }}">
                     <span class="h vb"></span> Отменить заявку
                 </a>
             @elseif (!$user->hasFriend())

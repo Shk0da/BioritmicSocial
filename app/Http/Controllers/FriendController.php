@@ -19,8 +19,17 @@ class FriendController extends MainController
 
     }
 
+    public function removeRequest(User $user)
+    {
+        $user = User::where('id', $user->id)->first();
+
+        Auth::user()->removeRequestToFriend($user);
+
+        return redirect()->back();
+    }
+
     public function accept(User $user)
     {
-        $user->acceptFriend();
+        //$user->acceptFriend();
     }
 }

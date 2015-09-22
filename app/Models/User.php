@@ -175,40 +175,30 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->belongsToMany('App\Models\User', 'friends', 'friend_id', 'user_id');
     }
 
-    public function getFriends()
+    public function friends()
     {
-        $friends = $this->friendsOfMine()->wherePivot('accepted', true)->get()
+        return $this->friendsOfMine()->wherePivot('accepted', true)->get()
             ->merge($this->friendsOf()->wherePivot('accepted', true)->get());
-
-        return $friends;
     }
 
-    public function getSubscribers()
+    public function friendsRequests()
     {
-        $subscribers = $this->friendsOf()->wherePivot('accepted', false)->get();
-
-        return $subscribers;
+        return $this->friendsOfMine()->wherePivot('accepted', false)->get();
     }
 
-    public function hasFriend()
+   public function friendRequestPending()
+   {
+       return $this->friendsOf()->wherePivot('accepted', false)->get();
+   }
+
+    public function hasRequestPending(User $user)
     {
-        return (bool) $this->getSubscribers()->where('id', $this->id)->count();
+        return (bool) $this->friendRequestPending()->where('id', $user->id)->count();
     }
 
-    public function hasRequestToFriend()
+    public function hasFriendRequestReceived(User $user)
     {
-        return (bool) $this->friendsOf()->wherePivot('accepted', false)->get()
-            ->where('id', $this->id)->count();
-    }
-
-    public function addFriend(User $user)
-    {
-        $this->friendsOfMine()->attach($user->id);
-    }
-
-    public function acceptFriend(User $user)
-    {
-        $this->getSubscribers()->where('id', $user->id)->first()->pivot()->update(['accepted' => true]);
+        return (bool) $this->friendsRequests()->where('id', $user->id)->count();
     }
 
 }

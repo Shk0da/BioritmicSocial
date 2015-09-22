@@ -71,4 +71,9 @@ Route::group(['middleware' => 'auth'], function () {
         'uses' => 'FriendController@add',
         'as' => 'friend.add'
     ]);
+
+    Route::get('/remove_request/id{user}', [
+        'uses' => 'FriendController@removeRequest',
+        'as' => 'friend.remove.request'
+    ]);
 });
