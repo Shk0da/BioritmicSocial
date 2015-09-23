@@ -22,7 +22,7 @@ class MainController extends Controller
 
         if (Auth::check()) {
             $posts = Post::notComment()->where('user_id', $this->getUser()->id)
-                ->orWhereIn('user_id', $this->getUser()->friends()->lists('id'))
+                ->orWhereIn('user_id', $this->getUser()->friends()->lists('id'))->notComment()
                 ->orWhereIn('user_id', $this->getUser()->friendRequestPending()->lists('id'))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
