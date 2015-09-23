@@ -41,6 +41,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Models\Friend');
     }
 
+    public function post()
+    {
+        return $this->hasMany('App\Models\Post', 'user_id');
+    }
+
     public function getName()
     {
         return $this->name ?: null;
@@ -201,9 +206,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return (bool) $this->friendsRequests()->where('id', $user->id)->count();
     }
 
-    public function addFiend(User $user)
+    public function addFriend(User $user)
     {
         $this->friendsOf()->attach($user->id);
+    }
+
+    public function removeRequestToFriend(User $user)
+    {
+        $this->friendsOf()->detach($user->id);
+    }
+
+    public function removeFriend(User $user)
+    {
+        $this->friends()->where('id', $user->id)->first()->pivot->update(['accepted' => false]);
     }
 
     public function acceptFriendRequest(User $user)

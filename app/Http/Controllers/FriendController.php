@@ -4,32 +4,47 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class FriendController extends MainController
 {
 
     public function add(User $user)
     {
-        $user = User::where('id', $user->id)->first();
+        $this->checkSelfUser($user);
 
-        Auth::user()->addFriend($user);
+        if ($this->getUser()->hasFriendRequestReceived($user)) {
+            $this->accept($user);
+        }
 
+        $this->getUser()->addFriend($user);
         return redirect()->back();
-
     }
 
     public function removeRequest(User $user)
     {
-        $user = User::where('id', $user->id)->first();
-
-        Auth::user()->removeRequestToFriend($user);
-
+        $this->checkSelfUser($user);
+        $this->getUser()->removeRequestToFriend($user);
         return redirect()->back();
     }
 
     public function accept(User $user)
     {
-        //$user->acceptFriend();
+        $this->checkSelfUser($user);
+        $this->getUser()->acceptFriendRequest($user);
+        return redirect()->back();
+    }
+
+    public function remove(User $user)
+    {
+        $this->checkSelfUser($user);
+        $this->getUser()->removeFriend($user);
+        $this->getUser()->removeRequestToFriend($user);
+        return redirect()->back();
+    }
+
+    protected function checkSelfUser(User $user)
+    {
+        if ($this->getUser()->id == $user->id)
+            return redirect()->back();
     }
 }

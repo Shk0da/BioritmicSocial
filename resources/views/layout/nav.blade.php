@@ -18,7 +18,7 @@
                     <a href="/">Новости</a>
                 </li>
                 <li>
-                    <a href="/id{{$user->id}}">Профиль</a>
+                    <a href="/id{{Auth::user()->id}}">Профиль</a>
                 </li>
                 <li>
                     <a data-toggle="modal" href="#msgModal">Сообщения</a>
@@ -33,7 +33,7 @@
                 </li>
                 <li>
                     <button class="cg fm oy ank" data-toggle="popover">
-                        <img class="cu" src="{{$user->getImageProfile()}}">
+                        <img class="cu" src="{{Auth::user()->getImageProfile()}}">
                     </button>
                 </li>
             </ul>
@@ -49,12 +49,12 @@
                 <li><a href="/profile/">Профиль</a></li>
                 <li><a href="/notifications/">Обновления</a></li>
                 <li><a data-toggle="modal" href="#msgModal">Сообщения</a></li>
-                <li><a href="{{ route('edit') }}">{{ $user->getName() }}</a></li>
+                <li><a href="{{ route('edit') }}">{{ Auth::user()->getName() }}</a></li>
                 <li><a href="{{ route('auth.logout') }}">Выйти</a></li>
             </ul>
 
             <ul class="nav navbar-nav hidden">
-                <li><a href="{{ route('edit') }}">{{ $user->getName() }}</a></li>
+                <li><a href="{{ route('edit') }}">{{ Auth::user()->getName() }}</a></li>
                 <li><a href="{{ route('auth.logout') }}">Выйти</a></li>
             </ul>
         </div>

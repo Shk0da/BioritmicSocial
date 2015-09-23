@@ -24,7 +24,10 @@
                                                 </a>
                                             @endif
                                         </button>
-                                        <strong>{{ $friend->getName() }}</strong>
+
+                                        <a href="{{ $friend->getProfileLink() }}">
+                                            <strong>{{ $friend->getName() }}</strong>
+                                        </a>
 
                                         <p>{{ $friend->getLocation() }}</p>
                                     </div>
@@ -38,7 +41,8 @@
     </div>
 </div>
 
-<div class="cd fade" id="subscribersModal" tabindex="-1" role="dialog" aria-labelledby="subscribersModal" aria-hidden="true">
+<div class="cd fade" id="subscribersModal" tabindex="-1" role="dialog" aria-labelledby="subscribersModal"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="d">
@@ -64,7 +68,9 @@
                                                 </a>
                                             @endif
                                         </button>
-                                        <strong>{{ $friend->getName() }}</strong>
+                                        <a href="{{ $friend->getProfileLink() }}">
+                                            <strong>{{ $friend->getName() }}</strong>
+                                        </a>
 
                                         <p>{{ $friend->getLocation() }}</p>
                                     </div>

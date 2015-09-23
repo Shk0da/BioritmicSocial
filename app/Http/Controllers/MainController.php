@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Models\Post;
 use App\Http\Requests;
 
 class MainController extends Controller
@@ -20,7 +21,16 @@ class MainController extends Controller
         $view = $this->view;
 
         if (Auth::check()) {
-            $view->with('content', view('layout.home')->with('user', $this->getUser()));
+            $posts = Post::notComment()->where('user_id', $this->getUser()->id)
+                ->orWhereIn('user_id', $this->getUser()->friends()->lists('id'))
+                ->orWhereIn('user_id', $this->getUser()->friendRequestPending()->lists('id'))
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+
+            $view->with('content', view('layout.home')
+                ->with('user', $this->getUser())
+                ->with('posts', $posts)
+            );
         } else {
             $view->with('content', view('auth.auth'));
         }

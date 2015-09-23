@@ -82,4 +82,14 @@ Route::group(['middleware' => 'auth'], function () {
         'uses' => 'FriendController@remove',
         'as' => 'friend.remove'
     ]);
+
+    Route::post('/post-send', [
+        'uses' => 'PostController@send',
+        'as' => 'post.send'
+    ]);
+
+    Route::post('/post/{postId}/comment', [
+        'uses' => 'PostController@comment',
+        'as' => 'post.comment'
+    ]);
 });

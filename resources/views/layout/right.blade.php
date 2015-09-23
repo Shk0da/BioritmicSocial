@@ -1,9 +1,11 @@
 <div class="go">
+    @if( isset($info) )
     <div class="alert pw alert-dismissible st" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                     aria-hidden="true">&times;</span></button>
-        <a class="ps" href="/application/profile">Зайдите в свой профиль!</a> Проверьте на сколько хорошо выглядит ваша страница.
+        {{ $info }}
     </div>
+    @endif
 
     <div class="qw rd alt st">
         <div class="qx">

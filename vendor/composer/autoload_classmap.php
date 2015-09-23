@@ -10,6 +10,7 @@ return array(
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreatePhotosTable' => $baseDir . '/database/migrations/2015_09_10_121228_create_photos_table.php',
     'CreateProfilesTable' => $baseDir . '/database/migrations/2015_09_10_115705_create_profiles_table.php',
+    'CreateTablePosts' => $baseDir . '/database/migrations/2015_09_23_141758_create_table_posts.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'File_Iterator' => $vendorDir . '/phpunit/php-file-iterator/src/Iterator.php',
