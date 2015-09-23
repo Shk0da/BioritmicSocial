@@ -9,7 +9,7 @@
             <div class="modal-body ame">
                 <div class="up">
                     <ul class="qp cj ca">
-                        @foreach($user->getFriends() as $friend)
+                        @foreach($user->friends() as $friend)
                             <li class="b">
                                 <div class="qg">
                                     <a class="qk" href="#">
@@ -18,8 +18,10 @@
 
                                     <div class="qh">
                                         <button class="cg fm fx eg">
-                                            @if ($friend->hasFriend())
-                                                <span class="c aok"></span> Убрать
+                                            @if ($user->isFriendWith($friend))
+                                                <a href="{{ route('friend.remove', $friend) }}">
+                                                    <span class="c aok"></span> Убрать
+                                                </a>
                                             @endif
                                         </button>
                                         <strong>{{ $friend->getName() }}</strong>
@@ -47,7 +49,7 @@
             <div class="modal-body ame">
                 <div class="up">
                     <ul class="qp cj ca">
-                        @foreach($user->getSubscribers() as $friend)
+                        @foreach($user->friendsRequests() as $friend)
                             <li class="b">
                                 <div class="qg">
                                     <a class="qk" href="#">
@@ -56,7 +58,7 @@
 
                                     <div class="qh">
                                         <button class="cg fm fx eg">
-                                            @if (!$friend->hasFriend())
+                                            @if (!$user->isFriendWith($friend))
                                                 <a href="{{ route('friend.accept', $friend) }}">
                                                     <span class="c aok"></span> Добавить
                                                 </a>

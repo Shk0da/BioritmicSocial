@@ -201,4 +201,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return (bool) $this->friendsRequests()->where('id', $user->id)->count();
     }
 
+    public function addFiend(User $user)
+    {
+        $this->friendsOf()->attach($user->id);
+    }
+
+    public function acceptFriendRequest(User $user)
+    {
+        $this->friendsRequests()->where('id', $user->id)->first()->pivot->update(['accepted' => true]);
+    }
+
+    public function isFriendWith(User $user)
+    {
+        return (bool) $this->friends()->where('id', $user->id)->count();
+    }
 }

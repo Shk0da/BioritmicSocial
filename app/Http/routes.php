@@ -62,18 +62,24 @@ Route::group(['middleware' => 'auth'], function () {
         'as' => 'search'
     ]);
 
-    Route::get('/accept/id{user}', [
-        'uses' => 'FriendController@accept',
-        'as' => 'friend.accept'
-    ]);
 
     Route::get('/add/id{user}', [
         'uses' => 'FriendController@add',
         'as' => 'friend.add'
     ]);
 
-    Route::get('/remove_request/id{user}', [
+    Route::get('/accept/id{user}', [
+        'uses' => 'FriendController@accept',
+        'as' => 'friend.accept'
+    ]);
+
+    Route::get('/remove-request/id{user}', [
         'uses' => 'FriendController@removeRequest',
         'as' => 'friend.remove.request'
+    ]);
+
+    Route::get('/remove/id{user}', [
+        'uses' => 'FriendController@remove',
+        'as' => 'friend.remove'
     ]);
 });

@@ -12,7 +12,7 @@
 
                 <div class="search-result">
                     @if ($result->count())
-                        @foreach($result as $user)
+                        @foreach($result as $people)
                             @include('user.block')
                         @endforeach
                     @endif
