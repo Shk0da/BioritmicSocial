@@ -21,6 +21,11 @@ class Post extends Model
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
+    public function likes()
+    {
+        return $this->morphMany('App\Models\Like', 'likes');
+    }
+
     public function getMessage()
     {
         return $this->body;

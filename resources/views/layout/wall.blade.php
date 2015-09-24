@@ -35,12 +35,6 @@
                         <div class="aob">
                             <div class="qo">
                                 <small class="eg dp">{{ $post->getTimeSend() }}</small>
-                                <a href="#">
-                                    <small class="eg dp">Лайкнуть <span class="glyphicon glyphicon-heart"></span></small>
-                                </a>
-                                <a href="#">
-                                    <small class="eg dp">Репост <span class="glyphicon glyphicon-share"></span></small>
-                                </a>
                                 <h5>
                                     <a href="{{ $post->user->getProfileLink() }}">{{ $post->user->getName() }}</a>
                                 </h5>
@@ -54,31 +48,22 @@
                                     <img data-action="zoom" data-width="1050" data-height="700"
                                          src="/public/img/unsplash_1.jpg">
                                 </div>
-
-                                <div style="display: none">
-                                    <img data-action="zoom" data-width="640" data-height="640"
-                                         src="/public/img/instagram_1.jpg">
-                                </div>
-
-                                <div style="display: none">
-                                    <img data-action="zoom" data-width="640" data-height="640"
-                                         src="/public/img/instagram_13.jpg">
-                                </div>
-
-                                <div style="display: none">
-                                    <img data-action="zoom" data-width="1048" data-height="700"
-                                         src="/public/img/unsplash_2.jpg">
-                                </div>
                             </div>
 
+                            <div class="text-right">
+                                <a href="#">
+                                    <small>Лайкнуть <span class="glyphicon glyphicon-heart"></span></small>
+                                </a>
+                                <a href="#">
+                                    <small>Репост <span class="glyphicon glyphicon-share"></span></small>
+                                </a>
+                            </div>
+                            <hr>
 
                             <ul class="qp all">
                                 @foreach ($post->comments as $comment)
                                 <li class="qg">
                                     <small class="eg dp">{{ $comment->getTimeSend() }}</small>
-                                    <a href="#">
-                                        <small class="eg dp"><span class="glyphicon glyphicon-heart"></span></small>
-                                    </a>
                                     <a class="qk" href="#">
                                         <img class="qi cu" src="{{ $comment->user->getImageProfile() }}">
                                     </a>
@@ -91,7 +76,13 @@
                                             {{ $comment->getMessage() }}
                                         </div>
                                     </div>
+                                    <div class="text-right">
+                                        <a href="#">
+                                            <small>Лайкнуть <span class="glyphicon glyphicon-heart"></span></small>
+                                        </a>
+                                    </div>
                                 </li>
+                                    <br>
                                 @endforeach
                             </ul>
 

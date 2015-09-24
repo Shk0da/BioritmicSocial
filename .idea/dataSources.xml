@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3351018199">
+  <component name="DataSourceManagerImpl" format="xml" hash="2808709998">
     <data-source source="LOCAL" name="PostgreSQL - bioritmic@localhost" uuid="ab6ecd7b-9b31-4796-bfb9-511481aaf21f">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
