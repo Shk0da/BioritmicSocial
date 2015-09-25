@@ -1650,6 +1650,7 @@
       <column name="path" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="created_at" sqlType="timestamp" precision="22" scale="0" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="22" scale="0" nullable="false" jdbcType="93"/>
+      <column name="album_id" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="photos_pkey" columns="id"/>
     </table>
     <table name="photos_id_seq" schema="public" catalog="bioritmic" type="SEQUENCE">

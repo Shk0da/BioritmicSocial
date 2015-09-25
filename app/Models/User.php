@@ -51,6 +51,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Models\Like', 'user_id');
     }
 
+    public function album()
+    {
+        return $this->hasMany('App\Models\Album', 'user_id');
+    }
+
     public function getName()
     {
         return $this->name ?: null;

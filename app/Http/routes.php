@@ -116,4 +116,9 @@ Route::group(['middleware' => 'auth'], function () {
         'uses' => 'PhotoController@albumCreate',
         'as' => 'photo.album.create'
     ]);
+
+    Route::get('/photo/album/{albumId}', [
+        'uses' => 'PhotoController@albumShow',
+        'as' => 'photo.album.show'
+    ]);
 });

@@ -44,44 +44,24 @@
         </div>
     </div>
 
+    @if ($user->album()->count())
     <div class="qw rd sn sq">
         <div class="qx">
             <h5 class="alc">Фотографии
                 <small>· <a href="{{ route('photo.edit') }}">Редактировать</a></small>
             </h5>
             <div data-grid="images" data-target-height="150">
-                <div>
-                    <img data-width="640" data-height="640" data-action="zoom"
-                         src="/public/img/instagram_5.jpg">
-                </div>
-
-                <div>
-                    <img data-width="640" data-height="640" data-action="zoom"
-                         src="/public/img/instagram_6.jpg">
-                </div>
-
-                <div>
-                    <img data-width="640" data-height="640" data-action="zoom"
-                         src="/public/img/instagram_7.jpg">
-                </div>
-
-                <div>
-                    <img data-width="640" data-height="640" data-action="zoom"
-                         src="/public/img/instagram_8.jpg">
-                </div>
-
-                <div>
-                    <img data-width="640" data-height="640" data-action="zoom"
-                         src="/public/img/instagram_9.jpg">
-                </div>
-
-                <div>
-                    <img data-width="640" data-height="640" data-action="zoom"
-                         src="/public/img/instagram_10.jpg">
-                </div>
+                @foreach ($user->album()->get() as $album)
+                    @if ($preview = $user->photo()->where('album_id', $album->id)->first())
+                        <div>
+                            <a href="{{ route('photo.album.show' , ['albumId' => $album->id]) }}"><img src="{{ $preview->path }}" title="{{ $album->name }}"></a>
+                        </div>
+                    @endif
+                @endforeach
             </div>
         </div>
     </div>
+    @endif
 </div>
 
 <div class="cd fade" id="changeImage" tabindex="-1" role="dialog" aria-labelledby="changeImage" aria-hidden="true">

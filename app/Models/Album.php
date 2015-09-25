@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Photo extends Model
+class Album extends Model
 {
-    protected $table = 'photos';
+    protected $table = 'albums';
 
     protected $fillable = [
         'user_id',
-        'path',
-        'tag',
+        'name',
+        'private',
     ];
 
     public function user()
@@ -19,8 +19,10 @@ class Photo extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function album()
+    public function photo()
     {
-        return $this->belongsTo('App\Models\Album');
+        return $this->hasMany('App\Models\Photo');
     }
+
+
 }
