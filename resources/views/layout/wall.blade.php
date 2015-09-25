@@ -51,7 +51,7 @@
                             </div>
 
                             <div class="text-right">
-                                <a href="#">
+                                <a href="{{ route('post.like', ['postId' => $post->id]) }}">
                                     <small>Лайкнуть <span class="glyphicon glyphicon-heart"></span></small>
                                 </a>
                                 <a href="#">
@@ -77,7 +77,7 @@
                                         </div>
                                     </div>
                                     <div class="text-right">
-                                        <a href="#">
+                                        <a href="{{ route('post.like', ['postId' => $comment->id]) }}">
                                             <small>Лайкнуть <span class="glyphicon glyphicon-heart"></span></small>
                                         </a>
                                     </div>

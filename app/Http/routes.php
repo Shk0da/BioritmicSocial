@@ -92,4 +92,9 @@ Route::group(['middleware' => 'auth'], function () {
         'uses' => 'PostController@comment',
         'as' => 'post.comment'
     ]);
+
+    Route::get('/post/{postId}/like', [
+        'uses' => 'PostController@getLike',
+        'as' => 'post.like'
+    ]);
 });

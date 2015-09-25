@@ -23,7 +23,7 @@ class Post extends Model
 
     public function likes()
     {
-        return $this->morphMany('App\Models\Like', 'likes');
+        return $this->morphMany('App\Models\Like', 'like');
     }
 
     public function getMessage()

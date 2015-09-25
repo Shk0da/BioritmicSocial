@@ -43,4 +43,20 @@ class PostController extends MainController
         return redirect()->back();
     }
 
+    public function getLike($postId)
+    {
+        $post = Post::find($postId);
+        $user = $this->getUser();
+
+        if ($post && !$user->hasLikedPost($post)) {
+            $like = $post->likes()->create([]);
+            $user->likes()->save($like);
+        }
+
+        if ($user->hasLikedPost($post)) {
+            $user->removeLikePost($post);
+        }
+
+        return redirect()->back();
+    }
 }

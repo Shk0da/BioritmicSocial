@@ -46,6 +46,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Models\Post', 'user_id');
     }
 
+    public function likes()
+    {
+        return $this->hasMany('App\Models\Like', 'user_id');
+    }
+
     public function getName()
     {
         return $this->name ?: null;
@@ -230,4 +235,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return (bool) $this->friends()->where('id', $user->id)->count();
     }
+
+    public function hasLikedPost(Post $post)
+    {
+        return (bool) $post->likes
+            ->where('like_id', $post->id)
+            ->where('like_type', get_class($post))
+            ->where('user_id', $this->id)
+            ->count();
+    }
+
+    public function removeLikePost(Post $post)
+    {
+        $post->likes
+            ->where('like_id', $post->id)
+            ->where('like_type', get_class($post))
+            ->where('user_id', $this->id)
+            ->first()
+            ->delete();
+    }
+
 }
