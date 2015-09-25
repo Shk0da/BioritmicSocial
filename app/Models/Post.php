@@ -46,4 +46,19 @@ class Post extends Model
         return $this->hasMany('App\Models\Post', 'parent_id');
     }
 
+    public function getAttach()
+    {
+        $attach = unserialize($this->attach);
+
+        if (!$attach)
+            return false;
+
+        $files = [];
+        for ($i = 0; $i < count($attach); $i++) {
+            $files[] = Photo::find($attach[$i])['path'];
+        }
+
+        return $files;
+    }
+
 }

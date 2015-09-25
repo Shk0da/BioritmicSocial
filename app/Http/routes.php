@@ -62,7 +62,6 @@ Route::group(['middleware' => 'auth'], function () {
         'as' => 'search'
     ]);
 
-
     Route::get('/add/id{user}', [
         'uses' => 'FriendController@add',
         'as' => 'friend.add'
@@ -96,5 +95,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/post/{postId}/like', [
         'uses' => 'PostController@getLike',
         'as' => 'post.like'
+    ]);
+
+    Route::get('/post/{postId}/repost', [
+        'uses' => 'PostController@repost',
+        'as' => 'post.repost'
+    ]);
+
+    Route::get('/post/{postId}/delete', [
+        'uses' => 'PostController@delete',
+        'as' => 'post.delete'
+    ]);
+
+    Route::get('/photo/', [
+        'uses' => 'PhotoController@edit',
+        'as' => 'photo.edit'
     ]);
 });

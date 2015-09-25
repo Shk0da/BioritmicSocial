@@ -238,11 +238,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function hasLikedPost(Post $post)
     {
-        return (bool) $post->likes
-            ->where('like_id', $post->id)
-            ->where('like_type', get_class($post))
-            ->where('user_id', $this->id)
-            ->count();
+        return (bool) $post->likes->where('user_id', $this->id)->count();
     }
 
     public function removeLikePost(Post $post)

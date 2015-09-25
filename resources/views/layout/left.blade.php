@@ -33,7 +33,7 @@
     <div class="qw rd sn sq">
         <div class="qx">
             <h5 class="alc">Информация
-                <small>· <a href="{{ route('edit') }}">Edit</a></small>
+                <small>· <a href="{{ route('edit') }}">Редактировать</a></small>
             </h5>
             <ul class="eb tc">
                 <li><span class="dp h xg alk"></span>Дата рождения: {{ $user->getStringBirthday() }}
@@ -47,7 +47,7 @@
     <div class="qw rd sn sq">
         <div class="qx">
             <h5 class="alc">Фотографии
-                <small>· <a href="#">Edit</a></small>
+                <small>· <a href="{{ route('photo.edit') }}">Редактировать</a></small>
             </h5>
             <div data-grid="images" data-target-height="150">
                 <div>
