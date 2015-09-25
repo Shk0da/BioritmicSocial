@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Photo;
+use Illuminate\Http\Request;
 
 class PhotoController extends MainController
 {
@@ -25,5 +26,15 @@ class PhotoController extends MainController
             ->with('albums', $this->albums)
         );
         return $view;
+    }
+
+    public function albumCreate(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:100',
+        ]);
+
+        $name = $request->get('name');
+
     }
 }

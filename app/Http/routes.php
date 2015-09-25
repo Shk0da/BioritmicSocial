@@ -111,4 +111,9 @@ Route::group(['middleware' => 'auth'], function () {
         'uses' => 'PhotoController@edit',
         'as' => 'photo.edit'
     ]);
+
+    Route::post('/photo/album-create', [
+        'uses' => 'PhotoController@albumCreate',
+        'as' => 'photo.album.create'
+    ]);
 });

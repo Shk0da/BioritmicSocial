@@ -49,14 +49,17 @@
                         </div>
 
                         <div class="modal-body ame js-modalBody">
-                            <div class="action text-center">
-                                <form method="post" action="#" enctype="multipart/form-data">
+                            <div class="action text-center{{ $errors->has('name') ? ' has-error' : '' }}">
+                                <form method="post" action="{{ route('photo.album.create') }}">
                                     <span>Название</span>
                                     <input type="text" name="name">
                                     {!! csrf_field() !!}
                                     <button type="submit" class="btn btn-link">Создать
                                     </button>
                                 </form>
+                                @if ($errors->has('name'))
+                                    <span class="help-block">{{ $errors->first('name') }}</span>
+                                @endif
                             </div>
 
                         </div>
