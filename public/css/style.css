@@ -8728,3 +8728,12 @@ img.zoom-img {
 .image-profile-preview {
     width: 256px;
 }
+
+.album {
+    text-align: center;
+}
+
+.album.photo {
+    width: 190px;
+    padding: 10px;
+}

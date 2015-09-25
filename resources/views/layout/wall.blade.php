@@ -94,7 +94,6 @@
                                         <div>
                                             {{ $comment->getMessage() }}
 
-
                                             @if ($comment->getAttach())
                                                 @foreach ($comment->getAttach() as $file)
                                                     <div class="anx" data-grid="images">
@@ -105,7 +104,6 @@
                                                     </div>
                                                 @endforeach
                                             @endif
-
 
                                         </div>
                                     </div>

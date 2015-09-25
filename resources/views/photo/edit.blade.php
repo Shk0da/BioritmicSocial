@@ -10,7 +10,25 @@
             <div class="ha">
                 <h3>Ваши фотографии</h3>
 
+                <div class="album">
+                    @foreach($albums as $album)
 
+                        <h4>{{ $album['name'] }}</h4>
+                        @foreach($album['data'] as $photo)
+                            <img class="album photo" data-action="zoom" data-width="1050" data-height="700" src="{{ $photo->path }}" />
+                        @endforeach
+
+                    @endforeach
+                </div>
+
+            </div>
+
+            <div class="go">
+                <div class="qw rd aof alt qx dj">
+                    <a data-toggle="modal" href="#newPhoto">
+                        Загрузить фото
+                    </a>
+                </div>
             </div>
 
             <div class="go">
