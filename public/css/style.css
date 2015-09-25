@@ -5014,6 +5014,15 @@ button.qv.active:focus {
     margin: -15px -5px 0px 0px;
 }
 
+.post.submit {
+    position: relative;
+    float: right;
+    margin: -31px 43px 0px 0px;
+    z-index: 2;
+    background: none;
+    border: none;
+}
+
 .close:hover,
 .close:focus {
     color: #000000;

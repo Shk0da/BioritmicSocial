@@ -18,6 +18,7 @@
                     </div>
                 </div>
                 {{ csrf_field() }}
+                <button type="submit" class="post submit">Отправить</button>
             </form>
             @if ($errors->has('post'))
                 <span class="help-block">{{ $errors->first('post') }}</span>
@@ -134,6 +135,7 @@
                                         </div>
                                     </div>
                                     {{ csrf_field() }}
+                                    <button type="submit" class="post submit">Отправить</button>
                                 </form>
                                 @if ($errors->has('comment-'.$post->id))
                                     <span class="help-block">{{ $errors->first('comment-'.$post->id) }}</span>

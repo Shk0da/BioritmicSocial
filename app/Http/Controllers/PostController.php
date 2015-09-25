@@ -103,7 +103,6 @@ class PostController extends MainController
             $post->delete();
         }
 
-
         return redirect()->back();
     }
 
