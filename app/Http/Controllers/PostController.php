@@ -129,10 +129,12 @@ class PostController extends MainController
 
     public function clearLikes(Post $post)
     {
-        $post->likes
+        $like = $post->likes
             ->where('like_id', $post->id)
             ->where('like_type', get_class($post))
-            ->first()
-            ->delete();
+            ->first();
+
+        if ($like)
+            $like->delete();
     }
 }
