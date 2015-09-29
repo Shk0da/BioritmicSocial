@@ -14,7 +14,7 @@ class ProfileController extends MainController
     {
         $userId = $this->getUser()->id;
         $file = $request->file('image');
-        $path = '/public/image/profile_image/'.$userId.'/';
+        $path = 'public/image/profile_image/'.$userId.'/';
         $fileName = md5_file($file->getRealPath());
         $file->move($path, $fileName);
 
@@ -35,7 +35,7 @@ class ProfileController extends MainController
     {
         $userId = $this->getUser()->id;
         $file = $request->file('background');
-        $path = '/public/image/background/'.$userId.'/';
+        $path = 'public/image/background/'.$userId.'/';
         $fileName = md5_file($file->getRealPath());
         $file->move($path, $fileName);
 

@@ -75,9 +75,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         $image = Photo::find($this->profile->image_profile);
         if (!$image)
-            return '/public/img/avatar-dhg.png';
+            return url('/public/img/avatar-dhg.png');
 
-        return $image->path;
+        return $image->getUrl();
     }
 
     public function getBackground()

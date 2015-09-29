@@ -23,4 +23,9 @@ class Photo extends Model
     {
         return $this->belongsTo('App\Models\Album');
     }
+
+    public function getUrl()
+    {
+        return url($this->path);
+    }
 }

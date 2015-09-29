@@ -121,4 +121,9 @@ Route::group(['middleware' => 'auth'], function () {
         'uses' => 'PhotoController@albumShow',
         'as' => 'photo.album.show'
     ]);
+
+    Route::post('/photo/album/{albumId}/add', [
+        'uses' => 'PhotoController@addPhoto',
+        'as' => 'photo.add'
+    ]);
 });

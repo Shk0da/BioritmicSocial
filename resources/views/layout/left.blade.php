@@ -54,7 +54,7 @@
                 @foreach ($user->album()->get() as $album)
                     @if ($preview = $user->photo()->where('album_id', $album->id)->first())
                         <div>
-                            <a href="{{ route('photo.album.show' , ['albumId' => $album->id]) }}"><img src="{{ $preview->path }}" title="{{ $album->name }}"></a>
+                            <a href="{{ route('photo.album.show' , ['albumId' => $album->id]) }}"><img src="{{ $preview->getUrl() }}" title="{{ $album->name }}"></a>
                         </div>
                     @endif
                 @endforeach
