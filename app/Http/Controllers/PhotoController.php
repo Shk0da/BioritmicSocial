@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Photo;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class PhotoController extends MainController
@@ -30,7 +29,6 @@ class PhotoController extends MainController
                 'data' => $this->getUser()->photo()->where('album_id', $album->id)->get(),
             ];
         }
-
     }
 
     public function edit()

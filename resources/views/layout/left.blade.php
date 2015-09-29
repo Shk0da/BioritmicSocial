@@ -1,11 +1,7 @@
 <div class="go">
     <div class="qw rd aof alt">
-        <div class="qy" style="background-image: url({{$user->getBackground()}});"></div>
         <div class="qx dj">
-            <a data-toggle="modal" href="#changeImage">
-                <img class="aog" src="{{$user->getImageProfile()}}">
-            </a>
-
+            @include('user.avatar')
             <h5 class="qz">
                 <a class="akt" href="/id{{$user->id}}">{{ $user->getName() }}</a>
             </h5>
@@ -62,32 +58,4 @@
         </div>
     </div>
     @endif
-</div>
-
-<div class="cd fade" id="changeImage" tabindex="-1" role="dialog" aria-labelledby="changeImage" aria-hidden="true">
-    <div class="modal-dialog imd">
-        <div class="modal-content">
-            <div class="d">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Изменить изображение профиля</h4>
-            </div>
-
-            <div class="modal-body ame js-modalBody">
-                <div class="changeImage">
-                    <img id="image_preview" class="image-profile-preview" src="{{$user->getImageProfile()}}">
-                </div>
-                <div class="action text-center">
-                    <form method="post" action="{{ route('user.save.image') }}" enctype="multipart/form-data">
-                        <span class="btn btn-link fileinput-button">
-                            <span>Загрузить другое изображение</span>
-                            <input id="image_profile" type="file" name="image" accept="image/*">
-                        </span>
-                        {!! csrf_field() !!}
-                        <button id="save_image_profile" type="submit" class="btn btn-link">Сохранить</button>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
 </div>

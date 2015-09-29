@@ -12,8 +12,12 @@ class ProfileController extends MainController
 
     public function saveImage(Request $request)
     {
+        $data = json_decode(stripslashes($request->get('avatar_data')));
+        dd($data);
+
+
         $userId = $this->getUser()->id;
-        $file = $request->file('image');
+        $file = $request->file('avatar_file');
         $path = 'public/image/profile_image/'.$userId.'/';
         $fileName = md5_file($file->getRealPath());
         $file->move($path, $fileName);
