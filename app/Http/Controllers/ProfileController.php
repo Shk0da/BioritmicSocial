@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Photo;
 use App\Models\User;
-use Storage;
 use Illuminate\Http\Request;
 
 class ProfileController extends MainController
@@ -13,8 +12,6 @@ class ProfileController extends MainController
     public function saveImage(Request $request)
     {
         $data = json_decode(stripslashes($request->get('avatar_data')));
-        dd($data);
-
 
         $userId = $this->getUser()->id;
         $file = $request->file('avatar_file');
@@ -32,7 +29,7 @@ class ProfileController extends MainController
         $user->profile->image_profile = $photo->id;
         $user->profile->save();
 
-        return redirect()->route('edit');
+        return redirect()->back();
     }
 
     public function saveBackground(Request $request)
