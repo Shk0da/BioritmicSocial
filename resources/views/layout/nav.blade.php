@@ -8,7 +8,7 @@
                 <span class="ow"></span>
             </button>
             <a class="e" href="/">
-                <img src="/public/img/brand-white.png" alt="brand">
+                Bioritmic
             </a>
         </div>
         <div class="f collapse" id="navbar-collapse-main">

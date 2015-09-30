@@ -13,6 +13,7 @@ class UserController extends MainController
         $view = $this->view;
         $view->with('content', view('layout.profile')
             ->with('user', $user)
+            ->with('authUser', $this->getUser())
             ->with('albums', $user->album()->get()));
         return $view;
     }
