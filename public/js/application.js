@@ -197,7 +197,7 @@ $('#add_photo').change(function() {
 
         initPreview: function () {
             var url = this.$avatar.attr('src');
-
+            this.$avatarWrapper.html('<img src="' + url + '">');
             this.$avatarPreview.html('<img src="' + url + '">');
         },
 
