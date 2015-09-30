@@ -10,87 +10,47 @@
             <p class="ant">
                 {{$user->getStatus()}}
             </p>
+
+            <p class="ant">
+                {{ $user->getAge() }} лет <small>·</small> {{ $user->getLocation() }}
+            </p>
         </div>
     </div>
 
     <nav class="anv">
-        <ul class="nav om">
-            <li class="active">
-                <a href="#">Photos</a>
+        <ul class="nav om" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#albums" aria-controls="albums" role="tab" data-toggle="tab">
+                    Все фотографии
+                </a>
             </li>
-            <li>
-                <a href="#">Others</a>
-            </li>
-            <li>
-                <a href="#">Anothers</a>
-            </li>
+            @foreach($albums as $album)
+                <li role="presentation">
+                    <a href="#album{{ $album->id }}" aria-controls="album{{ $album->id }}" role="tab" data-toggle="tab">
+                        {{ $album['name'] }}
+                    </a>
+                </li>
+            @endforeach
         </ul>
     </nav>
 </div>
 
-<div class="by alw" data-grid="images">
-    <div>
-        <img data-width="640" data-height="400" data-action="zoom" src="/public/img/instagram_5.jpg">
+    <div class="tab-content">
+        <div role="tabpanel" id="albums" class="tab-pane by alw active" data-grid="images">
+                @foreach($photos = $user->photo()->notUpload()->get() as $photo)
+                    <img data-action="zoom" data-width="640" data-height="400" src="{{ $photo->getUrl() }}" />
+                @endforeach
+        </div>
+        @if ($photos->count() < 1)
+            <div class="text-center">У пользователся еще нет загруженных фотографий</div>
+        @endif
+        @foreach($albums as $album)
+            <div role="tabpanel" id="album{{ $album->id }}" class="tab-pane by alw" data-grid="images">
+                @foreach($user->photo()->where('album_id', $album->id)->get() as $photo)
+                    <img data-action="zoom" data-width="640" data-height="400" src="{{ $photo->getUrl() }}" />
+                @endforeach
+            </div>
+        @endforeach
     </div>
 
-    <div>
-        <img data-width="640" data-height="640" data-action="zoom" src="/public/img/instagram_6.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="640" data-action="zoom" src="/public/img/instagram_7.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="640" data-action="zoom" src="/public/img/instagram_8.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="640" data-action="zoom" src="/public/img/instagram_9.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="640" data-action="zoom" src="/public/img/instagram_10.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="400" data-action="zoom" src="/public/img/instagram_11.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="640" data-action="zoom" src="/public/img/instagram_12.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="400" data-action="zoom" src="/public/img/instagram_13.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="640" data-action="zoom" src="/public/img/instagram_14.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="640" data-action="zoom" src="/public/img/instagram_15.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="640" data-action="zoom" src="/public/img/instagram_16.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="640" data-action="zoom" src="/public/img/instagram_17.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="640" data-action="zoom" src="/public/img/instagram_18.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="400" data-action="zoom" src="/public/img/instagram_1.jpg">
-    </div>
-
-    <div>
-        <img data-width="640" data-height="640" data-action="zoom" src="/public/img/instagram_2.jpg">
-    </div>
-</div>
 @stop

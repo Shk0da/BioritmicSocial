@@ -78,18 +78,7 @@ $(document).on("click", ".js-msgGroup", function () {
     var n = $("#markdown-toc"), i = $(window);
     n[0] && (o(), i.on("resize", o))
 });
-$('#save_image_profile').hide();
-$('#image_profile').change(function() {
-    var input = $(this)[0];
-    if ( input.files && input.files[0] ) {
-        if ( input.files[0].type.match('image.*') ) {
-            var reader = new FileReader();
-            reader.onload = function(e) { $('#image_preview').attr('src', e.target.result); }
-            reader.readAsDataURL(input.files[0]);
-            $('#save_image_profile').show();
-        } else console.log('is not image mime type');
-    } else console.log('not isset files data or files API not supordet');
-});
+
 
 $('#save_background').hide();
 $('#background').change(function() {
@@ -197,7 +186,7 @@ $('#add_photo').change(function() {
 
         initPreview: function () {
             var url = this.$avatar.attr('src');
-            this.$avatarWrapper.html('<img src="' + url + '">');
+            //this.$avatarWrapper.html('<img src="' + url + '_original">');
             this.$avatarPreview.html('<img src="' + url + '">');
         },
 

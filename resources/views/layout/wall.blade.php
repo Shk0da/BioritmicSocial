@@ -50,7 +50,7 @@
                                 </h5>
                             </div>
                             <div class="post">
-                                {{ $post->getMessage() }}
+                                <p>{{ $post->getMessage() }}</p>
                             </div>
 
                             @if ($post->getAttach())

@@ -22,6 +22,7 @@
             @if($user->hasFriendRequestReceived($people))
                 (подписался на вас)
             @endif
+            {{ $people->getAge() ? "({$people->getAge()} лет)": '' }}
         </a>
         <p>@город  - {{ $people->getLocation() ?: 'не указан' }}</p>
     </div>

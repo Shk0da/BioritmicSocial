@@ -28,4 +28,9 @@ class Photo extends Model
     {
         return url($this->path);
     }
+
+    public function scopeNotUpload($query)
+    {
+        return $query->where('tag', 'photo');
+    }
 }

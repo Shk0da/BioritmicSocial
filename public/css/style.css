@@ -8291,7 +8291,7 @@ img.zoom-img {
 }
 .anr .qi {
     display: inline-block;
-    width: 80px;
+    width: 120px;
     margin-right: 0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
@@ -8313,7 +8313,7 @@ img.zoom-img {
         height: 500px;
     }
     .anr .qi {
-        width: 110px;
+        width: 220px;
     }
 }
 .anv {

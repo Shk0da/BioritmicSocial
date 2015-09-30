@@ -11,7 +11,9 @@ class UserController extends MainController
     public function show(User $user)
     {
         $view = $this->view;
-        $view->with('content', view('layout.profile')->with('user', $user));
+        $view->with('content', view('layout.profile')
+            ->with('user', $user)
+            ->with('albums', $user->album()->get()));
         return $view;
     }
 

@@ -109,6 +109,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return implode('.', array_reverse(explode("-", $this->profile->birthday))) ?: null;
     }
 
+    public function getAge()
+    {
+        $birthday_timestamp = strtotime($this->profile->birthday);
+        $age = date('Y') - date('Y', $birthday_timestamp);
+        if (date('md', $birthday_timestamp) > date('md')) {
+            $age--;
+        }
+        return $age;
+    }
+
     public function getAbout()
     {
         return $this->profile->about ?: null;
