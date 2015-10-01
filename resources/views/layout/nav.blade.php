@@ -23,6 +23,9 @@
                 <li>
                     <a data-toggle="modal" href="#msgModal">Сообщения</a>
                 </li>
+                <li>
+                    <a href="{{ route('search') }}?query=&type=ideal">Найти идеальную пару</a>
+                </li>
             </ul>
 
             <ul class="nav navbar-nav oh ald st">
