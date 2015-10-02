@@ -64,7 +64,7 @@ class BiorhythmController extends MainController
         return $rhythms;
     }
 
-    public function compare(User $user1, User $user2, $string = null)
+    public function compare(User $user1, User $user2, $option = null)
     {
         $compare = [];
 
@@ -82,7 +82,13 @@ class BiorhythmController extends MainController
             $compare[$biorhythm['name']] = ($rhythm > 50) ? (($rhythm-50)*2) : (-1)*(($rhythm-50)*2);
         }
 
-        dd($compare);
+        if ($option && is_array($option)) {
+            $select_compare = [];
+            foreach ($option as $select)
+                $select_compare[] = $compare[$select];
+            //@todo выборка по определенным ритмам
+        }
+
         return $compare;
     }
 
