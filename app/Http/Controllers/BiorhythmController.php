@@ -45,7 +45,7 @@ class BiorhythmController extends MainController
         ];
     }
 
-    public function getRitm(User $user)
+    public function getRhythms(User $user)
     {
         $rhythms = [];
 
@@ -64,7 +64,13 @@ class BiorhythmController extends MainController
         return $rhythms;
     }
 
-    public function compare(User $user1, User $user2, $option = null)
+    /**
+     * @param User $user1
+     * @param User $user2
+     * @param null $options = ['fiz', 'emo', 'int']
+     * @return array
+     */
+    public function compare(User $user1, User $user2, $options = null)
     {
         $compare = [];
 
@@ -82,14 +88,27 @@ class BiorhythmController extends MainController
             $compare[$biorhythm['name']] = ($rhythm > 50) ? (($rhythm-50)*2) : (-1)*(($rhythm-50)*2);
         }
 
-        if ($option && is_array($option)) {
+        if ($options && is_array($options)) {
             $select_compare = [];
-            foreach ($option as $select)
-                $select_compare[] = $compare[$select];
-            //@todo выборка по определенным ритмам
+            foreach ($options as $select) {
+                $select = $this->biorhythms[$select];
+                $select_compare[$select['name']] = $compare[$select['name']];
+            }
+            return $select_compare;
         }
 
         return $compare;
+    }
+
+    public function boolCompare(User $user1, User $user2, $options = null)
+    {
+        $compare = $this->compare($user1, $user2, $options);
+        $average = array_sum($compare) / count($compare);
+
+        if ($average >= 60)
+            return true;
+
+        return false;
     }
 
 }

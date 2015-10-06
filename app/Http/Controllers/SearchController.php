@@ -17,8 +17,14 @@ class SearchController extends MainController
 
         $result = User::where('id', '<>', $user->id);
 
-        if ($type == 'ideal')
-            $result->whereIn('id', $this->findIdealPartner());
+        if (in_array('ideal', $type)) {
+            $result->whereIn('id', $this->findIdealPartner($result));
+        }
+
+        if (in_array('zodiac', $type)) {
+            //$result->whereIn('id', $this->findIdealPartner($result));
+        }
+
 
         $result->where('name', 'LIKE', "%{$query}%");
 
@@ -28,11 +34,18 @@ class SearchController extends MainController
         return $view;
     }
 
-    protected function findIdealPartner()
+    protected function findIdealPartner($result)
     {
-        $user = User::find(1);
-        $bioritm = BiorhythmController::instance();
-        $bioritm->compare($user, $this->getUser());
-        return [1];
+        $authUser = $this->getUser();
+        $users = $result->take(1000)->get();
+        $find = [0];
+
+        foreach ($users as $user) {
+            $compare = BiorhythmController::instance()->boolCompare($user, $authUser);
+            if ($compare)
+                $find[] = $user->id;
+        }
+
+        return $find;
     }
 }
