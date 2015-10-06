@@ -8,49 +8,43 @@
         </div>
     @endif
 
-    <div class="qw rd alt st">
+    <div class="qw rd aoj">
         <div class="qx">
-            <h5 class="alc">Likes
-                <small>· <a href="#">View All</a></small>
+            <h5 class="alc text-center">
+                Дополнительные параметры совместимости
             </h5>
-            <ul class="qp anw">
-                <li class="qg all">
-                    <a class="qk" href="#">
-                        <img
-                                class="qi cu"
-                                src="/public/img/avatar-fat.jpg">
-                    </a>
 
-                    <div class="qh">
-                        <strong>Jacob Thornton</strong> @fat
-                        <div class="anz">
-                            <button class="cg ts fx">
-                                <span class="h vb"></span> Follow
-                            </button>
+            <form method="get" action="{{ route('search') }}">
+                <div class="panel-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control oh i" name="location" placeholder="Город">
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        @foreach($filters as $name => $filter)
+                            <div class="input-group">
+                                <input type="checkbox" name="{{ $name }}">
+                                <span title="{{ $filter['description'] }}"> {{ $filter['name'] }}</span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <input type="checkbox" name="zodiac">
+                            <span> По знаку зодиака</span>
                         </div>
                     </div>
-                </li>
-                <li class="qg">
-                    <a class="qk" href="#">
-                        <img
-                                class="qi cu"
-                                src="/public/img/avatar-mdo.png">
-                    </a>
+                </div>
 
-                    <div class="qh">
-                        <strong>Mark Otto</strong> @mdo
-                        <div class="anz">
-                            <button class="cg ts fx">
-                                <span class="h vb"></span> Follow
-                            </button>
-                            </button>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+                <button type="submit" class="btn btn-sm gx eg">Показать</button>
+            </form>
         </div>
-        <div class="ra">
-            Dave really likes these nerds, no one knows why though.
+        <div class="ra text-center">
+            Дополнительные параметры помогут вам найти людей которые подходят именно Вам!
         </div>
     </div>
 

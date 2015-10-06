@@ -31,18 +31,72 @@ class BiorhythmController extends MainController
 
         $this->biorhythms = [
             'fiz' => [
-                'name'  => 'Физический',
+                'name'  => 'Физическая',
                 'cycle' => 23.6884,
+                'description' => "Физическое притяжение. \nКачество секса.",
             ],
             'emo' => [
-                'name'  => 'Эмоциональный',
+                'name'  => 'Эмоциональная',
                 'cycle' => 28.426125,
+                'description' => "Интеллектуальная совместимость с женщиной может стать для мужчины серьезным \nстимулом для ее завоевания. Она делает женщину в глазах мужчины, как минимум, интересной \nсобеседницей. А ведь для мужчины умная женщина очень притягательна.",
             ],
             'int' => [
-                'name'  => 'Интелектуальный',
+                'name'  => 'Интелектуальная',
                 'cycle' => 33.163812,
+                'description' => "Это та самая искра, чувства с первого взгляда и \nрадость быть вместе, разделяя общие эмоции.\nОна дает основу для отношений между мужчиной и женщиной",
             ]
         ];
+
+        /*
+           Огонь — Овен, Лев, Стрелец
+           Воздух — Близнецы, Весы, Водолей
+           Земля — Телец, Дева, Козерог
+           Вода — Рак, Скорпион, Рыба
+        */
+        // 'Козерог', 'Водолей', 'Рыбы', 'Овен', 'Телец', 'Близнецы', 'Рак', 'Лев', 'Девы', 'Весы', 'Скорпион', 'Стрелец'
+        /*
+          3 правила совместимости знаков Зодиака:
+            знаки не одинаковы и знаки принадлежат одной стихии
+             или
+            знак Земли — со знаком Воды / знак Воздуха — со знаком Огня
+        */
+
+        $this->horo = [
+            'fire'  => [4,8,12],
+            'air'   => [6,10,2],
+            'earth' => [5,9,1],
+            'water' => [7,11,3],
+        ];
+    }
+
+    public function horoCompare(User $user1, User $user2)
+    {
+        $compare = false;
+        $zodiac1 = $user1->profile->zodiac;
+        $zodiac2 = $user2->profile->zodiac;
+
+        $horo = false;
+        foreach ($this->horo as $zodiacs) {
+            if (in_array($zodiac1, $zodiacs) && in_array($zodiac2, $zodiacs))
+                $horo = true;
+        }
+
+        if ($zodiac1 <> $zodiac2 && $horo)
+            $compare = true;
+
+        if (in_array($zodiac1, $this->horo['earth']) && in_array($zodiac2, $this->horo['water']))
+            $compare = true;
+
+        if (in_array($zodiac2, $this->horo['earth']) && in_array($zodiac1, $this->horo['water']))
+            $compare = true;
+
+        if (in_array($zodiac1, $this->horo['fire']) && in_array($zodiac2, $this->horo['air']))
+            $compare = true;
+
+        if (in_array($zodiac2, $this->horo['fire']) && in_array($zodiac1, $this->horo['air']))
+            $compare = true;
+
+        return $compare;
     }
 
     public function getRhythms(User $user)
@@ -109,6 +163,11 @@ class BiorhythmController extends MainController
             return true;
 
         return false;
+    }
+
+    public function getBiorhythms()
+    {
+        return $this->biorhythms;
     }
 
 }

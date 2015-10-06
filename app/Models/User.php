@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\BiorhythmController;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -264,6 +265,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->where('user_id', $this->id)
             ->first()
             ->delete();
+    }
+
+    public function getCompare(User $user)
+    {
+        $rhythms = "Ваша совместимость: \n";
+        $compare = BiorhythmController::instance()->compare($this, $user);
+        foreach ($compare as $name => $val) {
+            $rhythms .= "{$name}: {$val} \n";
+        }
+        return $rhythms;
     }
 
 }

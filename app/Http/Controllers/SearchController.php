@@ -17,19 +17,21 @@ class SearchController extends MainController
 
         $result = User::where('id', '<>', $user->id);
 
-        if (in_array('ideal', $type)) {
-            $result->whereIn('id', $this->findIdealPartner($result));
-        }
+        if ($type) {
+            if (in_array('ideal', $type)) {
+                $result->whereIn('id', $this->findIdealPartner($result));
+            }
 
-        if (in_array('zodiac', $type)) {
-            //$result->whereIn('id', $this->findIdealPartner($result));
+            if (in_array('zodiac', $type)) {
+                $result->whereIn('id', $this->findIdealHoro($result));
+            }
         }
-
 
         $result->where('name', 'LIKE', "%{$query}%");
 
         $view->with('content', view('search.result')
             ->with('user', $user)
+            ->with('filters', BiorhythmController::instance()->getBiorhythms())
             ->with('result', $result->get()));
         return $view;
     }
@@ -42,6 +44,21 @@ class SearchController extends MainController
 
         foreach ($users as $user) {
             $compare = BiorhythmController::instance()->boolCompare($user, $authUser);
+            if ($compare)
+                $find[] = $user->id;
+        }
+
+        return $find;
+    }
+
+    protected function findIdealHoro($result)
+    {
+        $authUser = $this->getUser();
+        $users = $result->take(1000)->get();
+        $find = [0];
+
+        foreach ($users as $user) {
+            $compare = BiorhythmController::instance()->horoCompare($user, $authUser);
             if ($compare)
                 $find[] = $user->id;
         }
