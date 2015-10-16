@@ -17,7 +17,7 @@
             <form method="get" action="{{ route('search') }}">
                 <div class="panel-body">
                     <div class="input-group">
-                        <input type="text" class="form-control oh i" name="location" placeholder="Город">
+                        <input type="text" class="form-control oh i" name="location" placeholder="Город" value="{{ $form['location'] or '' }}">
                     </div>
                 </div>
 
@@ -25,7 +25,7 @@
                     <div class="panel-body">
                         @foreach($filters as $name => $filter)
                             <div class="input-group">
-                                <input type="checkbox" name="{{ $name }}">
+                                <input type="checkbox" name="{{ $name }}"{{ $form[$name] or '' }}>
                                 <span title="{{ $filter['description'] }}"> {{ $filter['name'] }}</span>
                             </div>
                         @endforeach
@@ -34,7 +34,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="input-group">
-                            <input type="checkbox" name="zodiac">
+                            <input type="checkbox" name="zodiac"{{ $form['zodiac'] or '' }}>
                             <span> По знаку зодиака</span>
                         </div>
                     </div>

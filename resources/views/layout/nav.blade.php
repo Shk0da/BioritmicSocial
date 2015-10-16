@@ -24,7 +24,7 @@
                     <a data-toggle="modal" href="#msgModal">Сообщения</a>
                 </li>
                 <li>
-                    <a href="{{ route('search') }}?query=&type[]=ideal">Найти идеальную пару</a>
+                    <a href="{{ route('search') }}?ideal=on">Найти идеальную пару</a>
                 </li>
             </ul>
 
@@ -43,7 +43,7 @@
 
             <form class="ox oh i" role="search" action="{{ route('search') }}">
                 <div class="et">
-                    <input type="text" name="query" class="form-control" data-action="grow" placeholder="Поиск">
+                    <input type="text" name="name" class="form-control" data-action="grow" placeholder="Поиск">
                 </div>
             </form>
 

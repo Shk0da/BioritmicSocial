@@ -12,38 +12,67 @@ class SearchController extends MainController
     {
         $view = $this->view;
         $user = $this->getUser();
-        $query = $request->input('query');
-        $type = $request->input('type');
 
-        $result = User::where('id', '<>', $user->id);
+        $name = $request->input('name');
+        $location = $request->input('location');
+        $ideal = $request->input('ideal');
+        $zodiac = $request->input('zodiac');
+        $rhythms = [];
+        $form = [];
 
-        if ($type) {
-            if (in_array('ideal', $type)) {
-                $result->whereIn('id', $this->findIdealPartner($result));
-            }
+        $filters = BiorhythmController::instance()->getBiorhythms();
+        $filter_names = array_keys($filters);
 
-            if (in_array('zodiac', $type)) {
-                $result->whereIn('id', $this->findIdealHoro($result));
+        foreach ($filter_names as $rhythm) {
+            if ($request->input($rhythm)) {
+                $rhythms[] = $rhythm;
+                $form[$rhythm] = 'checked';
             }
         }
 
-        $result->where('name', 'LIKE', "%{$query}%");
+        $result = User::where('id', '<>', $user->id);
+
+        if ($ideal) {
+            $location = $user->profile->location;
+            $result->whereIn('id', $this->findIdealPartner($result));
+            $result->whereIn('id', $this->findByLocation($location));
+            $form['location'] = $location;
+            foreach ($filter_names as $rhythm) {
+                    $form[$rhythm] = 'checked';
+            }
+        }
+
+        if ($location) {
+            $result->whereIn('id', $this->findByLocation($location));
+            $form['location'] = $location;
+        }
+
+        if (count($rhythms))
+            $result->whereIn('id', $this->findIdealPartner($result, $rhythms));
+
+        if ($zodiac) {
+            $result->whereIn('id', $this->findIdealHoro($result));
+            $form['zodiac'] = 'checked';
+        }
+
+        $result->where('name', 'LIKE', "%{$name}%");
 
         $view->with('content', view('search.result')
             ->with('user', $user)
-            ->with('filters', BiorhythmController::instance()->getBiorhythms())
+            ->with('filters', $filters)
+            ->with('form', $form)
             ->with('result', $result->get()));
         return $view;
     }
 
-    protected function findIdealPartner($result)
+    protected function findIdealPartner($result, $rhythms = [])
     {
         $authUser = $this->getUser();
         $users = $result->take(1000)->get();
         $find = [0];
 
         foreach ($users as $user) {
-            $compare = BiorhythmController::instance()->boolCompare($user, $authUser);
+            $compare = BiorhythmController::instance()->boolCompare($user, $authUser, $rhythms);
             if ($compare)
                 $find[] = $user->id;
         }
@@ -60,6 +89,19 @@ class SearchController extends MainController
         foreach ($users as $user) {
             $compare = BiorhythmController::instance()->horoCompare($user, $authUser);
             if ($compare)
+                $find[] = $user->id;
+        }
+
+        return $find;
+    }
+
+    protected function findByLocation($location)
+    {
+        $users = User::all();
+        $find = [0];
+
+        foreach ($users as $user) {
+            if ($user->profile->location == $location)
                 $find[] = $user->id;
         }
 
