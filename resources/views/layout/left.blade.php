@@ -57,5 +57,14 @@
             </div>
         </div>
     </div>
+    @else
+        <div class="qw rd sn sq">
+            <div class="qx">
+                <h5 class="alc">Фотографии
+                    <small>· <a href="{{ route('photo.edit') }}">Редактировать</a></small>
+                </h5>
+                <p class="text-center">У вас еще нет ни одной фотографии...</p>
+            </div>
+        </div>
     @endif
 </div>

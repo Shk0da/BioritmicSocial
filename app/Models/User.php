@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use GoogleMaps;
 use App\Http\Controllers\BiorhythmController;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -64,7 +65,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getLocation()
     {
-        return $this->profile->location ?: null;
+        $location = GoogleMaps::load('geocoding')
+            ->setParamByKey('latlng', $this->profile->location)
+            ->setParamByKey('language', 'ru-RU')
+            ->getResponseByKey('results.address_components.long_name');
+
+        $location = print_r(($location['results']));
+
+        return $location ?: null;
     }
 
     public function getProfileLink()

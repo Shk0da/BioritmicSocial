@@ -76,10 +76,11 @@
                     <div class="form-group">
                         <label for="location" class="col-sm-3 control-label">Город</label>
                         <div class="col-sm-9">
-                            <input id="location" name="location" type="text" class="form-control" value="{{ $user->getLocation() }}" placeholder="Город">
+                            <input id="location" name="locality" type="text" class="form-control" value="{{ $user->getLocation() }}" placeholder="Город">
                             @if ($errors->has('location'))
                                 <span class="help-block">{{ $errors->first('location') }}</span>
                             @endif
+                            <input type="hidden" name="location" value="">
                         </div>
                     </div>
 

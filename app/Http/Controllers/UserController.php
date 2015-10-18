@@ -42,7 +42,7 @@ class UserController extends MainController
         $location = $request->input('location');
         $about = $request->input('about');
 
-        $user = User::find($this->getUser()->id);
+        $user = $this->getUser();
         $user->name = $name;
         $user->profile->birthday = "{$birthday['y']}-{$birthday['m']}-{$birthday['d']}";
         $user->profile->status = $status;

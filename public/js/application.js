@@ -432,5 +432,12 @@ $('#add_photo').change(function() {
         return new CropAvatar($('#crop-avatar'));
     });
 
+    $(function(){
+        $("#location").geocomplete({
+            details: "form",
+            types: ["geocode", "establishment"]
+        });
+    });
+
 });
 
