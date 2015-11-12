@@ -42,7 +42,6 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Bkwld\Croppa\ServiceProvider::class,
-        GoogleMaps\ServiceProvider\GoogleMapsServiceProvider::class,
 
     ],
 
@@ -81,7 +80,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
         'Croppa'    => Bkwld\Croppa\Facade::class,
-        'GoogleMaps'=> GoogleMaps\Facade\GoogleMapsFacade::class,
     ],
 
 ];

@@ -21,4 +21,13 @@ class Profile extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function gatLocation()
+    {
+        $location = Location::where('id', $this->location)
+            ->get(['city', 'country'])
+            ->toArray()[0];
+
+        return $location;
+    }
 }

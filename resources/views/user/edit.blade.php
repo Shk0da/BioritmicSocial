@@ -74,13 +74,32 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="country" class="col-sm-3 control-label">Страна</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="country">
+                                <option disabled>Выберите страну</option>
+                                @foreach($user->getCountryList() as $country)
+                                    <option value="{{ $country }}"{{ $country == $user->getCountry() ? ' selected' : '' }}>{{ $country }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('country'))
+                                <span class="help-block">{{ $errors->first('country') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="location" class="col-sm-3 control-label">Город</label>
                         <div class="col-sm-9">
-                            <input id="location" name="locality" type="text" class="form-control" value="{{ $user->getLocation() }}" placeholder="Город">
+                            <select class="form-control" name="location">
+                                <option disabled>Выберите город</option>
+                                @foreach($user->getCityList() as $key => $city)
+                                    <option value="{{ $key }}"{{ $city == $user->getCity() ? ' selected' : '' }}>{{ $city }}</option>
+                                @endforeach
+                            </select>
                             @if ($errors->has('location'))
                                 <span class="help-block">{{ $errors->first('location') }}</span>
                             @endif
-                            <input type="hidden" name="location" value="">
                         </div>
                     </div>
 

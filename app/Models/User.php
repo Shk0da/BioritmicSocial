@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use GoogleMaps;
 use App\Http\Controllers\BiorhythmController;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -63,16 +62,47 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->name ?: null;
     }
 
+    public function getCountry()
+    {
+        return $this->profile->gatLocation()['country'];
+    }
+
+    public function getCountryList()
+    {
+        if (!isset($this->countryList)) {
+            $list = [];
+            foreach (Location::all(['country']) as $location) {
+                $list[] = $location->country;
+                $list = array_unique($list);
+            }
+            $this->countryList = $list;
+        }
+
+        return $this->countryList;
+    }
+
+    public function getCityList()
+    {
+        if (!isset($this->cityList)) {
+            $list = [];
+            foreach (Location::all(['id', 'city']) as $location) {
+                $list[$location->id] = $location->city;
+                $list = array_unique($list);
+            }
+            $this->cityList = $list;
+        }
+
+        return $this->cityList;
+    }
+
+    public function getCity()
+    {
+        return $this->profile->gatLocation()['city'];
+    }
+
     public function getLocation()
     {
-        $location = GoogleMaps::load('geocoding')
-            ->setParamByKey('latlng', $this->profile->location)
-            ->setParamByKey('language', 'ru-RU')
-            ->getResponseByKey('results.address_components.long_name');
-
-        $location = print_r(($location['results']));
-
-        return $location ?: null;
+        return $this->getCity();
     }
 
     public function getProfileLink()
