@@ -7,9 +7,9 @@ use App\Http\Requests;
 class ApiController extends MainController
 {
 
-    public function main(Requests $requests)
+    public function main($action)
     {
-        dd($requests);
+        dd($action);
     }
 
 }
