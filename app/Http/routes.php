@@ -126,4 +126,9 @@ Route::group(['middleware' => 'auth'], function () {
         'uses' => 'PhotoController@addPhoto',
         'as' => 'photo.add'
     ]);
+
+    Route::any('/api/{action}', [
+        'uses' => 'ApiController@main',
+        'as' => 'api'
+    ]);
 });

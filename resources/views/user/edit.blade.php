@@ -103,6 +103,10 @@
                         </div>
                     </div>
 
+                    <script>
+
+                    </script>
+
                     <div class="form-group">
                         <label for="about" class="col-sm-3 control-label">О себе</label>
                         <div class="col-sm-9">
