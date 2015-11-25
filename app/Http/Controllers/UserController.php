@@ -33,7 +33,7 @@ class UserController extends MainController
             'name' => 'required|min:2',
             'birthday' => 'required',
             'location' => 'required',
-        ]);
+        ], $this->errorMessages);
 
         $name = $request->input('name');
         $birthday = $request->input('birthday');

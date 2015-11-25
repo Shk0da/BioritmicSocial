@@ -14,14 +14,6 @@ class AuthController extends MainController
 
     use ResetsPasswords;
 
-    protected $errorMessages = [
-        'required' => 'Необходимо заполнить это поле',
-        'max' => 'Максимальное кол-во символов - :max',
-        'min' => 'Минимальное кол-во символов - :min',
-        'unique' => 'Такой :attribute уже зарегистрирован',
-        'email' => 'Необходио ввести Email',
-    ];
-
     public function index()
     {
         $view = $this->view;

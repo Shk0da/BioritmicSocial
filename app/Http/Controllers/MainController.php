@@ -9,6 +9,13 @@ use App\Http\Requests;
 class MainController extends Controller
 {
     protected $view;
+    protected $errorMessages = [
+        'required' => 'Необходимо заполнить это поле',
+        'max' => 'Максимальное кол-во символов - :max',
+        'min' => 'Минимальное кол-во символов - :min',
+        'unique' => 'Такой :attribute уже зарегистрирован',
+        'email' => 'Необходио ввести Email',
+    ];
 
     public function __construct()
     {
