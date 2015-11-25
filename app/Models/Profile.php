@@ -26,7 +26,14 @@ class Profile extends Model
     {
         $location = Location::where('id', $this->location)
             ->get(['city', 'country'])
-            ->toArray()[0];
+            ->toArray();
+
+        if (count($location)){
+            $location = $location[0];
+        } else {
+            $location = ['city' => null, 'country' => null];
+        }
+
 
         return $location;
     }

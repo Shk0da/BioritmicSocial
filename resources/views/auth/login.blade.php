@@ -15,6 +15,9 @@
                         @if ($errors->has('password'))
                             <span class="help-block">{{ $errors->first('password') }}</span>
                         @endif
+                        @if ($errors->has('info'))
+                            <span class="help-block">{{$errors->first('info')}}</span>
+                        @endif
                     </div>
                     <div class="form-group">
                         <div class="checkbox">
@@ -26,6 +29,7 @@
                     {!! csrf_field() !!}
                     <div class="form-group">
                         <button type="submit" class="btn btn-default">Войти</button>
+                        <a href="{{ route('main') }}">Регистрация</a>
                     </div>
                 </form>
             </div>

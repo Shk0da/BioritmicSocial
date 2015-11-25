@@ -72,7 +72,7 @@ class AuthController extends MainController
         $this->authenticate($email, $password, $remember);
 
         if (!Auth::check()) {
-            return redirect()->back()->withErrors(['info', 'Не верный Email или пароль']);
+            return redirect()->back()->withErrors(['info' => 'Не верный Email или пароль']);
         }
 
         return redirect()->intended();

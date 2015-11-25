@@ -113,8 +113,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function getImageProfile()
     {
         $image = Photo::find($this->profile->image_profile);
-        if (!$image)
-            return url('/public/img/avatar-dhg.png');
+        if (!$image) {
+            $image = url(($this->profile->gender) ? '/public/img/no-image-male.jpg' : '/public/img/no-image-female.jpg');
+            return $image;
+        }
 
         return $image->getUrl();
     }
