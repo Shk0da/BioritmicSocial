@@ -1,5 +1,6 @@
-@import "http://yastatic.net/bootstrap/3.3.4/css/bootstrap.min.css";
-@import "http://fonts.googleapis.com/css?family=Open+Sans:400,300,600";
+@import url("http://yastatic.net/bootstrap/3.3.4/css/bootstrap.min.css");
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
+@import url(https://fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic);
 
 html {
     font-family: sans-serif;
@@ -8598,18 +8599,19 @@ img.zoom-img {
     margin-bottom: 14px;
     margin-left: 10%;
     text-align: left;
+    font-family: 'Roboto', sans-serif;
 }
 
 .welcome h1 {
     color: #fff;
     text-shadow: 0 2px rgba(0,0,0,.15);
-    font: 4.2em/1 "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 55px;
 }
 
 .welcome p {
     color: #fff;
     text-shadow: 0 2px rgba(0,0,0,.15);
-    font: 2.167em/1.231 "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 22px;
 }
 
 .main {

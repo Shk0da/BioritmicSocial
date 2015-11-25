@@ -14,6 +14,14 @@ class AuthController extends MainController
 
     use ResetsPasswords;
 
+    protected $errorMessages = [
+        'required' => 'Необходимо заполнить это поле',
+        'max' => 'Максимальное кол-во символов - :max',
+        'min' => 'Минимальное кол-во символов - :min',
+        'unique' => 'Такой :attribute уже зарегистрирован',
+        'email' => 'Необходио ввести Email',
+    ];
+
     public function index()
     {
         $view = $this->view;
@@ -32,7 +40,9 @@ class AuthController extends MainController
             'name' => 'required|max:100',
             'email' => 'required|email|unique:users|max:255',
             'password' => 'required|min:6',
-        ]);
+        ], $this->errorMessages);
+
+
 
         $name = $request->input('name');
         $email = $request->input('email');
@@ -54,7 +64,7 @@ class AuthController extends MainController
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required',
-        ]);
+        ], $this->errorMessages);
 
         $email = $request->input('email');
         $password = $request->input('password');
@@ -62,7 +72,7 @@ class AuthController extends MainController
         $this->authenticate($email, $password, $remember);
 
         if (!Auth::check()) {
-            return redirect()->back();
+            return redirect()->back()->withErrors(['info', 'Не верный Email или пароль']);
         }
 
         return redirect()->intended();
