@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
   <data-source name="PostgreSQL - bioritmic@localhost" uuid="ab6ecd7b-9b31-4796-bfb9-511481aaf21f">
-    <database-info product="PostgreSQL" version="9.4.4" jdbc-version="4.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.4 JDBC4 (build 1201)">
+    <database-info product="PostgreSQL" version="9.5beta2" jdbc-version="4.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.4 JDBC4 (build 1201)">
       <identifier-quote-string>&quot;</identifier-quote-string>
     </database-info>
     <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact"/>
@@ -1594,9 +1594,9 @@
       <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnZnJpZW5kc19pZF9zZXEnOjpyZWdjbGFzcyk=" autoIncrement="true"/>
       <column name="user_id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="friend_id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="accepted" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7" def="ZmFsc2U="/>
-      <column name="created_at" sqlType="timestamp" precision="22" scale="0" nullable="true" jdbcType="93"/>
-      <column name="updated_at" sqlType="timestamp" precision="22" scale="0" nullable="true" jdbcType="93"/>
+      <column name="accepted" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="created_at" sqlType="timestamp" precision="22" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="timestamp" precision="22" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="friends_pkey" columns="id"/>
     </table>
     <table name="friends_id_seq" schema="public" catalog="bioritmic" type="SEQUENCE">
@@ -1667,9 +1667,9 @@
       <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgncGhvdG9zX2lkX3NlcSc6OnJlZ2NsYXNzKQ==" autoIncrement="true"/>
       <column name="user_id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="tag" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="path" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="created_at" sqlType="timestamp" precision="22" scale="0" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="22" scale="0" nullable="false" jdbcType="93"/>
+      <column name="path" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="album_id" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="photos_pkey" columns="id"/>
     </table>

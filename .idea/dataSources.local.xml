@@ -7,7 +7,7 @@
       <schema-pattern>*.pg_catalog *.public</schema-pattern>
       <default-schemas>*.pg_catalog *.public</default-schemas>
       <ssh-properties>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
         <proxy-host>localhost</proxy-host>
         <proxy-port>22</proxy-port>
         <secret-storage>master_key</secret-storage>

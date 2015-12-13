@@ -1,4 +1,3 @@
-<? $route = Route::currentRouteName() ?>
 <nav class="ck pd ot app-navbar">
     <div class="by">
         <div class="os">
@@ -14,16 +13,16 @@
         </div>
         <div class="f collapse" id="navbar-collapse-main">
             <ul class="nav navbar-nav st">
-                <li{{ ($route == 'main') ? ' class=active' : ''}}>
+                <li{{ (Route::currentRouteName() == 'main') ? ' class=active' : ''}}>
                     <a href="/">Новости</a>
                 </li>
-                <li{{ ($route == 'profile') ? ' class=active' : ''}}>
+                <li{{ (Route::currentRouteName() == 'profile') ? ' class=active' : ''}}>
                     <a href="/id{{Auth::user()->id}}">Профиль</a>
                 </li>
-                <li{{ ($route == 'message') ? ' class=active' : ''}}>
+                <li{{ (Route::currentRouteName() == 'message') ? ' class=active' : ''}}>
                     <a data-toggle="modal" href="#msgModal">Сообщения</a>
                 </li>
-                <li{{ ($route == 'search') ? ' class=active' : ''}}>
+                <li{{ (Route::currentRouteName() == 'search') ? ' class=active' : ''}}>
                     <a href="{{ route('search') }}?ideal=on">Найти идеальную пару</a>
                 </li>
             </ul>
