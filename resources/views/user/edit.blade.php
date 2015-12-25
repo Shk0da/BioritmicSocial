@@ -93,7 +93,7 @@
                         <div class="col-sm-9">
                             <select class="form-control" name="location">
                                 <option disabled>Выберите город</option>
-                                @foreach($user->getCityList($user->getCountry() ?: 'Россия') as $key => $city)
+                                @foreach($user->getCityList($user->getCountry() ?: null) as $key => $city)
                                     <option value="{{ $key }}"{{ $city == $user->getCity() ? ' selected' : '' }}>{{ $city }}</option>
                                 @endforeach
                             </select>

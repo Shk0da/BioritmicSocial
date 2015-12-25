@@ -331,4 +331,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $rhythms;
     }
 
+    public function getUserLikes()
+    {
+        $users = [];
+        $likes = $this->likes()->get();
+
+        foreach ($likes as $like) {
+            $user = User::find($like->user_id);
+            if ($user->id <> $this->id)
+                $users[] = $user;
+        }
+
+        return $users;
+    }
+
 }
