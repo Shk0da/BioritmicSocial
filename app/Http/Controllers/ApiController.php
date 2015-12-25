@@ -19,12 +19,9 @@ class ApiController extends MainController
 
     public function getCityList($request = null)
     {
-        if ($country = $request->input('country')) {
-            $list = $this->getUser()->getCityList($country);
-            return $list;
-        }
-
-        return 0;
+        $country = $request->input('country') ?: null;
+        $list = $this->getUser()->getCityList($country);
+        return $list;
     }
 
 }
