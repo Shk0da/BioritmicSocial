@@ -9145,9 +9145,12 @@ img.zoom-img {
     cursor: not-allowed;
 }
 
+.input-group .form-control:last-child {
+    border-radius: 2px;
+}
+
 textarea {
     resize: none;
-    border-radius: 2px;
 }
 
 .add-photo-button {

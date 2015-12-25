@@ -14,6 +14,8 @@ class PostController extends MainController
         $hasAttach = $request->hasFile('attach');
         $this->validate($request, [
             'post' => !$hasAttach ? 'required|' : '' . 'max:1000',
+        ], [
+            'required' => 'Напишите что-нибудь =)'
         ]);
 
         $attach = [];
