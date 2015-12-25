@@ -93,13 +93,34 @@
                         <div class="col-sm-9">
                             <select class="form-control" name="location">
                                 <option disabled>Выберите город</option>
-                                @foreach($user->getCityList() as $key => $city)
+                                @foreach($user->getCityList($user->getCountry() ?: 'Россия') as $key => $city)
                                     <option value="{{ $key }}"{{ $city == $user->getCity() ? ' selected' : '' }}>{{ $city }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('location'))
                                 <span class="help-block">{{ $errors->first('location') }}</span>
                             @endif
+
+                            <script>
+                                $(function () {
+                                    var country = $('select[name=country]');
+                                    var location = $('select[name=location]');
+
+                                    country.on('change', function () {
+                                        $.get('{{ route('api', 'getCityList') }}', {country: country.val()})
+                                                .done(function (data) {
+                                                    if (data != 0) {
+                                                        location.empty();
+                                                        $.each(data, function (id, name) {
+                                                            location.append('<option value="' + id + '">' + name + '</option>');
+                                                        });
+                                                    }
+                                                });
+                                    });
+
+                                })
+                            </script>
+
                         </div>
                     </div>
 

@@ -81,18 +81,32 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->countryList;
     }
 
-    public function getCityList()
+    public function getCityList($country = null)
     {
-        if (!isset($this->cityList)) {
-            $list = [];
-            foreach (Location::all(['id', 'city']) as $location) {
-                $list[$location->id] = $location->city;
-                $list = array_unique($list);
+        $saveName = 'cityList' . $country;
+
+        if ($country) {
+            if (!isset($this->$saveName)) {
+                $list = [];
+                foreach (Location::whereCountry($country)->get(['id', 'city']) as $location) {
+                    $list[$location->id] = $location->city;
+                    $list = array_unique($list);
+                }
+                $this->$saveName = $list;
             }
-            $this->cityList = $list;
+        }
+        else {
+            if (!isset($this->$saveName)) {
+                $list = [];
+                foreach (Location::all(['id', 'city']) as $location) {
+                    $list[$location->id] = $location->city;
+                    $list = array_unique($list);
+                }
+                $this->$saveName = $list;
+            }
         }
 
-        return $this->cityList;
+        return $this->$saveName;
     }
 
     public function getCity()
