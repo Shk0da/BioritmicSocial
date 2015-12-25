@@ -15,6 +15,8 @@
                         @foreach($result as $people)
                             @include('user.block')
                         @endforeach
+                    @else
+                        Упс, кажется по заданным параметрам никого нет...
                     @endif
                 </div>
 

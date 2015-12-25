@@ -19,7 +19,7 @@
 
                     <div class="form-group">
                         <label for="country" class="col-sm-3 control-label">Страна</label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-12">
                             <select class="form-control" name="country">
                                 <option value="">Все страны</option>
                                 @foreach($user->getCountryList() as $country)
@@ -34,7 +34,7 @@
 
                     <div class="form-group">
                         <label for="location" class="col-sm-3 control-label">Город</label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-12">
                             <select class="form-control" name="location">
                                 <option value="">Все города</option>
                                 @foreach($user->getCityList($user->getCountry() ?: null) as $key => $city)

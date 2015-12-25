@@ -33,9 +33,9 @@
             </h5>
             <ul class="eb tc">
                 <li><span class="dp h xg alk"></span>Дата рождения: {{ $user->getStringBirthday() }}
-                <li><span class="dp h abt alk"></span>Вы рождены в год <a href="{{ route('search') }}">{{ $user->getAnimal() }}</a>
+                <li><span class="dp h abt alk"></span>Вы рождены в год <a>{{ $user->getAnimal() }}</a>
                 <li><span class="dp h ajv alk"></span>Знак зодиака: <a href="{{ route('search') }}?zodiac=on">{{ $user->getZodiac() }}</a>
-                <li><span class="dp h ads alk"></span>Город: <a href="{{ route('search') }}?location={{ $user->getLocation() }}">{{ $user->getLocation() }}</a>
+                <li><span class="dp h ads alk"></span>Город: <a href="{{ route('search') }}?location={{ $user->profile->location }}">{{ $user->getLocation() }}</a>
             </ul>
         </div>
     </div>

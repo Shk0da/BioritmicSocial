@@ -5,7 +5,8 @@
 
             <form method="post" action="{{ route('post.send') }}" enctype="multipart/form-data">
                 <div class="input-group{{ $errors->has('post') ? ' has-error' : '' }}">
-                    <input type="text" name="post" class="form-control" placeholder="Что у вас нового?">
+
+                    <textarea name="post" class="form-control" data-autosize-on="true" placeholder="Что у вас нового?"></textarea>
 
                     <div class="fj">
                         <div class="input-group">

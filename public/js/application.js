@@ -452,4 +452,10 @@ $(function () {
         });
     });
 
-})
+});
+
+$(function () {
+    $.getScript('/public/js/autosize.min.js', function () {
+        autosize($('textarea[name=post]'));
+    });
+});
