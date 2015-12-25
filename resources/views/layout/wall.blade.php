@@ -4,22 +4,24 @@
         <li class="qg b amk">
 
             <form method="post" action="{{ route('post.send') }}" enctype="multipart/form-data">
-                <div class="input-group{{ $errors->has('post') ? ' has-error' : '' }}">
+                <div class="input-group col-xs-12 col-sm-12{{ $errors->has('post') ? ' has-error' : '' }}">
 
-                    <textarea name="post" class="form-control" data-autosize-on="true" placeholder="Что у вас нового?"></textarea>
-
-                    <div class="fj">
-                        <div class="input-group">
-                            <div class="fj">
-                                <span class="cg fm h xh fileinput-button">
-                                    <input type="file" name="attach[]" multiple accept="image/*">
-                                </span>
-                            </div>
-                        </div>
+                    <div class="add-photo-button">
+                        <span class="h xh fileinput-button">
+                            <input type="file" name="attach[]" multiple accept="image/*">
+                        </span>
                     </div>
+
+                    <div>
+                        <textarea name="post" class="form-control" data-autosize-on="true" placeholder="Что у вас нового?"></textarea>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="post submit">Отправить</button>
+                    </div>
+
                 </div>
                 {{ csrf_field() }}
-                <button type="submit" class="post submit">Отправить</button>
             </form>
             @if ($errors->has('post'))
                 <span class="help-block">{{ $errors->first('post') }}</span>
@@ -121,20 +123,23 @@
 
                             @if ($user->isFriendWith($post->user) || $post->user->id == $user->id )
                                 <form method="post" action="{{ route('post.comment' , ['postId' => $post->id]) }}" enctype="multipart/form-data">
-                                    <div class="input-group{{ $errors->has('comment-'.$post->id) ? ' has-error' : '' }}">
-                                        <input type="text" name="comment-{{ $post->id }}" class="form-control" placeholder="Оставить комменатрий">
-                                        <div class="fj">
-                                            <div class="input-group">
-                                                <div class="fj">
-                                                    <span class="cg fm h xh fileinput-button">
-                                                        <input type="file" name="attach[]" multiple accept="image/*">
-                                                    </span>
-                                                </div>
-                                            </div>
+                                    <div class="input-group col-xs-12 col-sm-12{{ $errors->has('comment-'.$post->id) ? ' has-error' : '' }}">
+                                        <div class="add-photo-button">
+                                                <span class="h xh fileinput-button">
+                                                    <input type="file" name="attach[]" multiple accept="image/*">
+                                                </span>
+                                        </div>
+
+                                        <div>
+                                            <textarea name="comment-{{ $post->id }}" class="form-control"
+                                                      placeholder="Оставить комменатрий"></textarea>
+                                        </div>
+
+                                        <div>
+                                            <button type="submit" class="post submit">Отправить</button>
                                         </div>
                                     </div>
                                     {{ csrf_field() }}
-                                    <button type="submit" class="post submit">Отправить</button>
                                 </form>
                                 @if ($errors->has('comment-'.$post->id))
                                     <span class="help-block">{{ $errors->first('comment-'.$post->id) }}</span>

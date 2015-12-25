@@ -5018,10 +5018,10 @@ button.qv.active:focus {
 .post.submit {
     position: relative;
     float: right;
-    margin: -31px 43px 0px 0px;
     z-index: 2;
     background: none;
     border: none;
+    padding: 10px 5px 0px 0px;
 }
 
 .close:hover,
@@ -8706,6 +8706,7 @@ img.zoom-img {
     position: relative;
     overflow: hidden;
     display: inline-block;
+    padding: 10px;
 }
 .fileinput-button input {
     position: absolute;
@@ -9142,4 +9143,17 @@ img.zoom-img {
 .cropper-disabled .cropper-line,
 .cropper-disabled .cropper-point {
     cursor: not-allowed;
+}
+
+textarea {
+    resize: none;
+    border-radius: 2px;
+}
+
+.add-photo-button {
+    margin: 1px 0px 0px 0px;
+    position: absolute;
+    z-index: 3;
+    right: 5px;
+    top: 5px;
 }
