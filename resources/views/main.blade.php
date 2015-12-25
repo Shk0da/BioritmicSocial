@@ -9,7 +9,6 @@
     <meta name="keywords" content="{{ $meta['keywords'] ?: '' }}">
     <link rel="shortcut icon" href="/public/favicon.jpg" type="image/png" />
     <link href="/public/css/style.css" rel="stylesheet">
-    <script src="/public/js/jquery.min.js"></script>
 </head>
 <body class="anf">
     @yield('content')

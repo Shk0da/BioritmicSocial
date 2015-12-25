@@ -101,32 +101,8 @@
                                 <span class="help-block">{{ $errors->first('location') }}</span>
                             @endif
 
-                            <script>
-                                $(function () {
-                                    var country = $('select[name=country]');
-                                    var location = $('select[name=location]');
-
-                                    country.on('change', function () {
-                                        $.get('{{ route('api', 'getCityList') }}', {country: country.val()})
-                                                .done(function (data) {
-                                                    if (data != 0) {
-                                                        location.empty();
-                                                        $.each(data, function (id, name) {
-                                                            location.append('<option value="' + id + '">' + name + '</option>');
-                                                        });
-                                                    }
-                                                });
-                                    });
-
-                                })
-                            </script>
-
                         </div>
                     </div>
-
-                    <script>
-
-                    </script>
 
                     <div class="form-group">
                         <label for="about" class="col-sm-3 control-label">О себе</label>

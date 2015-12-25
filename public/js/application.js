@@ -434,3 +434,22 @@ $('#add_photo').change(function() {
 
 });
 
+$(function () {
+    var country = $('select[name=country]');
+    var location = $('select[name=location]');
+    var first = $("select[name=location] :first").val();
+
+    country.on('change', function () {
+        $.get('/api/getCityList', {country: country.val()})
+        .done(function (data) {
+            if (data != 0) {
+                location.empty();
+                location.prepend('<option value="">' + first + '</option>');
+                $.each(data, function (id, name) {
+                    location.append('<option value="' + id + '">' + name + '</option>');
+                });
+            }
+        });
+    });
+
+})
