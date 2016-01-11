@@ -15,11 +15,11 @@
             </h5>
 
             <form method="get" action="{{ route('search') }}">
-                <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <label class="col-sm-3 control-label">Местоположение</label>
 
-                    <div class="form-group">
-                        <label for="country" class="col-sm-3 control-label">Страна</label>
-                        <div class="col-sm-12">
+                        <div class="form-group">
                             <select class="form-control" name="country">
                                 <option value="">Все страны</option>
                                 @foreach($user->getCountryList() as $country)
@@ -30,11 +30,8 @@
                                 <span class="help-block">{{ $errors->first('country') }}</span>
                             @endif
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="location" class="col-sm-3 control-label">Город</label>
-                        <div class="col-sm-12">
+                        <div class="form-group">
                             <select class="form-control" name="location">
                                 <option value="">Все города</option>
                                 @foreach($user->getCityList($user->getCountry() ?: null) as $key => $city)
@@ -44,10 +41,8 @@
                             @if ($errors->has('location'))
                                 <span class="help-block">{{ $errors->first('location') }}</span>
                             @endif
-
                         </div>
                     </div>
-
                 </div>
 
                 <div class="panel panel-default">
