@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="d">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <button type="button" class="cg fx fp eg k js-newMsg">New message</button>
+                <button name="send-message" type="button" class="cg fx fp eg k js-newMsg">New message</button>
                 <h4 class="modal-title">Messages</h4>
             </div>
 

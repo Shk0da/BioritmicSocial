@@ -460,3 +460,19 @@ $(function () {
         autosize($('textarea'));
     });
 });
+
+
+$(function () {
+    var conn = new WebSocket('ws://localhost:8080');
+
+    conn.onopen = function(e) {
+        console.log('Подключение ок')
+    };
+
+    conn.onmessage = function(e) {
+        console.log(e.data)
+    };
+
+    var sendMessage = $('button[name=send-message]')
+    sendMessage.click(function(){conn.send(Math.random())});
+});
