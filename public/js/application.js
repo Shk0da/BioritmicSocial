@@ -462,17 +462,41 @@ $(function () {
 });
 
 
-$(function () {
-    var conn = new WebSocket('ws://localhost:8080');
+function wsmessage(host, key) {
+    //var ws = new WebSocket(host);
+    //
+    //ws.onopen = function(e) {
+    //    console.log('Подключение ок')
+    //};
+    //
+    //ws.onmessage = function(e) {
+    //    console.log('!!');
+    //    console.log(e.data);
+    //    console.log('!!');
+    //};
+    //
+    //var sendMessage = $('button[name=send-message]');
+    //sendMessage.click(function() {
+    //    ws.send('{"key": "'+key+'","body": {"from": 1, "to": 2, "msg": "Текст сообщения"}}')
+    //});
 
-    conn.onopen = function(e) {
-        console.log('Подключение ок')
-    };
+    new ab.connect(host,
+        function (session) {
+            session.subscribe(key, function (topic, data) {
+                console.info(topic);
+                console.log(data.data);
+            });
+        },
 
-    conn.onmessage = function(e) {
-        console.log(e.data)
-    };
+        function(code, reason, detail) {
+            console.warn(code + reason + detail);
+        },
 
-    var sendMessage = $('button[name=send-message]')
-    sendMessage.click(function(){conn.send(Math.random())});
-});
+        {
+            'maxRetries': 60,
+            'retryDelay': 4000,
+            'skipSubprotocolCheck': true
+        }
+    );
+}
+

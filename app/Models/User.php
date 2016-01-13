@@ -345,4 +345,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $users;
     }
 
+    public function getMessageKey()
+    {
+        return md5($this->getRememberToken() . env('APP_KEY'));
+    }
+
+    public function getRealMessageKey()
+    {
+        return md5($_SERVER['REMOTE_ADDR'] . $this->getMessageKey() . $_SERVER['HTTP_USER_AGENT']);
+    }
 }

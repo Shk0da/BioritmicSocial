@@ -8,20 +8,24 @@ class MessagingSocket extends SocketController
 {
 
     protected $clients;
+    protected $online_count;
 
     public function __construct()
     {
         $this->clients = new \SplObjectStorage();
+        $this->online_count = 0;
     }
 
     function onOpen(ConnectionInterface $conn)
     {
         $this->clients->attach($conn);
+        $this->online_count++;
     }
 
     function onClose(ConnectionInterface $conn)
     {
         $this->clients->detach($conn);
+        $this->online_count--;
     }
 
     function onMessage(ConnectionInterface $from, $msg)
