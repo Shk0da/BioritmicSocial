@@ -1,6 +1,5 @@
 @section('content')
     @include('layout.nav')
-    @include('layout.message')
     <div class="anr dj"
          style="background-image: url({{$user->getBackground()}});">
         <div class="by">

@@ -4414,9 +4414,10 @@ a.cq.active {
     display: block;
     padding: 10px 15px;
     margin-bottom: -1px;
-    background-color: #ffffff;
+    /*background-color: #ffffff;*/
     border: 1px solid #d3e0e9;
 }
+
 .b:first-child {
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
@@ -4440,7 +4441,7 @@ a.b:focus,
 button.b:focus {
     text-decoration: none;
     color: #555555;
-    background-color: #f5f8fa;
+    background-color: #fff;
 }
 button.b {
     width: 100%;
@@ -6436,7 +6437,7 @@ fieldset[disabled] .tw.active {
     border-color: transparent;
 }
 .up {
-    max-height: 500px;
+    max-height: 1200px;
     overflow: auto;
     border-radius: 6px;
 }
@@ -8411,7 +8412,7 @@ img.zoom-img {
 .aoa .aob {
     position: relative;
     padding: 10px 15px;
-    background-color: #f5f8fa;
+    background-color: #fff;
     border-radius: 9px;
 }
 .aoa .aob + .aob {
@@ -8493,8 +8494,8 @@ img.zoom-img {
     background-size: cover;
 }
 .aog {
-    max-width: 100px;
-    margin-top: -70px;
+    max-width: 130px;
+    margin-top: -100px;
     margin-bottom: 5px;
     border: 3px solid #fff;
     border-radius: 100%;
@@ -8745,18 +8746,19 @@ img.zoom-img {
 
 .avatar-view {
     display: block;
-    margin: 5% auto 5%;
-    max-height: 220px;
-    max-width: 220px;
-    border: 3px solid #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0,0,0,.15);
+    /*margin: 5% auto 5%;*/
+    /*max-height: 220px;*/
+    /*max-width: 220px;*/
+    /*border: 3px solid #fff;*/
+    /*border-radius: 5px;*/
+    /*box-shadow: 0 0 5px rgba(0,0,0,.15);*/
     cursor: pointer;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .avatar-view img {
     width: 100%;
+    margin-top: -85px;
 }
 
 .avatar-body {

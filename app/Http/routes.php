@@ -127,6 +127,11 @@ Route::group(['middleware' => 'auth'], function () {
         'as' => 'photo.add'
     ]);
 
+    Route::any('/messages', [
+        'uses' => 'MessageController@main',
+        'as' => 'messages'
+    ]);
+
     Route::any('/api/{action}', [
         'uses' => 'ApiController@main',
         'as' => 'api'

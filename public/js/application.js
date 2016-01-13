@@ -1,6 +1,6 @@
 var $input = $('<div class="modal-body"><input type="text" class="form-control" placeholder="Message"></div>');
 $(document).on("click", ".js-msgGroup", function () {
-    $(".js-msgGroup, .js-newMsg").addClass("hide"), $(".js-conversation").removeClass("hide"), $(".modal-title").html('<a href="#" class="js-gotoMsgs">Back</a>'), $input.insertBefore(".js-modalBody")
+    $(".js-msgGroup, .js-newMsg").addClass("hide"), $(".js-conversation").removeClass("hide"), $(".modal-title").html('<a href="#" class="js-gotoMsgs">Назад</a>'), $input.insertBefore(".js-modalBody")
 }), $(function () {
     function o() {
         return $(window).width() - ($('[data-toggle="popover"]').offset().left + $('[data-toggle="popover"]').outerWidth())
@@ -456,42 +456,28 @@ $(function () {
 
 $(function () {
     $.getScript('/public/js/autosize.min.js', function () {
-        //autosize($('textarea[name=post]'));
         autosize($('textarea'));
     });
 });
 
 
 function wsmessage(host, key) {
-    //var ws = new WebSocket(host);
-    //
-    //ws.onopen = function(e) {
-    //    console.log('Подключение ок')
-    //};
-    //
-    //ws.onmessage = function(e) {
-    //    console.log('!!');
-    //    console.log(e.data);
-    //    console.log('!!');
-    //};
-    //
-    //var sendMessage = $('button[name=send-message]');
-    //sendMessage.click(function() {
-    //    ws.send('{"key": "'+key+'","body": {"from": 1, "to": 2, "msg": "Текст сообщения"}}')
-    //});
+
+    var sendMessage = $('button[name=send-message]');
+    sendMessage.click(function() {
+        ws.send('{"key": "'+key+'","body": {"from": 1, "to": 2, "msg": "Текст сообщения"}}')
+    });
 
     new ab.connect(host,
         function (session) {
-            session.subscribe(key, function (topic, data) {
+            session.subscribe('one', function (topic, data) {
                 console.info(topic);
                 console.log(data.data);
             });
         },
-
         function(code, reason, detail) {
             console.warn(code + reason + detail);
         },
-
         {
             'maxRetries': 60,
             'retryDelay': 4000,

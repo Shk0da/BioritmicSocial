@@ -1,7 +1,7 @@
 <div id="crop-avatar" class="">
 
     <div class="avatar-view" title="Изменить изображение профиля">
-        <img src="{{$user->getImageProfile()}}" alt="Это Вы">
+        <img class="aog" src="{{$user->getImageProfile()}}" alt="Это Вы">
     </div>
 
     <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">

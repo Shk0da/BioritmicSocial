@@ -1,5 +1,7 @@
 <div class="go">
+
     <div class="qw rd aof alt">
+        <div class="qy" style="background-image: url({{$user->getBackground()}});"></div>
         <div class="qx dj">
             @include('user.avatar')
             <h5 class="qz">
