@@ -11,10 +11,12 @@
                         Написать сообщение
                     </button>
                     <div class="new-message">
+                        @if ($errors->has('message'))
+                            <span class="help-block">{{ $errors->first('message') }}</span>
+                        @endif
                         <form method="post" action="">
                             <textarea name="message" class="form-control" data-autosize-on="true"
-                                      placeholder="Сообщение">
-                            </textarea>
+                                      placeholder="Сообщение"></textarea>
                             <div class="row">
                                 <div class="col-md-5">
                                     <select class="form-control" name="to">
@@ -47,7 +49,7 @@
                         <div class="qp cj ca js-msgGroup">
                             @foreach($user->getUserDialogs() as $dialog)
                                 <?php $from = $dialog->getFromUser(); ?>
-                                <a href="{{ $dialog->getChat($from) }}" class="b">
+                                <a href="{{ route('chat', $from) }}" class="b">
                                     <div class="qg">
                                             <span class="qk">
                                                 <img class="cu qi" src="{{ $from->getImageProfile() }}">

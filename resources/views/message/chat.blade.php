@@ -27,8 +27,17 @@
                 </div>
 
                 <div class="modal-body">
+                    @if ($errors->has('message'))
+                        <span class="help-block">{{ $errors->first('message') }}</span>
+                    @endif
+                    <form method="post" action="">
                     <textarea class="form-control" data-autosize-on="true" placeholder="Сообщение"
                               name="message"></textarea>
+                    <div class="p-btm25">
+                        <button type="submit" class="post submit">Отправить</button>
+                    </div>
+                        {{ csrf_field() }}
+                    </form>
                 </div>
 
                 <div class="modal-body ame js-Dialogs">

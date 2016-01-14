@@ -40,21 +40,24 @@ class MessageController extends MainController
             'required' => 'Заполните все поля'
         ]);
 
-        $message = Message::class;
-        $message::create(
-            [
-                'from' => $this->getUser()->id,
-                'to' => $request->input('to'),
-                'text' => $request->input('message'),
-            ]
-        );
+        $this->factoryMessage($this->getUser()->id, $request->input('to'), $request->input('message'));
 
         return redirect()->back();
     }
 
-    public function chat($id)
+    public function chat(Request $request, $id)
     {
         $view = $this->view;
+
+        if ($request->method() == 'POST') {
+            $this->validate($request, [
+                'message' => 'required|max:1000',
+            ], [
+                'required' => 'Ваше сообщение пустое'
+            ]);
+
+            $this->factoryMessage($this->getUser()->id, $id, $request->input('message'));
+        }
 
         $messages = Message::orderBy('created_at', 'desc')->get();
 
@@ -65,5 +68,16 @@ class MessageController extends MainController
         );
 
         return $view;
+    }
+
+    public function factoryMessage($from, $to, $text)
+    {
+        Message::create(
+            [
+                'from' => $from,
+                'to' => $to,
+                'text' => $text,
+            ]
+        );
     }
 }

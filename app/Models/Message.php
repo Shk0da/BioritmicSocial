@@ -59,11 +59,6 @@ class Message extends Model
         return $message;
     }
 
-    public function getChat($to)
-    {
-        return route('chat', $to);
-    }
-
     public function getTime()
     {
         $timestamp = strtotime($this->created_at);
