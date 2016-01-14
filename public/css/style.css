@@ -9162,3 +9162,23 @@ textarea {
     right: 5px;
     top: 5px;
 }
+
+.new-message .row {
+    padding-top: 10px;
+}
+
+.new-message {
+    display: none;
+}
+
+.js-backMsg {
+    cursor: pointer;
+}
+
+.js-DialogsTitle {
+    margin-top: 0px;
+}
+
+.js-DialogsTitle img {
+    width: 45px;
+}

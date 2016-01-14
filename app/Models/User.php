@@ -137,11 +137,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getBackground()
     {
-        $image = Photo::find($this->profile->background);
-        if (!$image)
-            return '/public/img/iceland.jpg';
+        $image = Photo::find($this->profile->background)->path;
 
-        return $image->path;
+        if (!$image) {
+            $image = '/public/img/iceland.jpg';
+        }
+
+        return url($image);
     }
 
     public function getEmail()
@@ -345,19 +347,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $users;
     }
 
-    public function getDialogs()
+    public function getUserDialogs()
     {
-        $message = \App\Models\Message::class;
-        $messages = $message::where('to', $this->id)->orWhere('from', $this->id)->get()->toArray();
+        $result = [];
+        $dialogs = \App\Models\Message::where('to', $this->id)->orWhere('from', $this->id)->get();
 
+        foreach ($dialogs as $dialog) {
+            $from = $dialog->getFromUser();
 
-        return $messages;
+            if ($from->id != $this->id) {
+                $result[$dialog->from] = $dialog;
+            }
+        }
+
+        return $result;
     }
 
 
     public function getMessageKey()
     {
-        return md5($this->getRememberToken() . env('APP_KEY'));
+        return md5($this->getRememberToken() . env('APP_KEY', 0));
     }
 
     public function getRealMessageKey()

@@ -132,6 +132,11 @@ Route::group(['middleware' => 'auth'], function () {
         'as' => 'messages'
     ]);
 
+    Route::get('/messages/chat/{to}', [
+        'uses' => 'MessageController@chat',
+        'as' => 'chat'
+    ]);
+
     Route::any('/api/{action}', [
         'uses' => 'ApiController@main',
         'as' => 'api'
