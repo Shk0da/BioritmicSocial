@@ -1,4 +1,4 @@
-var $input = $('<div class="modal-body"><input type="text" class="form-control" placeholder="Message"></div>');
+var $input = $('<div class="modal-body"><textarea class="form-control" data-autosize-on="true" placeholder="Сообщение" name="message"></textarea></div>');
 $(document).on("click", ".js-msgGroup", function () {
     $(".js-msgGroup, .js-newMsg").addClass("hide"), $(".js-conversation").removeClass("hide"), $(".modal-title").html('<a href="#" class="js-gotoMsgs">Назад</a>'), $input.insertBefore(".js-modalBody")
 }), $(function () {
@@ -28,7 +28,7 @@ $(document).on("click", ".js-msgGroup", function () {
         }, 1))
     })
 }), $(document).on("click", ".js-gotoMsgs", function () {
-    $input.remove(), $(".js-conversation").addClass("hide"), $(".js-msgGroup, .js-newMsg").removeClass("hide"), $(".modal-title").html("Messages")
+    $input.remove(), $(".js-conversation").addClass("hide"), $(".js-msgGroup, .js-newMsg").removeClass("hide"), $(".modal-title").html("Сообщения")
 }), $(document).on("click", "[data-action=growl]", function (o) {
     o.preventDefault(), $("#app-growl").append('<div class="alert alert-dark alert-dismissible fade in" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><p>Click the x on the upper right to dismiss this little thing. Or click growl again to show more growls.</p></div>')
 }), $(document).on("focus", '[data-action="grow"]', function () {

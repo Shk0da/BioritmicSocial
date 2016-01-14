@@ -345,6 +345,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $users;
     }
 
+    public function getDialogs()
+    {
+        $message = \App\Models\Message::class;
+        $messages = $message::where('to', $this->id)->orWhere('from', $this->id)->get()->toArray();
+
+
+        return $messages;
+    }
+
+
     public function getMessageKey()
     {
         return md5($this->getRememberToken() . env('APP_KEY'));

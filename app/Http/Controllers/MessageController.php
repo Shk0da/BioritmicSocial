@@ -16,6 +16,7 @@ class MessageController extends MainController
     public function index()
     {
         $view = $this->view;
+
         $view->with('content', view('layout.message')
             ->with('user', $this->getUser())
         );

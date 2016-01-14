@@ -15,8 +15,19 @@ class Message extends Model
         'created_at',
     ];
 
-    public function user()
+    public function getFromUser()
     {
-        return $this->belongsTo('App\Models\User', 'to');
+        return User::find($this->from);
+    }
+
+    public function getToUser()
+    {
+        return User::find($this->to);
+    }
+
+    public function getMessage()
+    {
+        $message = mb_strcut($this->text, 0, 100);
+        return $message;
     }
 }
