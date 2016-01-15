@@ -137,10 +137,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getBackground()
     {
-        $image = Photo::find($this->profile->background)->path;
+        $image = Photo::find($this->profile->background);
 
         if (!$image) {
             $image = '/public/img/iceland.jpg';
+        } else {
+            $image = $image->path;
         }
 
         return url($image);
