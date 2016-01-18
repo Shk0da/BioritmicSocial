@@ -486,6 +486,7 @@ function wsmessage(host, key) {
     var ws = new WebSocket(host);
     ws.onopen = function(e) {
         console.log("Соединение установлено");
+        ws.send(JSON.stringify({key: key}));
     };
 
     ws.onmessage = function(e) {

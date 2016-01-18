@@ -8,6 +8,7 @@ class MessagingSocket extends SocketController
 {
 
     protected $clients;
+    protected $users = [];
     protected $online_count;
 
     public function __construct()
@@ -33,6 +34,13 @@ class MessagingSocket extends SocketController
         //TODO добавлять при заходе хеш-ключ в массив regid => hash, для идентификации пользователся
         // делать обратное преобразование пользака в хеш и смотреть есть ли он сейчас в массиве, если есть отправлять сабж
         // гениально сцуко!
+
+        if (property_exists(json_decode($msg, false), 'key')) {
+            $users[json_decode($msg)->key] = $from->resourceId;
+        }
+
+        print_r($users);
+
         foreach ($this->clients as $client) {
             $client->send($msg);
         }
