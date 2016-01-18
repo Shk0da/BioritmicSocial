@@ -98,12 +98,10 @@ class MessageController extends MainController
 
         $dialog = Message::
             where(function ($query) use ($from, $to) {
-                $query->where('from', $from)
-                    ->where('to', $to);
+                $query->where('from', $from)->where('to', $to);
             })
             ->orWhere(function ($query) use ($from, $to) {
-                $query->where('to', $from)
-                    ->where('from', $to);
+                $query->where('to', $from)->where('from', $to);
             })
             ->first();
 

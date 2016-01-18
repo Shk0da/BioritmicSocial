@@ -48,7 +48,7 @@
 
             <ul class="nav navbar-nav su sv sw">
                 <li><a href="/">Новости</a></li>
-                <li><a href="/profile/">Профиль</a></li>
+                <li><a href="{{ route('profile') }}">Профиль</a></li>
                 <li><a href="/notifications/">Обновления</a></li>
                 <li><a data-toggle="modal" href="#messages">Сообщения</a></li>
                 <li><a href="{{ route('edit') }}">{{ Auth::user()->getName() }}</a></li>

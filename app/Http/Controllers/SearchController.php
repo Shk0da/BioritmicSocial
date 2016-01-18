@@ -32,6 +32,11 @@ class SearchController extends MainController
 
         $result = User::where('id', '<>', $user->id);
 
+        if ($location) {
+            $result->whereIn('id', $this->findByLocation($location));
+            $form['location'] = $location;
+        }
+
         if ($user->profile->birthday) {
             if ($ideal) {
                 $location = $user->profile->location;
@@ -41,11 +46,6 @@ class SearchController extends MainController
                 foreach ($filter_names as $rhythm) {
                     $form[$rhythm] = 'checked';
                 }
-            }
-
-            if ($location) {
-                $result->whereIn('id', $this->findByLocation($location));
-                $form['location'] = $location;
             }
 
             if (count($rhythms))
@@ -74,6 +74,10 @@ class SearchController extends MainController
         $find = [0];
 
         foreach ($users as $user) {
+
+            if (!$user->profile->birthday)
+                continue;
+
             $compare = BiorhythmController::instance()->boolCompare($user, $authUser, $rhythms);
             if ($compare)
                 $find[] = $user->id;
@@ -89,6 +93,10 @@ class SearchController extends MainController
         $find = [0];
 
         foreach ($users as $user) {
+
+            if (!$user->profile->birthday)
+                continue;
+
             $compare = BiorhythmController::instance()->horoCompare($user, $authUser);
             if ($compare)
                 $find[] = $user->id;

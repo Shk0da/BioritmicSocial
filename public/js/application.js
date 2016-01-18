@@ -79,30 +79,30 @@ $(document).on("click", ".js-msgGroup", function () {
     n[0] && (o(), i.on("resize", o))
 });
 
-var newMsg = $('.js-newMsg');
-var newMsgBlock = $('.new-message');
-var Dialogs = $('.js-Dialogs');
-var DialogsTitle = $('.js-DialogsTitle');
-var backMsg = $('.js-backMsg');
-var sendMsg = $('.js-sendMsg');
-
-newMsg.on('click', function(){
-    newMsgBlock.show();
-    newMsg.hide();
-    Dialogs.hide();
-    DialogsTitle.hide();
-});
-
-backMsg.on('click', function(){
-    newMsgBlock.hide();
-    newMsg.show();
-    Dialogs.show();
-    DialogsTitle.show();
-});
-
-sendMsg.on('click', function(){
-
-});
+//var newMsg = $('.js-newMsg');
+//var newMsgBlock = $('.new-message');
+//var Dialogs = $('.js-Dialogs');
+//var DialogsTitle = $('.js-DialogsTitle');
+//var backMsg = $('.js-backMsg');
+//var sendMsg = $('.js-sendMsg');
+//
+//newMsg.on('click', function(){
+//    newMsgBlock.show();
+//    newMsg.hide();
+//    Dialogs.hide();
+//    DialogsTitle.hide();
+//});
+//
+//backMsg.on('click', function(){
+//    newMsgBlock.hide();
+//    newMsg.show();
+//    Dialogs.show();
+//    DialogsTitle.show();
+//});
+//
+//sendMsg.on('click', function(){
+//
+//});
 
 $('#save_background').hide();
 $('#background').change(function() {
