@@ -360,8 +360,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $result[$dialog->dialog] = $dialog;
         }
 
-        if (count($result))
-        {
+        if (count($result)) {
             usort($result, function ($a, $b) {
                 return ($a['created_at'] < $b['created_at']) ? 1 : -1;
             });
