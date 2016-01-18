@@ -6,6 +6,8 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Support\Facades\App;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class MessageController extends MainController
@@ -48,6 +50,12 @@ class MessageController extends MainController
     public function chat(Request $request, $id)
     {
         $view = $this->view;
+        $fromUser = $this->getUser();
+        $toUser = User::find($id);
+        $thisUserId = $fromUser->id;
+
+        if (!$toUser)
+            App::abort(404);
 
         if ($request->method() == 'POST') {
             $this->validate($request, [
@@ -59,11 +67,21 @@ class MessageController extends MainController
             $this->factoryMessage($this->getUser()->id, $id, $request->input('message'));
         }
 
-        $messages = Message::orderBy('created_at', 'desc')->get();
+        $messages = Message::
+            where(function ($query) use ($id, $thisUserId) {
+                $query->where('from', $thisUserId)
+                    ->where('to', $id);
+            })
+            ->orWhere(function ($query) use ($id, $thisUserId) {
+                $query->where('to', $thisUserId)
+                    ->where('from', $id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $view->with('content', view('message.chat')
-            ->with('user', $this->getUser())
-            ->with('to', User::find($id))
+            ->with('user', $fromUser)
+            ->with('to', $toUser)
             ->with('messages', $messages)
         );
 
@@ -72,11 +90,35 @@ class MessageController extends MainController
 
     public function factoryMessage($from, $to, $text)
     {
+        $fromUser = User::find($from);
+        $toUser = User::find($to);
+
+        if (!$fromUser || !$toUser || !$fromUser->isFriendWith($toUser))
+            App::abort(403);
+
+        $dialog = Message::
+            where(function ($query) use ($from, $to) {
+                $query->where('from', $from)
+                    ->where('to', $to);
+            })
+            ->orWhere(function ($query) use ($from, $to) {
+                $query->where('to', $from)
+                    ->where('from', $to);
+            })
+            ->first();
+
+        if ($dialog) {
+            $dialog = $dialog->dialog;
+        } else {
+            $dialog = Message::orderBy('created_at', 'desc')->first()->dialog + 1;
+        }
+
         Message::create(
             [
                 'from' => $from,
                 'to' => $to,
                 'text' => $text,
+                'dialog' => $dialog,
             ]
         );
     }

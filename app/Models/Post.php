@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use \Auth;
 
-class Post extends Model
+class Post extends MainModel
 {
     protected $table = 'posts';
 

@@ -32,27 +32,29 @@ class SearchController extends MainController
 
         $result = User::where('id', '<>', $user->id);
 
-        if ($ideal) {
-            $location = $user->profile->location;
-            $result->whereIn('id', $this->findIdealPartner($result));
-            $result->whereIn('id', $this->findByLocation($location));
-            $form['location'] = $location;
-            foreach ($filter_names as $rhythm) {
+        if ($user->profile->birthday) {
+            if ($ideal) {
+                $location = $user->profile->location;
+                $result->whereIn('id', $this->findIdealPartner($result));
+                $result->whereIn('id', $this->findByLocation($location));
+                $form['location'] = $location;
+                foreach ($filter_names as $rhythm) {
                     $form[$rhythm] = 'checked';
+                }
             }
-        }
 
-        if ($location) {
-            $result->whereIn('id', $this->findByLocation($location));
-            $form['location'] = $location;
-        }
+            if ($location) {
+                $result->whereIn('id', $this->findByLocation($location));
+                $form['location'] = $location;
+            }
 
-        if (count($rhythms))
-            $result->whereIn('id', $this->findIdealPartner($result, $rhythms));
+            if (count($rhythms))
+                $result->whereIn('id', $this->findIdealPartner($result, $rhythms));
 
-        if ($zodiac) {
-            $result->whereIn('id', $this->findIdealHoro($result));
-            $form['zodiac'] = 'checked';
+            if ($zodiac) {
+                $result->whereIn('id', $this->findIdealHoro($result));
+                $form['zodiac'] = 'checked';
+            }
         }
 
         $result->where('name', 'LIKE', "%{$name}%");

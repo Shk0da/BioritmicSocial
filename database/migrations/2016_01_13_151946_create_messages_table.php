@@ -13,6 +13,7 @@ class CreateMessagesTable extends Migration
             $table->integer('from');
             $table->integer('to');
             $table->string('text');
+            $table->integer('dialog');
             $table->timestamps();
         });
     }

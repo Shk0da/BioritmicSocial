@@ -56,7 +56,7 @@
                                                 </div>
                                                 <div class="aoc">
                                                     <small class="dp">
-                                                        <a>{{ $from->getName() }}</a> {{ $message->getTime() }}
+                                                        <a>{{ $from->getName() }}</a> {{ $message->diffForHumans() }}
                                                     </small>
                                                 </div>
                                             </div>
@@ -75,7 +75,7 @@
                                                 </div>
                                                 <div class="aoc">
                                                     <small class="dp">
-                                                        <a>{{ $from->getName() }}</a> {{ $message->getTime() }}
+                                                        <a>{{ $from->getName() }}</a> {{ $message->diffForHumans() }}
                                                     </small>
                                                 </div>
                                             </div>

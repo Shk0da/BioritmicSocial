@@ -47,7 +47,7 @@
                     <div class="qh">
                         <div class="aob">
                             <div class="qo">
-                                <small class="eg dp">{{ $post->getTimeSend() }}</small>
+                                <small class="eg dp">{{ $post->diffForHumans() }}</small>
                                 <h5>
                                     <a href="{{ $post->user->getProfileLink() }}">{{ $post->user->getName() }}</a>
                                 </h5>
@@ -85,7 +85,7 @@
                                     @if ($comment->user->id == $user->id)
                                         <a href="{{ route('post.delete', ['postId' => $comment->id]) }}" type="button" class="close post">&times;</a>
                                     @endif
-                                    <small class="eg dp">{{ $comment->getTimeSend() }}</small>
+                                    <small class="eg dp">{{ $comment->diffForHumans() }}</small>
                                     <a class="qk" href="#">
                                         <img class="qi cu" src="{{ $comment->user->getImageProfile() }}">
                                     </a>
