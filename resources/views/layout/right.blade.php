@@ -10,9 +10,8 @@
     <div class="qw rd alt st">
         <div class="qx">
             <h5 class="alc">Реклама</h5>
-            <div data-grid="images" data-target-height="150">
-                <img class="qi" data-width="640" data-height="640" data-action="zoom"
-                     src="">
+            <div>
+                <a href="//ya.ru" target="_blank"><img width="250" class="qi" src="/public/img/adv_temp.jpg"></a>
             </div>
         </div>
     </div>

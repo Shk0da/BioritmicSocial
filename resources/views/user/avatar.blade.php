@@ -29,9 +29,9 @@
                                     <div class="avatar-wrapper"></div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="avatar-preview preview-lg"></div>
+                                    <div class="avatar-preview preview-lg cu"></div>
                                     <div class="avatar-preview preview-md qi cu"></div>
-                                    <div class="avatar-preview preview-sm"></div>
+                                    <div class="avatar-preview preview-sm cu"></div>
                                 </div>
                             </div>
 

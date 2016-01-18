@@ -1,7 +1,4 @@
-var $input = $('<div class="modal-body"><textarea class="form-control" data-autosize-on="true" placeholder="Сообщение" name="message"></textarea></div>');
-$(document).on("click", ".js-msgGroup", function () {
-    $(".js-msgGroup, .js-newMsg").addClass("hide"), $(".js-conversation").removeClass("hide"), $(".modal-title").html('<a href="#" class="js-gotoMsgs">Назад</a>'), $input.insertBefore(".js-modalBody")
-}), $(function () {
+$(function () {
     function o() {
         return $(window).width() - ($('[data-toggle="popover"]').offset().left + $('[data-toggle="popover"]').outerWidth())
     }
@@ -27,17 +24,9 @@ $(document).on("click", ".js-msgGroup", function () {
             })
         }, 1))
     })
-}), $(document).on("click", ".js-gotoMsgs", function () {
-    $input.remove(), $(".js-conversation").addClass("hide"), $(".js-msgGroup, .js-newMsg").removeClass("hide"), $(".modal-title").html("Сообщения")
-}), $(document).on("click", "[data-action=growl]", function (o) {
-    o.preventDefault(), $("#app-growl").append('<div class="alert alert-dark alert-dismissible fade in" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><p>Click the x on the upper right to dismiss this little thing. Or click growl again to show more growls.</p></div>')
-}), $(document).on("focus", '[data-action="grow"]', function () {
-    $(window).width() > 1e3 && $(this).animate({width: 300})
-}), $(document).on("blur", '[data-action="grow"]', function () {
-    if ($(window).width() > 1e3) {
-        $(this).animate({width: 180})
-    }
-}), $(function () {
+});
+
+$(function () {
     function o() {
         $(window).scrollTop() > $(window).height() ? $(".docs-top").fadeIn() : $(".docs-top").fadeOut()
     }
@@ -79,38 +68,40 @@ $(document).on("click", ".js-msgGroup", function () {
     n[0] && (o(), i.on("resize", o))
 });
 
-//var newMsg = $('.js-newMsg');
-//var newMsgBlock = $('.new-message');
-//var Dialogs = $('.js-Dialogs');
-//var DialogsTitle = $('.js-DialogsTitle');
-//var backMsg = $('.js-backMsg');
-//var sendMsg = $('.js-sendMsg');
-//
-//newMsg.on('click', function(){
-//    newMsgBlock.show();
-//    newMsg.hide();
-//    Dialogs.hide();
-//    DialogsTitle.hide();
-//});
-//
-//backMsg.on('click', function(){
-//    newMsgBlock.hide();
-//    newMsg.show();
-//    Dialogs.show();
-//    DialogsTitle.show();
-//});
-//
-//sendMsg.on('click', function(){
-//
-//});
+var newMsg = $('.js-newMsg');
+var newMsgBlock = $('.new-message');
+var Dialogs = $('.js-Dialogs');
+var DialogsTitle = $('.js-DialogsTitle');
+var backMsg = $('.js-backMsg');
+var sendMsg = $('.js-sendMsg');
+
+newMsg.on('click', function () {
+    newMsgBlock.show();
+    newMsg.hide();
+    Dialogs.hide();
+    DialogsTitle.hide();
+});
+
+backMsg.on('click', function () {
+    newMsgBlock.hide();
+    newMsg.show();
+    Dialogs.show();
+    DialogsTitle.show();
+});
+
+sendMsg.on('click', function () {
+
+});
 
 $('#save_background').hide();
-$('#background').change(function() {
+$('#background').change(function () {
     var input = $(this)[0];
-    if ( input.files && input.files[0] ) {
-        if ( input.files[0].type.match('image.*') ) {
+    if (input.files && input.files[0]) {
+        if (input.files[0].type.match('image.*')) {
             var reader = new FileReader();
-            reader.onload = function(e) { $('#background_preview').attr('src', e.target.result); }
+            reader.onload = function (e) {
+                $('#background_preview').attr('src', e.target.result);
+            }
             reader.readAsDataURL(input.files[0]);
             $('#save_background').show();
         } else console.log('is not image mime type');
@@ -119,12 +110,14 @@ $('#background').change(function() {
 
 $('#save_add_photo').hide();
 $('#photo_preview').hide();
-$('#add_photo').change(function() {
+$('#add_photo').change(function () {
     var input = $(this)[0];
-    if ( input.files && input.files[0] ) {
-        if ( input.files[0].type.match('image.*') ) {
+    if (input.files && input.files[0]) {
+        if (input.files[0].type.match('image.*')) {
             var reader = new FileReader();
-            reader.onload = function(e) { $('#photo_preview').attr('src', e.target.result); }
+            reader.onload = function (e) {
+                $('#photo_preview').attr('src', e.target.result);
+            }
             reader.readAsDataURL(input.files[0]);
             $('#photo_preview').show();
             $('#save_add_photo').show();
@@ -144,7 +137,10 @@ $('#add_photo').change(function() {
 
     'use strict';
 
-    var console = window.console || { log: function () {} };
+    var console = window.console || {
+            log: function () {
+            }
+        };
 
     function CropAvatar($element) {
         this.$container = $element;
@@ -211,7 +207,7 @@ $('#add_photo').change(function() {
         initPreview: function () {
             var url = this.$avatar.attr('src');
             //this.$avatarWrapper.html('<img src="' + url + '_original">');
-            this.$avatarPreview.html('<img src="' + url + '">');
+            this.$avatarPreview.html('<img class="cu" src="' + url + '">');
         },
 
         initIframe: function () {
@@ -465,15 +461,15 @@ $(function () {
 
     country.on('change', function () {
         $.get('/api/getCityList', {country: country.val()})
-        .done(function (data) {
-            if (data != 0) {
-                location.empty();
-                location.prepend('<option value="">' + first + '</option>');
-                $.each(data, function (id, name) {
-                    location.append('<option value="' + id + '">' + name + '</option>');
-                });
-            }
-        });
+            .done(function (data) {
+                if (data != 0) {
+                    location.empty();
+                    location.prepend('<option value="">' + first + '</option>');
+                    $.each(data, function (id, name) {
+                        location.append('<option value="' + id + '">' + name + '</option>');
+                    });
+                }
+            });
     });
 
 });
@@ -488,8 +484,8 @@ $(function () {
 function wsmessage(host, key) {
 
     var sendMessage = $('button[name=send-message]');
-    sendMessage.click(function() {
-        ws.send('{"key": "'+key+'","body": {"from": 1, "to": 2, "msg": "Текст сообщения"}}')
+    sendMessage.click(function () {
+        ws.send('{"key": "' + key + '","body": {"from": 1, "to": 2, "msg": "Текст сообщения"}}')
     });
 
     new ab.connect(host,
@@ -499,7 +495,7 @@ function wsmessage(host, key) {
                 console.log(data.data);
             });
         },
-        function(code, reason, detail) {
+        function (code, reason, detail) {
             console.warn(code + reason + detail);
         },
         {

@@ -20,7 +20,7 @@
                     <a href="/id{{Auth::user()->id}}">Профиль</a>
                 </li>
                 <li{{ (Route::currentRouteName() == 'messages') ? ' class=active' : ''}}>
-                    <a href="{{ route('messages') }}" data-featherlight="ajax">Сообщения</a>
+                    <a href="{{ route('messages') }}">Сообщения</a>
                 </li>
                 <li{{ (Route::currentRouteName() == 'search') ? ' class=active' : ''}}>
                     <a href="{{ route('search') }}?ideal=on">Найти идеальную пару</a>
@@ -48,9 +48,9 @@
 
             <ul class="nav navbar-nav su sv sw">
                 <li><a href="/">Новости</a></li>
-                <li><a href="{{ route('profile') }}">Профиль</a></li>
+                <li><a href="/profile/">Профиль</a></li>
                 <li><a href="/notifications/">Обновления</a></li>
-                <li><a data-toggle="modal" href="#messages">Сообщения</a></li>
+                <li><a href="{{ route('messages') }}">Сообщения</a></li>
                 <li><a href="{{ route('edit') }}">{{ Auth::user()->getName() }}</a></li>
                 <li><a href="{{ route('auth.logout') }}">Выйти</a></li>
             </ul>

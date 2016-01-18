@@ -57,6 +57,9 @@
 
                                         <div class="qh">
                                             <strong>{{ $from->getName() }}</strong>
+                                            <small class="f-right">
+                                                {{ $dialog->diffForHumans() }}
+                                            </small>
                                             <div class="aoe">
                                                 {{ $dialog->getMessage() }}
                                             </div>

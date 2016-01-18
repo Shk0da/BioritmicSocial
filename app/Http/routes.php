@@ -137,6 +137,11 @@ Route::group(['middleware' => 'auth'], function () {
         'as' => 'chat'
     ]);
 
+    Route::get('/post/chat/{to}/delete', [
+        'uses' => 'MessageController@delete',
+        'as' => 'chat.delete'
+    ]);
+
     Route::any('/api/{action}', [
         'uses' => 'ApiController@main',
         'as' => 'api'

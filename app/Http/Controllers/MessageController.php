@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dialog;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -96,28 +97,24 @@ class MessageController extends MainController
         if (!$fromUser || !$toUser || !$fromUser->isFriendWith($toUser))
             App::abort(403);
 
-        $dialog = Message::
-            where(function ($query) use ($from, $to) {
-                $query->where('from', $from)->where('to', $to);
-            })
-            ->orWhere(function ($query) use ($from, $to) {
-                $query->where('to', $from)->where('from', $to);
-            })
-            ->first();
-
-        if ($dialog) {
-            $dialog = $dialog->dialog;
-        } else {
-            $dialog = Message::orderBy('created_at', 'desc')->first()->dialog + 1;
-        }
+        $dialog = Dialog::getOrCreate($from, $to);
 
         Message::create(
             [
                 'from' => $from,
                 'to' => $to,
                 'text' => $text,
-                'dialog' => $dialog,
+                'dialog' => $dialog->id,
             ]
         );
+    }
+
+    public function delete($id)
+    {
+        $thisUser = $this->getUser();
+        $dialog = Dialog::getOrCreate($thisUser->id, $id);
+        //@TODO скрытие сообщений
+
+        return redirect()->back();
     }
 }
