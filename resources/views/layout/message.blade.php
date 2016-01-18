@@ -48,7 +48,7 @@
                     <div class="up">
                         <div class="qp cj ca js-msgGroup">
                             @foreach($user->getUserDialogs() as $dialog)
-                                <?php $from = $dialog->getFromUser();  if ($from->id == $user->id) $from = $dialog->getToUser()?>
+                                <?php $from = ($dialog->getFromUser()->id == $user->id) ? $dialog->getToUser() : $dialog->getFromUser()?>
                                 <a href="{{ route('chat', $from) }}" class="b">
                                     <div class="qg">
                                             <span class="qk">

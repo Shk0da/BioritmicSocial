@@ -352,7 +352,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function getUserDialogs()
     {
         $result = [];
-        $dialogs = \App\Models\Message::where('to', $this->id)->orWhere('from', $this->id)->get();
+        $dialogs = Message::where('to', $this->id)
+            ->orWhere('from', $this->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         foreach ($dialogs as $dialog) {
             $result[$dialog->dialog] = $dialog;
