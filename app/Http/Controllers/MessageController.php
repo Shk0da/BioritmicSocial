@@ -65,7 +65,7 @@ class MessageController extends MainController
                 'required' => 'Ваше сообщение пустое'
             ]);
 
-            $this->factoryMessage($this->getUser()->id, $id, $request->input('message'));
+            $this->factoryMessage($fromUser->id, $id, $request->input('message'));
         }
 
         $messages = Message::
@@ -79,6 +79,13 @@ class MessageController extends MainController
             })
             ->orderBy('created_at', 'desc')
             ->get();
+
+        foreach ($messages as $message) {
+            if ($message->to == $fromUser->id && $message->read != 1) {
+                $message->read = true;
+                $message->save();
+            }
+        }
 
         $view->with('content', view('message.chat')
             ->with('user', $fromUser)

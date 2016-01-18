@@ -4419,8 +4419,8 @@ a.cq.active {
 }
 
 .b:first-child {
-    border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
+    /*border-top-right-radius: 4px;*/
+    /*border-top-left-radius: 4px;*/
 }
 .b:last-child {
     margin-bottom: 0;
@@ -6439,7 +6439,7 @@ fieldset[disabled] .tw.active {
 .up {
     max-height: 1200px;
     overflow: auto;
-    border-radius: 6px;
+    /*border-radius: 6px;*/
 }
 .modal-body + .modal-body {
     border-top: 1px solid #e5e5e5;
@@ -9190,4 +9190,8 @@ textarea {
 
 .f-right {
     float: right;
+}
+
+.newmsg {
+    background-color: rgba(130, 130, 130, 0.14);
 }

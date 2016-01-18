@@ -354,11 +354,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $result = [];
         $dialogs = Message::where('to', $this->id)
             ->orWhere('from', $this->id)
-            ->orderBy('created_at', 'desc')
             ->get();
 
         foreach ($dialogs as $dialog) {
             $result[$dialog->dialog] = $dialog;
+        }
+
+        if (count($result))
+        {
+            usort($result, function ($a, $b) {
+                return ($a['created_at'] < $b['created_at']) ? 1 : -1;
+            });
         }
 
         return $result;

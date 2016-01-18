@@ -49,7 +49,7 @@
                         <div class="qp cj ca js-msgGroup">
                             @foreach($user->getUserDialogs() as $dialog)
                                 <?php $from = ($dialog->getFromUser()->id == $user->id) ? $dialog->getToUser() : $dialog->getFromUser()?>
-                                <a href="{{ route('chat', $from) }}" class="b">
+                                <a href="{{ route('chat', $from) }}" class="b{{ $dialog->read ? '' : ' newmsg' }}">
                                     <div class="qg">
                                             <span class="qk">
                                                 <img class="cu qi" src="{{ $from->getImageProfile() }}">
