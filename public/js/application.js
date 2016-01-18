@@ -483,26 +483,18 @@ $(function () {
 
 function wsmessage(host, key) {
 
+    var ws = new WebSocket(host);
+    ws.onopen = function(e) {
+        console.log("Соединение установлено");
+    };
+
+    ws.onmessage = function(e) {
+        console.log(e.data);
+    };
+
     var sendMessage = $('button[name=send-message]');
     sendMessage.click(function () {
         ws.send('{"key": "' + key + '","body": {"from": 1, "to": 2, "msg": "Текст сообщения"}}')
     });
-
-    new ab.connect(host,
-        function (session) {
-            session.subscribe('one', function (topic, data) {
-                console.info(topic);
-                console.log(data.data);
-            });
-        },
-        function (code, reason, detail) {
-            console.warn(code + reason + detail);
-        },
-        {
-            'maxRetries': 60,
-            'retryDelay': 4000,
-            'skipSubprotocolCheck': true
-        }
-    );
 }
 

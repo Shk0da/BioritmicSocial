@@ -15,7 +15,6 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\Inspire::class,
         \App\Console\Commands\MessagingServer::class,
-        \App\Console\Commands\PushServer::class,
     ];
 
     /**
