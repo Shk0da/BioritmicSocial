@@ -71,6 +71,6 @@ class MessagingSocket extends SocketController
 
     protected function getUser($key)
     {
-        return User::where(DB::raw('md5(CONCAT(remember_token, \''.env('APP_KEY', 0).'\'))'), $key)->first();
+        return User::getUserForKey($key);
     }
 }

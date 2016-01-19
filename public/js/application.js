@@ -480,6 +480,9 @@ $(function () {
     });
 });
 
+function updateChat() {
+
+}
 
 function wsmessage(host, key) {
 
@@ -492,13 +495,12 @@ function wsmessage(host, key) {
 
     ws.onmessage = function(e) {
         if (e.data == 'new') {
-            console.log(e.data);
+            updateChat();
         }
     };
 
     var sendMessage = $('button[name=send-message]');
     sendMessage.click(function () {
-        message = $('textarea[name=message]').val();
         ws.send(JSON.stringify({key: key, body: JSON.stringify({to: sendMessage.data('to'), msg: 'new'})}))
     });
 }

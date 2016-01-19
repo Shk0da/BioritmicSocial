@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use App\Http\Controllers\BiorhythmController;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -373,6 +374,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function getMessageKey()
     {
         return md5($this->getRememberToken() . env('APP_KEY', 0));
+    }
+
+    public static function getUserForKey($key)
+    {
+        return self::where(DB::raw('md5(CONCAT(remember_token, \''.env('APP_KEY', 0).'\'))'), $key)->first();
     }
 
     public function getAgentInfo()
