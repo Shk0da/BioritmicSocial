@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Console\Commands\MessagingServer;
+use App\Http\Controllers\Socket\MessagingSocket;
 use App\Models\Dialog;
 use App\Models\Message;
 use App\Models\User;
@@ -75,6 +77,13 @@ class MessageController extends MainController
             ], [
                 'required' => 'Ваше сообщение пустое'
             ]);
+
+            $wsServer = @fsockopen(MessagingServer::URL, MessagingServer::PORT);
+            if ($wsServer == false) {
+                $this->factoryMessage($fromUser->id, $toUser->id, $request->input('message'));
+            } else {
+                fclose($wsServer);
+            }
         }
 
         $messages = Message::
@@ -107,6 +116,15 @@ class MessageController extends MainController
 
     public function factoryMessage($from, $to, $text)
     {
+        if (!isset($from) || !isset($to))
+            return false;
+
+        $text = strip_tags($text);
+        $text = trim($text);
+
+        if (!$text)
+            return false;
+
         $fromUser = User::find($from);
         $toUser = User::find($to);
 

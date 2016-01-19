@@ -77,4 +77,5 @@ class MessagingSocket extends SocketController
     {
         return User::getUserForKey($key);
     }
+
 }
