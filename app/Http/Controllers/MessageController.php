@@ -13,6 +13,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MessageController extends MainController
 {
+
+    protected static $_instance;
+
+    public static function instance()
+    {
+        if (empty(static::$_instance))
+            static::$_instance = new MessageController();
+
+        return self::$_instance;
+    }
+
     public function main(Request $request)
     {
         if ($request->method() == 'POST') {
@@ -64,8 +75,6 @@ class MessageController extends MainController
             ], [
                 'required' => 'Ваше сообщение пустое'
             ]);
-
-            $this->factoryMessage($fromUser->id, $id, $request->input('message'));
         }
 
         $messages = Message::
@@ -98,22 +107,24 @@ class MessageController extends MainController
 
     public function factoryMessage($from, $to, $text)
     {
-//        $fromUser = User::find($from);
-//        $toUser = User::find($to);
-//
-//        if (!$fromUser || !$toUser || !$fromUser->isFriendWith($toUser))
-//            App::abort(403);
-//
-//        $dialog = Dialog::getOrCreate($from, $to);
-//
-//        Message::create(
-//            [
-//                'from' => $from,
-//                'to' => $to,
-//                'text' => $text,
-//                'dialog' => $dialog->id,
-//            ]
-//        );
+        $fromUser = User::find($from);
+        $toUser = User::find($to);
+
+        if (!$fromUser || !$toUser || !$fromUser->isFriendWith($toUser))
+            App::abort(403);
+
+        $dialog = Dialog::getOrCreate($from, $to);
+
+        $message = Message::create(
+            [
+                'from' => $from,
+                'to' => $to,
+                'text' => $text,
+                'dialog' => $dialog->id,
+            ]
+        );
+
+        return $message;
     }
 
     public function delete($id)

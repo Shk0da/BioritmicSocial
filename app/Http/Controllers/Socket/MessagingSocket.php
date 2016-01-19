@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Socket;
 
+use App\Http\Controllers\MessageController;
 use DB;
 use App\Models\User;
 use Ratchet\ConnectionInterface;
@@ -54,10 +55,13 @@ class MessagingSocket extends SocketController
 
             if ($from) {
                 $to = $body->to;
-
                 if (isset($this->users[$to]) && $client = $this->users[$to]) {
-                    $msg = $body->msg;
-                    $this->clients[$client]->send($msg);
+
+                    $message = MessageController::instance()->factoryMessage($from->id, $to, $body->message);
+
+                    if ($message) {
+                        $this->clients[$client]->send($msgObj->body);
+                    }
                 }
             }
         }

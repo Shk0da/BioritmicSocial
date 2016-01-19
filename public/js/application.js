@@ -480,28 +480,58 @@ $(function () {
     });
 });
 
-function updateChat() {
+$(function () {
+    $('textarea[name=message]').keydown(function(event){
+        if (event.which == 13 && event.ctrlKey) {
+            $('button[name=send-message]').trigger('click');
+        }
+    })
+});
 
+function updateChat(from, to) {
+    $.post('/api/getNewMessage', {from: from, to: to}).done(function (data) {
+        var conversation = $('.js-conversation ul');
+
+        $.each(data, function (id, item) {
+            conversation.prepend(
+                '<li class="qg aod alt">' +
+                '<div class="qh">' +
+                '<div class="aob">' + item.text + '</div>' +
+                '<div class="aoc">' +
+                '<small class="dp"><a>' + item.name + '</a> ' + item.time + '</small>' +
+                '</div>' +
+                '</div>' +
+                '<a class="qj">' +
+                '<img class="cu qi" src="' + item.image + '">' +
+                '</a>' +
+                '</li>'
+            );
+        });
+    });
 }
 
 function wsmessage(host, key) {
-
     var ws = new WebSocket(host);
+    $.ajaxSetup({headers: {'X-CSRF-Token': $('input[name=_token]').val()}});
+
     ws.onopen = function () {
-        $.get('/api/getClientInfo').done(function (agent) {
+        $.post('/api/getClientInfo').done(function (agent) {
             ws.send(JSON.stringify({key: key, agent: agent}));
         });
     };
 
     ws.onmessage = function(e) {
-        if (e.data == 'new') {
-            updateChat();
+        var data = JSON.parse(e.data);
+        if (data.from && data.to && data.message) {
+            updateChat(data.from, data.to);
         }
     };
 
     var sendMessage = $('button[name=send-message]');
     sendMessage.click(function () {
-        ws.send(JSON.stringify({key: key, body: JSON.stringify({to: sendMessage.data('to'), msg: 'new'})}))
+        var from = sendMessage.data('from');
+        var to = sendMessage.data('to');
+        var message = $('textarea[name=message]').val();
+        ws.send(JSON.stringify({key: key, body: JSON.stringify({from: from, to: to, message: message})}));
     });
 }
-

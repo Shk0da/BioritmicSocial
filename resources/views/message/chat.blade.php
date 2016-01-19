@@ -30,11 +30,11 @@
                     @if ($errors->has('message'))
                         <span class="help-block">{{ $errors->first('message') }}</span>
                     @endif
-                    <form method="post" action="">
+                    <form name="message-form" method="post" action="">
                     <textarea class="form-control" data-autosize-on="true" placeholder="Сообщение"
                               name="message"></textarea>
                     <div class="p-btm25">
-                        <button name="send-message" data-to="{{ $to->id }}" type="submit" class="post submit">Отправить</button>
+                        <button name="send-message" data-from="{{ $user->id }}" data-to="{{ $to->id }}" type="submit" class="post submit">Отправить</button>
                     </div>
                         {{ csrf_field() }}
                     </form>
