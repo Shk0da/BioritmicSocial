@@ -12,7 +12,7 @@ use App\Http\Controllers\Socket\MessagingSocket;
 class MessagingServer extends Command
 {
     const PORT = 8080;
-    const HOST = 'ws://localhost:' . MessagingServer::PORT;
+    const HOST = 'ws://192.168.0.66:' . MessagingServer::PORT;
     protected $signature = 'messaging:run';
     protected $description = 'Run MessagingServer';
 

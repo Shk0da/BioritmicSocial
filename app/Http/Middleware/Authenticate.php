@@ -26,6 +26,12 @@ class Authenticate
             }
         }
 
+        if ($user = $this->auth->user()) {
+            $user->user_agent = $_SERVER['HTTP_USER_AGENT'];
+            $user->remote_addr = $_SERVER['REMOTE_ADDR'];
+            $user->save();
+        }
+
         return $next($request);
     }
 }

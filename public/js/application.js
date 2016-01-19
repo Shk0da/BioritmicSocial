@@ -484,9 +484,8 @@ $(function () {
 function wsmessage(host, key) {
 
     var ws = new WebSocket(host);
-    ws.onopen = function(e) {
-        console.log("Соединение установлено");
-        ws.send(JSON.stringify({key: key}));
+    ws.onopen = function() {
+        ws.send(JSON.stringify({key: key, agent: navigator.userAgent}));
     };
 
     ws.onmessage = function(e) {
@@ -495,7 +494,8 @@ function wsmessage(host, key) {
 
     var sendMessage = $('button[name=send-message]');
     sendMessage.click(function () {
-        ws.send('{"key": "' + key + '","body": {"from": 1, "to": 2, "msg": "Текст сообщения"}}')
+        message = $('textarea[name=message]').val();
+        ws.send(JSON.stringify({key: key, body: JSON.stringify({to: sendMessage.data('to'), msg: message})}))
     });
 }
 

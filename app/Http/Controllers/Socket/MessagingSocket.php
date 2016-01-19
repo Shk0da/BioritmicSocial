@@ -2,53 +2,75 @@
 
 namespace App\Http\Controllers\Socket;
 
+use DB;
+use App\Models\User;
 use Ratchet\ConnectionInterface;
 
 class MessagingSocket extends SocketController
 {
 
-    protected $clients;
+    protected $clients = [];
     protected $users = [];
     protected $online_count;
 
     public function __construct()
     {
-        $this->clients = new \SplObjectStorage();
         $this->online_count = 0;
     }
 
-    function onOpen(ConnectionInterface $conn)
+    public function onOpen(ConnectionInterface $conn)
     {
-        $this->clients->attach($conn);
+        $this->clients[$conn->resourceId] = $conn;
         $this->online_count++;
     }
 
-    function onClose(ConnectionInterface $conn)
+    public function onClose(ConnectionInterface $conn)
     {
-        $this->clients->detach($conn);
+        unset($this->clients[$conn->resourceId]);
         $this->online_count--;
     }
 
-    function onMessage(ConnectionInterface $from, $msg)
+    public function onMessage(ConnectionInterface $from, $msg)
     {
-        //TODO добавлять при заходе хеш-ключ в массив regid => hash, для идентификации пользователся
-        // делать обратное преобразование пользака в хеш и смотреть есть ли он сейчас в массиве, если есть отправлять сабж
-        // гениально сцуко!
+        $msgObj = json_decode($msg);
 
-        if (property_exists(json_decode($msg, false), 'key')) {
-            $users[json_decode($msg)->key] = $from->resourceId;
+        if (property_exists($msgObj, 'key') && property_exists($msgObj, 'agent')) {
+
+            $key = $msgObj->key;
+            $agent = $msgObj->agent;
+
+            $user = $this->getUser($key);
+
+            if ($user->getAgentInfo() === $agent) {
+                $this->users[$user->id] = $from->resourceId;
+            }
         }
 
-        print_r($users);
+        if (property_exists($msgObj, 'key') && property_exists($msgObj, 'body')) {
 
-        foreach ($this->clients as $client) {
-            $client->send($msg);
+            $key = $msgObj->key;
+            $from = $this->getUser($key);
+            $body = json_decode($msgObj->body);
+
+            if ($from) {
+                $to = $body->to;
+
+                if ($client = $this->users[$to]) {
+                    $msg = $body->msg;
+                    $this->clients[$client]->send($msg);
+                }
+            }
         }
     }
 
-    function onError(ConnectionInterface $conn, \Exception $e)
+    public function onError(ConnectionInterface $conn, \Exception $e)
     {
         echo $e->getMessage();
         $conn->close();
+    }
+
+    protected function getUser($key)
+    {
+        return User::where(DB::raw('md5(CONCAT(remember_token, \''.env('APP_KEY', 0).'\'))'), $key)->first();
     }
 }

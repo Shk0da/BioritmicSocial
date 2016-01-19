@@ -34,7 +34,7 @@
                     <textarea class="form-control" data-autosize-on="true" placeholder="Сообщение"
                               name="message"></textarea>
                     <div class="p-btm25">
-                        <button type="submit" class="post submit">Отправить</button>
+                        <button name="send-message" data-to="{{ $to->id }}" type="submit" class="post submit">Отправить</button>
                     </div>
                         {{ csrf_field() }}
                     </form>
