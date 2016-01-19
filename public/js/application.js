@@ -510,9 +510,16 @@ function updateChat(from, to) {
     });
 }
 
+
 function wsmessage(host, key) {
+
+    var offline = false;
     var ws = new WebSocket(host);
     $.ajaxSetup({headers: {'X-CSRF-Token': $('input[name=_token]').val()}});
+
+    ws.onerror = function (error) {
+        offline = true;
+    };
 
     ws.onopen = function () {
         $.post('/api/getClientInfo').done(function (agent) {
@@ -529,9 +536,12 @@ function wsmessage(host, key) {
 
     var sendMessage = $('button[name=send-message]');
     sendMessage.click(function () {
-        var from = sendMessage.data('from');
-        var to = sendMessage.data('to');
-        var message = $('textarea[name=message]').val();
-        ws.send(JSON.stringify({key: key, body: JSON.stringify({from: from, to: to, message: message})}));
+        if (!offline) {
+            var from = sendMessage.data('from');
+            var to = sendMessage.data('to');
+            var message = $('textarea[name=message]').val();
+            ws.send(JSON.stringify({key: key, body: JSON.stringify({from: from, to: to, message: message})}));
+        }
     });
+
 }
