@@ -377,12 +377,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getAgentInfo()
     {
-        return $this->user_agent;
+        return md5($this->user_agent . $this->remote_addr);
     }
 
-    public function getRealAgentInfoKey()
+    public function getRealAgentInfo()
     {
-        return md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+        return md5($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);
     }
 }
 

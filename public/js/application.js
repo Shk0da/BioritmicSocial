@@ -484,18 +484,22 @@ $(function () {
 function wsmessage(host, key) {
 
     var ws = new WebSocket(host);
-    ws.onopen = function() {
-        ws.send(JSON.stringify({key: key, agent: navigator.userAgent}));
+    ws.onopen = function () {
+        $.get('/api/getClientInfo').done(function (agent) {
+            ws.send(JSON.stringify({key: key, agent: agent}));
+        });
     };
 
     ws.onmessage = function(e) {
-        console.log(e.data);
+        if (e.data == 'new') {
+            console.log(e.data);
+        }
     };
 
     var sendMessage = $('button[name=send-message]');
     sendMessage.click(function () {
         message = $('textarea[name=message]').val();
-        ws.send(JSON.stringify({key: key, body: JSON.stringify({to: sendMessage.data('to'), msg: message})}))
+        ws.send(JSON.stringify({key: key, body: JSON.stringify({to: sendMessage.data('to'), msg: 'new'})}))
     });
 }
 

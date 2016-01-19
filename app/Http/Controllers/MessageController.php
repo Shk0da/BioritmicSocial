@@ -98,22 +98,22 @@ class MessageController extends MainController
 
     public function factoryMessage($from, $to, $text)
     {
-        $fromUser = User::find($from);
-        $toUser = User::find($to);
-
-        if (!$fromUser || !$toUser || !$fromUser->isFriendWith($toUser))
-            App::abort(403);
-
-        $dialog = Dialog::getOrCreate($from, $to);
-
-        Message::create(
-            [
-                'from' => $from,
-                'to' => $to,
-                'text' => $text,
-                'dialog' => $dialog->id,
-            ]
-        );
+//        $fromUser = User::find($from);
+//        $toUser = User::find($to);
+//
+//        if (!$fromUser || !$toUser || !$fromUser->isFriendWith($toUser))
+//            App::abort(403);
+//
+//        $dialog = Dialog::getOrCreate($from, $to);
+//
+//        Message::create(
+//            [
+//                'from' => $from,
+//                'to' => $to,
+//                'text' => $text,
+//                'dialog' => $dialog->id,
+//            ]
+//        );
     }
 
     public function delete($id)

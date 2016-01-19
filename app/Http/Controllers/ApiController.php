@@ -24,4 +24,9 @@ class ApiController extends MainController
         return $list;
     }
 
+    public function getClientInfo()
+    {
+        return Auth::user()->getRealAgentInfo();
+    }
+
 }
