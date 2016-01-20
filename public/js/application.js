@@ -1,3 +1,5 @@
+$.ajaxSetup({headers: {'X-CSRF-Token': $('input[name=_token]').val()}});
+
 +function (t) {
     "use strict";
     function e() {
@@ -3930,7 +3932,6 @@ $('textarea[name=message]').keydown(function (event) {
 function wsmessage(host, key) {
     var offline = false;
     var ws = new WebSocket(host);
-    $.ajaxSetup({headers: {'X-CSRF-Token': $('input[name=_token]').val()}});
 
     ws.onerror = function (error) {
         offline = true;
@@ -3982,6 +3983,49 @@ function wsmessage(host, key) {
     });
 }
 
-function uploadFile(){
+//Дальше идет ванила =)
+
+function addEvent(elem, type, handler) {
+    if (elem.addEventListener) {
+        elem.addEventListener(type, handler, false);
+    } else {
+        elem.attachEvent('on' + type, handler);
+    }
+    return false;
+}
+
+var inputAttach = document.getElementById('input-file-attach');
+var previewAttach = document.getElementById('preview-file-attach');
+
+if (inputAttach) {
+    addEvent(inputAttach, 'change', previewFiles.bind(inputAttach));
+}
+
+function previewFiles(input){
+    //var XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
+    //var xhr = new XHR();
+    //
+    //xhr.open('POST', '/', true);
+    //
+    //console.log('Загрузка пошла...');
+    var files = input.target.files;
+    var length = files.length;
+    this.previewImg = '';
+
+    for (var i = 0; i < length; i++) {
+        if (files[i].type.match('image.*')) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                this.previewImg += '<img width="100" src="'+e.target.result+'">';
+            };
+            reader.readAsDataURL(files[i]);
+        }
+    }
+
+    console.log(this.previewImg);
+
+    if (previewAttach) {
+        previewAttach.innerHTML = this.previewImg;
+    }
 
 }

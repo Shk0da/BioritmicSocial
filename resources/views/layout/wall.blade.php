@@ -8,13 +8,15 @@
 
                     <div class="add-photo-button">
                         <span class="h xh fileinput-button">
-                            <input type="file" name="attach[]" multiple accept="image/*">
+                            <input id="input-file-attach" type="file" name="attach[]" multiple accept="image/*">
                         </span>
                     </div>
 
                     <div>
                         <textarea name="post" class="form-control" data-autosize-on="true" placeholder="Что у вас нового?"></textarea>
                     </div>
+
+                    <div id="preview-file-attach"></div>
 
                     <div>
                         <button type="submit" class="post submit">Отправить</button>
