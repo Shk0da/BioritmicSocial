@@ -3924,30 +3924,7 @@ $('textarea[name=message]').keydown(function (event) {
     if (event.which == 13 && event.ctrlKey) {
         $('button[name=send-message]').trigger('click');
     }
-})
-
-
-function updateChat(from, to) {
-    $.post('/api/getNewMessage', {from: from, to: to}).done(function (data) {
-        var conversation = $('.js-conversation ul');
-
-        $.each(data, function (id, item) {
-            conversation.prepend(
-                '<li class="qg aod alt">' +
-                '<div class="qh">' +
-                '<div class="aob">' + item.text + '</div>' +
-                '<div class="aoc">' +
-                '<small class="dp"><a>' + item.name + '</a> ' + item.time + '</small>' +
-                '</div>' +
-                '</div>' +
-                '<a class="qj">' +
-                '<img class="cu qi" src="' + item.image + '">' +
-                '</a>' +
-                '</li>'
-            );
-        });
-    });
-}
+});
 
 
 function wsmessage(host, key) {
@@ -3972,6 +3949,28 @@ function wsmessage(host, key) {
         }
     };
 
+    function updateChat(from, to) {
+        $.post('/api/getNewMessage', {from: from, to: to}).done(function (data) {
+            var conversation = $('.js-conversation ul');
+
+            $.each(data, function (id, item) {
+                conversation.prepend(
+                    '<li class="qg aod alt">' +
+                    '<div class="qh">' +
+                    '<div class="aob">' + item.text + '</div>' +
+                    '<div class="aoc">' +
+                    '<small class="dp"><a>' + item.name + '</a> ' + item.time + '</small>' +
+                    '</div>' +
+                    '</div>' +
+                    '<a class="qj">' +
+                    '<img class="cu qi" src="' + item.image + '">' +
+                    '</a>' +
+                    '</li>'
+                );
+            });
+        });
+    }
+
     var sendMessage = $('button[name=send-message]');
     sendMessage.click(function () {
         if (!offline) {
@@ -3984,5 +3983,5 @@ function wsmessage(host, key) {
 }
 
 function uploadFile(){
-    
+
 }

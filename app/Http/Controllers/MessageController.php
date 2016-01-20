@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Console\Commands\MessagingServer;
-use App\Http\Controllers\Socket\MessagingSocket;
 use App\Models\Dialog;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\App;
-use Symfony\Component\HttpFoundation\Response;
 
 
 class MessageController extends MainController
