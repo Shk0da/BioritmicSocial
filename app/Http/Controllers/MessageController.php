@@ -94,7 +94,7 @@ class MessageController extends MainController
                     ->where('from', $id);
             })
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(15);
 
         foreach ($messages as $message) {
             if ($message->to == $fromUser->id && $message->read != 1) {

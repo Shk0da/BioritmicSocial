@@ -63,7 +63,7 @@ class SearchController extends MainController
             ->with('user', $user)
             ->with('filters', $filters)
             ->with('form', $form)
-            ->with('result', $result->get()));
+            ->with('result', $result->paginate(15)));
         return $view;
     }
 
@@ -111,8 +111,9 @@ class SearchController extends MainController
         $find = [0];
 
         foreach ($users as $user) {
-            if ($user->profile->location == $location)
+            if ($user->profile->location && $user->profile->location == $location) {
                 $find[] = $user->id;
+            }
         }
 
         return $find;

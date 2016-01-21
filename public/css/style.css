@@ -18131,3 +18131,19 @@ textarea {
 .newmsg {
     background-color: rgba(130, 130, 130, 0.14);
 }
+
+.preview-file-attach img{
+    height: 150px;
+    padding: 5px;
+}
+
+.mosaic {
+    display: inline-block;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    vertical-align: bottom;
+}
+
+.mosaic img{
+    max-height: 150px;
+}

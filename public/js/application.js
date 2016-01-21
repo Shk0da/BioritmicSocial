@@ -3919,7 +3919,6 @@ $(function () {
     }), t.exports = d
 });
 
-
 autosize($('textarea'));
 
 $('textarea[name=message]').keydown(function (event) {
@@ -3928,6 +3927,11 @@ $('textarea[name=message]').keydown(function (event) {
     }
 });
 
+$('textarea[name=post]').keydown(function (event) {
+    if (event.which == 13 && event.ctrlKey) {
+        $('button[name=post-submit]').trigger('click');
+    }
+});
 
 function wsmessage(host, key) {
     var offline = false;
@@ -3997,35 +4001,22 @@ function addEvent(elem, type, handler) {
 var inputAttach = document.getElementById('input-file-attach');
 var previewAttach = document.getElementById('preview-file-attach');
 
-if (inputAttach) {
-    addEvent(inputAttach, 'change', previewFiles.bind(inputAttach));
+if (inputAttach && previewAttach) {
+    addEvent(inputAttach, 'change', previewFiles.bind(this, inputAttach, previewAttach));
 }
 
-function previewFiles(input){
-    //var XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
-    //var xhr = new XHR();
-    //
-    //xhr.open('POST', '/', true);
-    //
-    //console.log('Загрузка пошла...');
-    var files = input.target.files;
+function previewFiles(input, preview) {
+    preview.innerHTML = null;
+    var files = input.files;
     var length = files.length;
-    this.previewImg = '';
 
     for (var i = 0; i < length; i++) {
         if (files[i].type.match('image.*')) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                this.previewImg += '<img width="100" src="'+e.target.result+'">';
+                preview.innerHTML += '<img data-action="zoom" src="' + e.target.result + '" />';
             };
             reader.readAsDataURL(files[i]);
         }
     }
-
-    console.log(this.previewImg);
-
-    if (previewAttach) {
-        previewAttach.innerHTML = this.previewImg;
-    }
-
 }

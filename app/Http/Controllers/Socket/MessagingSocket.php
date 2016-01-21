@@ -56,7 +56,7 @@ class MessagingSocket extends SocketController
             if ($from) {
                 $to = $body->to;
                 $message = MessageController::instance()->factoryMessage($from->id, $to, $body->message);
-                if (isset($this->users[$to]) && $client = $this->users[$to] && $message) {
+                if (isset($this->users[$to]) && ($client = $this->users[$to]) && $message) {
                     $this->clients[$client]->send($msgObj->body);
                 }
             }

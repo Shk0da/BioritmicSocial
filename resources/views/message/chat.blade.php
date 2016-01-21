@@ -45,43 +45,45 @@
                         <div class="ali js-conversation">
 
                             <ul class="qp aoa">
-
-                                @foreach($messages as $message)
-                                    <?php $from = $message->getFromUser() ?>
-                                    @if ($from->id != $user->id)
-                                        <li class="qg aod alt">
-                                            <div class="qh">
-                                                <div class="aob">
-                                                    {{ $message->getText() }}
+                                @if($messages->count())
+                                    @foreach($messages as $message)
+                                        <?php $from = $message->getFromUser() ?>
+                                        @if ($from->id != $user->id)
+                                            <li class="qg aod alt">
+                                                <div class="qh">
+                                                    <div class="aob">
+                                                        {{ $message->getText() }}
+                                                    </div>
+                                                    <div class="aoc">
+                                                        <small class="dp">
+                                                            <a>{{ $from->getName() }}</a> {{ $message->diffForHumans() }}
+                                                        </small>
+                                                    </div>
                                                 </div>
-                                                <div class="aoc">
-                                                    <small class="dp">
-                                                        <a>{{ $from->getName() }}</a> {{ $message->diffForHumans() }}
-                                                    </small>
+                                                <a class="qj">
+                                                    <img class="cu qi" src="{{ $from->getImageProfile() }}">
+                                                </a>
+                                            </li>
+                                        @else
+                                            <li class="qg alt">
+                                                <a class="qk">
+                                                    <img class="cu qi" src="{{ $from->getImageProfile() }}">
+                                                </a>
+                                                <div class="qh">
+                                                    <div class="aob">
+                                                        {{ $message->getText() }}
+                                                    </div>
+                                                    <div class="aoc">
+                                                        <small class="dp">
+                                                            <a>{{ $from->getName() }}</a> {{ $message->diffForHumans() }}
+                                                        </small>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <a class="qj">
-                                                <img class="cu qi" src="{{ $from->getImageProfile() }}">
-                                            </a>
-                                        </li>
-                                    @else
-                                        <li class="qg alt">
-                                            <a class="qk">
-                                                <img class="cu qi" src="{{ $from->getImageProfile() }}">
-                                            </a>
-                                            <div class="qh">
-                                                <div class="aob">
-                                                    {{ $message->getText() }}
-                                                </div>
-                                                <div class="aoc">
-                                                    <small class="dp">
-                                                        <a>{{ $from->getName() }}</a> {{ $message->diffForHumans() }}
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endif
-                                @endforeach
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                        {!! $messages->render() !!}
+                                @endif
                             </ul>
 
                         </div>

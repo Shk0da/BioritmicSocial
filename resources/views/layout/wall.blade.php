@@ -16,10 +16,10 @@
                         <textarea name="post" class="form-control" data-autosize-on="true" placeholder="Что у вас нового?"></textarea>
                     </div>
 
-                    <div id="preview-file-attach"></div>
+                    <div id="preview-file-attach" class="preview-file-attach"></div>
 
                     <div>
-                        <button type="submit" class="post submit">Отправить</button>
+                        <button type="submit" name="post-submit" class="post submit">Отправить</button>
                     </div>
 
                 </div>
@@ -59,14 +59,13 @@
                             </div>
 
                             @if ($post->getAttach())
-                                @foreach ($post->getAttach() as $file)
-                                    <div class="anx" data-grid="images">
-                                        <div style="display: none">
-                                            <img data-action="zoom" data-width="1050" data-height="700"
-                                                 src="{{ $file }}">
+                                <div class="anx" data-grid="image">
+                                    @foreach ($post->getAttach() as $file)
+                                        <div class="{{ (count($post->getAttach()) > 1) ? 'mosaic' : '' }}">
+                                            <img data-action="zoom" src="{{ $file }}">
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                </div>
                             @endif
 
                             <div class="text-right">
@@ -100,14 +99,13 @@
                                             {{ $comment->getMessage() }}
 
                                             @if ($comment->getAttach())
-                                                @foreach ($comment->getAttach() as $file)
-                                                    <div class="anx" data-grid="images">
-                                                        <div style="display: none">
-                                                            <img data-action="zoom" data-width="1050" data-height="700"
-                                                                 src="{{ $file }}">
+                                                <div class="anx" data-grid="image">
+                                                    @foreach ($comment->getAttach() as $file)
+                                                        <div class="{{ (count($comment->getAttach()) > 1) ? 'mosaic' : '' }}">
+                                                            <img data-action="zoom" src="{{ $file }}">
                                                         </div>
-                                                    </div>
-                                                @endforeach
+                                                    @endforeach
+                                                </div>
                                             @endif
 
                                         </div>

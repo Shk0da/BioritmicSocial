@@ -14,6 +14,7 @@
                         @foreach($result as $people)
                             @include('user.block')
                         @endforeach
+                        {!! $result->render() !!}
                     @else
                         Упс, кажется по заданным параметрам никого нет...
                         @if (!$user->getStringBirthday())
