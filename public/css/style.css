@@ -14741,9 +14741,9 @@ fieldset[disabled] .tw.active {
 }
 
 .up {
-    /*max-height: 1200px;*/
     overflow: auto;
-    /*border-radius: 6px;*/
+    margin: 0;
+    padding: 0;
 }
 
 .modal-body + .modal-body {
@@ -16601,6 +16601,10 @@ fieldset[disabled] .tw.active {
     margin-right: 20px !important;
 }
 
+.alkn {
+    margin-right: 17px !important;
+}
+
 .all {
     margin-bottom: 20px !important;
 }
@@ -18146,4 +18150,11 @@ textarea {
 
 .mosaic img{
     max-height: 150px;
+}
+
+.albums img{
+    max-height: 100%;
+    max-width: 238px;
+    align-items: center;
+    padding: 5px;
 }

@@ -1,12 +1,9 @@
 @section('content')
-@include('layout.nav')
-<div class="anp" id="app-growl"></div>
-@include('layout.friends')
-<div class="by ams">
-    <div class="gd">
+    @include('layout.nav')
+    @include('layout.friends')
+    <div class="by ams">
         @include('layout.left')
         @include('layout.wall')
         @include('layout.right')
     </div>
-</div>
 @stop

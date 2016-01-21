@@ -64,6 +64,19 @@
                     </div>
                 </div>
 
+                <div class="panel panel-default">
+                    <div class="panel-body form-inline">
+                        <div class="input-group">
+                            <input type="checkbox" name="man"{{ $form['man'] or '' }}>
+                            <span> Мужчины</span>
+                        </div>
+                        <div class="input-group">
+                            <input type="checkbox" name="woman"{{ $form['woman'] or '' }}>
+                            <span> Женчины</span>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn btn-sm gx eg">Показать</button>
             </form>
         </div>

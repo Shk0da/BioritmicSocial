@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,8 @@ class SearchController extends MainController
         $location = $request->input('location');
         $ideal = $request->input('ideal');
         $zodiac = $request->input('zodiac');
+        $man = $request->input('man');
+        $woman = $request->input('woman');
         $rhythms = [];
         $form = [];
 
@@ -37,6 +40,16 @@ class SearchController extends MainController
             $form['location'] = $location;
         }
 
+        if ($man) {
+            $result->whereIn('id', $this->findByGender('man'));
+            $form['man'] = 'checked';
+        }
+
+        if ($woman) {
+            $result->whereIn('id', $this->findByGender('woman'));
+            $form['woman'] = 'checked';
+        }
+
         if ($user->profile->birthday) {
             if ($ideal) {
                 $location = $user->profile->location;
@@ -45,6 +58,16 @@ class SearchController extends MainController
                 $form['location'] = $location;
                 foreach ($filter_names as $rhythm) {
                     $form[$rhythm] = 'checked';
+                }
+
+                if ($user->profile->gender == 1) {
+                    $result->whereIn('id', $this->findByGender('woman'));
+                    $form['woman'] = 'checked';
+                }
+
+                if ($user->profile->gender == 0) {
+                    $result->whereIn('id', $this->findByGender('man'));
+                    $form['man'] = 'checked';
                 }
             }
 
@@ -58,12 +81,13 @@ class SearchController extends MainController
         }
 
         $result->where('name', 'LIKE', "%{$name}%");
+        $result = $result->paginate(15);
 
         $view->with('content', view('search.result')
             ->with('user', $user)
             ->with('filters', $filters)
             ->with('form', $form)
-            ->with('result', $result->paginate(15)));
+            ->with('result', $result));
         return $view;
     }
 
@@ -112,6 +136,21 @@ class SearchController extends MainController
 
         foreach ($users as $user) {
             if ($user->profile->location && $user->profile->location == $location) {
+                $find[] = $user->id;
+            }
+        }
+
+        return $find;
+    }
+
+    protected function findByGender($gender)
+    {
+        $genders = ['woman' => 0, 'man' => 1];
+        $users = User::all();
+        $find = [0];
+
+        foreach ($users as $user) {
+            if (isset($user->profile->gender) && $user->profile->gender == $genders[$gender]) {
                 $find[] = $user->id;
             }
         }

@@ -126,7 +126,7 @@
                                     <div class="input-group col-xs-12 col-sm-12{{ $errors->has('comment-'.$post->id) ? ' has-error' : '' }}">
                                         <div class="add-photo-button">
                                                 <span class="h xh fileinput-button">
-                                                    <input type="file" name="attach[]" multiple accept="image/*">
+                                                    <input id="input-file-attach-in-comment" type="file" name="attach[]" multiple accept="image/*">
                                                 </span>
                                         </div>
 
@@ -134,6 +134,8 @@
                                             <textarea name="comment-{{ $post->id }}" class="form-control"
                                                       placeholder="Оставить комменатрий"></textarea>
                                         </div>
+
+                                        <div id="preview-file-attach-in-comment" class="preview-file-attach"></div>
 
                                         <div>
                                             <button type="submit" class="post submit">Отправить</button>

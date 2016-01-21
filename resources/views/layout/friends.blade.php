@@ -1,5 +1,5 @@
 <div class="cd fade" id="friendsModal" tabindex="-1" role="dialog" aria-labelledby="friendsModal" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog imd">
         <div class="modal-content">
             <div class="d">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -8,6 +8,7 @@
 
             <div class="modal-body ame">
                 <div class="up">
+                    @if ($user->friends()->count())
                     <ul class="qp cj ca">
                         @foreach($user->friends() as $friend)
                             <li class="b">
@@ -35,15 +36,21 @@
                             </li>
                         @endforeach
                     </ul>
+                    @else
+                        <ul class="qp cj ca">
+                            <li class="b">
+                                <p class="text-center">У вас пока нет друзей</p>
+                            </li>
+                        </ul>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="cd fade" id="subscribersModal" tabindex="-1" role="dialog" aria-labelledby="subscribersModal"
-     aria-hidden="true">
-    <div class="modal-dialog">
+<div class="cd fade" id="subscribersModal" tabindex="-1" role="dialog" aria-labelledby="subscribersModal" aria-hidden="true">
+    <div class="modal-dialog imd">
         <div class="modal-content">
             <div class="d">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -51,7 +58,8 @@
             </div>
 
             <div class="modal-body ame">
-                <div class="up">
+                <ul class="up">
+                    @if ($user->friendsRequests()->count())
                     <ul class="qp cj ca">
                         @foreach($user->friendsRequests() as $friend)
                             <li class="b">
@@ -78,6 +86,13 @@
                             </li>
                         @endforeach
                     </ul>
+                    @else
+                        <ul class="qp cj ca">
+                            <li class="b">
+                                <p class="text-center">У вас нет заявок в друзья</p>
+                            </li>
+                        </ul>
+                    @endif
                 </div>
             </div>
         </div>

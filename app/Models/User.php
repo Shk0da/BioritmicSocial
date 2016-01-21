@@ -65,7 +65,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getCountry()
     {
-        return $this->profile->gatLocation()['country'];
+        return $this->profile->getLocation()['country'];
     }
 
     public function getCountryList()
@@ -112,7 +112,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getCity()
     {
-        return $this->profile->gatLocation()['city'];
+        return $this->profile->getLocation()['city'];
     }
 
     public function getLocation()
@@ -177,6 +177,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $age--;
         }
         return $age;
+    }
+
+    public function getYearBrithday($minify = false)
+    {
+        $year = ($this->profile->birthday) ? date('Y', strtotime($this->profile->birthday)) : '';
+        if ($year && $minify) {
+            $year = substr($year, 2, 2);
+        }
+        return $year ?: '00';
     }
 
     public function getAbout()

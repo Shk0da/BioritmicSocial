@@ -36,6 +36,9 @@ class ApiController extends MainController
         $from = User::find($request->input('from'));
         $to = User::find($request->input('to'));
 
+        if (!$from || !$to)
+            abort(503);
+
         if ($from->isFriendWith($to) && ($this->getUser()->id == $to->id)) {
             $messages = Message::where('read', 0)
                 ->where('from', $from->id)
