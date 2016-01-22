@@ -95,7 +95,7 @@
                                         <a href="{{ $comment->user->getProfileLink() }}">
                                             <strong>{{ $comment->user->getName() }}: </strong>
                                         </a>
-                                        <div>
+                                        <div class="commentText">
                                             {{ $comment->getMessage() }}
 
                                             @if ($comment->getAttach())
@@ -124,22 +124,10 @@
                             @if ($user->isFriendWith($post->user) || $post->user->id == $user->id )
                                 <form method="post" action="{{ route('post.comment' , ['postId' => $post->id]) }}" enctype="multipart/form-data">
                                     <div class="input-group col-xs-12 col-sm-12{{ $errors->has('comment-'.$post->id) ? ' has-error' : '' }}">
-                                        <div class="add-photo-button">
-                                                <span class="h xh fileinput-button">
-                                                    <input id="input-file-attach-in-comment" type="file" name="attach[]" multiple accept="image/*">
-                                                </span>
-                                        </div>
-
-                                        <div>
                                             <textarea name="comment-{{ $post->id }}" class="form-control"
                                                       placeholder="Оставить комменатрий"></textarea>
-                                        </div>
 
-                                        <div id="preview-file-attach-in-comment" class="preview-file-attach"></div>
-
-                                        <div>
                                             <button type="submit" class="post submit">Отправить</button>
-                                        </div>
                                     </div>
                                     {{ csrf_field() }}
                                 </form>

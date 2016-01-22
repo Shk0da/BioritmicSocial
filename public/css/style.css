@@ -1,7 +1,8 @@
 html {
     font-family: sans-serif;
     -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%
+    -ms-text-size-adjust: 100%;
+    word-break: break-word;
 }
 
 body {
@@ -18157,4 +18158,9 @@ textarea {
     max-width: 238px;
     align-items: center;
     padding: 5px;
+}
+
+.commentText {
+    max-width: 385px;
+    min-width: 385px;
 }

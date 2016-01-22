@@ -97,7 +97,7 @@ class PostController extends MainController
             $comments = Post::where('parent_id', $postId)->get();
 
             foreach ($comments as $comment) {
-                $this->clearLikes($comments);
+                $this->clearLikes($comment);
                 $comment->delete();
             }
 

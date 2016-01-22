@@ -27,7 +27,7 @@
 
             <ul class="nav navbar-nav oh ald st">
                 <li>
-                    <a class="g" href="/notifications/">
+                    <a class="g" role=button>
                         <span class="h wr"></span>
                     </a>
                 </li>
