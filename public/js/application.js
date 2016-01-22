@@ -3955,6 +3955,8 @@ function wsmessage(host, key) {
             var countNotify = $('#count-notify');
             var navbarNotify = $('#navbar-notify');
 
+            //@TODO сделать статусы на уровне сервера
+
             if (!inArray(data.message, ['invite', 'reinvite', 'liketo'])) {
                 updateChat(data.from, data.to);
                 if (navbarNotify) {
@@ -3964,17 +3966,17 @@ function wsmessage(host, key) {
             }
 
             if (data.message == 'invite' && navbarNotify) {
-                navbarNotify.prepend('<li><a id="from'+data.from+'" href="/id'+data.from+'">'+fromName+'</a> подписалась на Вас</li>');
+                navbarNotify.prepend('<li><a href="/id'+data.from+'">'+fromName+'</a> подписалась на Вас</li>');
                 countNotify.text(navbarNotify.children().length);
             }
 
             if (data.message == 'reinvite' && navbarNotify) {
-                navbarNotify.prepend('<li><a id="from'+data.from+'" href="/id'+data.from+'">'+fromName+'</a> отписался от Вас</li>');
+                navbarNotify.prepend('<li><a href="/id'+data.from+'">'+fromName+'</a> отписался от Вас</li>');
                 countNotify.text(navbarNotify.children().length);
             }
 
             if (data.message == 'liketo' && navbarNotify) {
-                navbarNotify.prepend('<li><a id="from'+data.from+'" href="/id'+data.from+'">'+fromName+'</a> поставил вам лайк!</li>');
+                navbarNotify.prepend('<li><a href="/id'+data.from+'">'+fromName+'</a> поставил вам лайк!</li>');
                 countNotify.text(navbarNotify.children().length);
             }
         }
