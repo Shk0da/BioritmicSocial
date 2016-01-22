@@ -23,7 +23,7 @@
                             <select class="form-control" name="country">
                                 <option value="">Все страны</option>
                                 @foreach($user->getCountryList() as $country)
-                                    <option value="{{ $country }}"{{ $country == $user->getCountry() ? ' selected' : '' }}>{{ $country }}</option>
+                                    <option value="{{ $country }}"{{ (isset($form['country'])) ? ($form['country'] == $country ? ' selected' : '') : ($country == $user->getCountry() ? ' selected' : '') }}>{{ $country }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('country'))
@@ -34,8 +34,8 @@
                         <div class="form-group">
                             <select class="form-control" name="location">
                                 <option value="">Все города</option>
-                                @foreach($user->getCityList($user->getCountry() ?: null) as $key => $city)
-                                    <option value="{{ $key }}"{{ $city == $user->getCity() ? ' selected' : '' }}>{{ $city }}</option>
+                                @foreach($user->getCityList( (isset($form['country'])) ? $form['country'] : ($user->getCountry() ?: null)) as $key => $city)
+                                    <option value="{{ $key }}"{{ (isset($form['location'])) ? ($form['location'] == $key ? ' selected' : '') : ($city == $user->getCity() ? ' selected' : '') }}>{{ $city }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('location'))
