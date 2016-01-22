@@ -17,7 +17,7 @@
             <form method="get" action="{{ route('search') }}">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <label class="col-sm-3 control-label">Местоположение</label>
+                        <label class="control-label">Местоположение</label>
 
                         <div class="form-group">
                             <select class="form-control" name="country">

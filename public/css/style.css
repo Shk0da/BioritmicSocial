@@ -18164,3 +18164,13 @@ textarea {
     max-width: 385px;
     min-width: 385px;
 }
+
+.navbar-notify {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.navbar-notify li{
+    padding-top: 5px;
+    min-width: 250px;
+}

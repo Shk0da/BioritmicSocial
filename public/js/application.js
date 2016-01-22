@@ -3987,6 +3987,35 @@ function wsmessage(host, key) {
     });
 }
 
+
+$(function () {
+    function o() {
+        return $(window).width() - ($('[data-toggle="popover-notify"]').offset().center + $('[data-toggle="popover-notify"]').outerWidth())
+    }
+
+    $(window).on("resize", function () {
+        var t = $('[data-toggle="popover-notify"]').data("bs.popover");
+        t && (t.options.viewport.padding = o())
+    }), $('[data-toggle="popover-notify"]').popover({
+        template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-content p-x-0"></div></div>',
+        title: "",
+        html: !0,
+        trigger: "manual",
+        placement: "bottom",
+        viewport: {selector: "body", padding: o()},
+        content: function () {
+            var o = $(".navbar-notify").clone();
+            return '<div class="navbar-notify">' + o.html() + "</div>"
+        }
+    }), $('[data-toggle="popover-notify"]').on("click", function (o) {
+        o.stopPropagation(), $('[data-toggle="popover-notify"]').data("bs.popover").tip().hasClass("in") ? ($('[data-toggle="popover-notify"]').popover("hide"), $(document).off("click.app.popover")) : ($('[data-toggle="popover-notify"]').popover("show"), setTimeout(function () {
+            $(document).one("click.app.popover", function () {
+                $('[data-toggle="popover-notify"]').popover("hide")
+            })
+        }, 1))
+    })
+});
+
 //Дальше идет ванила =)
 
 function addEvent(elem, type, handler) {

@@ -27,9 +27,10 @@
 
             <ul class="nav navbar-nav oh ald st">
                 <li>
-                    <a class="g" role=button>
-                        <span class="h wr"></span>
+                    <a class="g" data-toggle="popover-notify" role="button">
+                        <span class="h wr">4</span>
                     </a>
+
                 </li>
                 <li>
                     <button class="cg fm oy ank" data-toggle="popover">
@@ -51,6 +52,13 @@
                 <li><a href="{{ route('search') }}?ideal=on">Найти идеальную пару</a></li>
                 <li><a href="{{ route('edit') }}">{{ Auth::user()->getName() }}</a></li>
                 <li><a href="{{ route('auth.logout') }}">Выйти</a></li>
+            </ul>
+
+            <ul class="nav navbar-notify hidden">
+                <li><a href=""{{ route('messages') }}>У вас есть новые сообщения!</a></li>
+                <li><a href="{{ route('profile', [3]) }}">Евгений</a> поставил вам лайк!</li>
+                <li><a href="{{ route('profile', [2]) }}">Алеся</a> подписалась на Вас</li>
+                <li><a href="{{ route('profile', [5]) }}">Пользователь</a> добавил Вас в друзья</li>
             </ul>
 
             <ul class="nav navbar-nav hidden">

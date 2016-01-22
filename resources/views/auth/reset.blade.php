@@ -36,6 +36,9 @@
                                     <button type="submit" class="btn btn-primary">
                                         Отправить ссылку для смены пароля
                                     </button>
+                                    <a href="{{ route('edit') }}" type="button" class="btn btn-default">
+                                        Вернуться назад
+                                    </a>
                                 </div>
                             </div>
                         </form>
