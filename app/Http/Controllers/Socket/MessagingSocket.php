@@ -13,6 +13,7 @@ class MessagingSocket extends SocketController
     protected $clients = [];
     protected $users = [];
     protected $online_count;
+    protected $statuses = ['invite', 'reinvite', 'liketo'];
 
     public function __construct()
     {
@@ -55,10 +56,16 @@ class MessagingSocket extends SocketController
 
             if ($from) {
                 $to = $body->to;
-                $message = MessageController::instance()->factoryMessage($from->id, $to, $body->message);
+                $message = $body->message;
+
+                if (!in_array($body->message, $this->statuses)) {
+                    $message = MessageController::instance()->factoryMessage($from->id, $to, $body->message);
+                }
+
                 if (isset($this->users[$to]) && ($client = $this->users[$to]) && $message) {
                     $this->clients[$client]->send($msgObj->body);
                 }
+
             }
         }
     }

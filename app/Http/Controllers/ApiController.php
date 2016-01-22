@@ -60,5 +60,13 @@ class ApiController extends MainController
 
         return $result;
     }
+
+    public function getUserFrom($request = null)
+    {
+        $user = User::find($request->input('from'));
+        if ($user) {
+            return $user->name;
+        }
+    }
 }
 

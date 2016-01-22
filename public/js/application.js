@@ -3950,7 +3950,33 @@ function wsmessage(host, key) {
     ws.onmessage = function (e) {
         var data = JSON.parse(e.data);
         if (data.from && data.to && data.message) {
-            updateChat(data.from, data.to);
+
+            var fromName = $.ajax({type: 'POST', url: '/api/getUserFrom', async: false, data: {from: data.from}}).responseText;
+            var countNotify = $('#count-notify');
+            var navbarNotify = $('#navbar-notify');
+
+            if (!inArray(data.message, ['invite', 'reinvite', 'liketo'])) {
+                updateChat(data.from, data.to);
+                if (navbarNotify) {
+                    navbarNotify.prepend('<li><a id="from'+data.from+'" href="/messages/chat/'+data.from+'">'+fromName+'</a> оставил вам сообщение</li>');
+                    countNotify.text(navbarNotify.children().length);
+                }
+            }
+
+            if (data.message == 'invite' && navbarNotify) {
+                navbarNotify.prepend('<li><a id="from'+data.from+'" href="/id'+data.from+'">'+fromName+'</a> подписалась на Вас</li>');
+                countNotify.text(navbarNotify.children().length);
+            }
+
+            if (data.message == 'reinvite' && navbarNotify) {
+                navbarNotify.prepend('<li><a id="from'+data.from+'" href="/id'+data.from+'">'+fromName+'</a> отписался от Вас</li>');
+                countNotify.text(navbarNotify.children().length);
+            }
+
+            if (data.message == 'liketo' && navbarNotify) {
+                navbarNotify.prepend('<li><a id="from'+data.from+'" href="/id'+data.from+'">'+fromName+'</a> поставил вам лайк!</li>');
+                countNotify.text(navbarNotify.children().length);
+            }
         }
     };
 
@@ -3985,6 +4011,16 @@ function wsmessage(host, key) {
             ws.send(JSON.stringify({key: key, body: JSON.stringify({from: from, to: to, message: message})}));
         }
     });
+
+    var sendInvite = $('#invite');
+    sendInvite.click(function () {
+        if (!offline) {
+            var from = sendInvite.data('from');
+            var to = sendInvite.data('to');
+            var message = 'invite';
+            ws.send(JSON.stringify({key: key, body: JSON.stringify({from: from, to: to, message: message})}));
+        }
+    });
 }
 
 
@@ -4015,6 +4051,14 @@ $(function () {
         }, 1))
     })
 });
+
+function inArray(needle, haystack) {
+    var length = haystack.length;
+    for(var i = 0; i < length; i++) {
+        if(haystack[i] == needle) return true;
+    }
+    return false;
+}
 
 //Дальше идет ванила =)
 

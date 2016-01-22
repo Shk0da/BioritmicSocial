@@ -3,7 +3,7 @@
         <img class="qi cu" data-action="zoom" src="{{ $people->getImageProfile() }}">
     </a>
     <div class="qh" title="{{ $user->getCompare($people) }}">
-        <a class="btn cg ts fx eg"
+        <a id="{{ ($user->isFriendWith($people) || $user->hasRequestPending($people)) ? 'reinvite' : 'invite' }}" data-from="{{ $user->id }}" data-to="{{ $people->id }}" class="btn cg ts fx eg"
            @if ($user->isFriendWith($people))
                href="{{ route('friend.remove', $people) }}">
                <span class="h vb"></span> Убрать

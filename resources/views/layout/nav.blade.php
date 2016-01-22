@@ -28,7 +28,7 @@
             <ul class="nav navbar-nav oh ald st">
                 <li>
                     <a class="g" data-toggle="popover-notify" role="button">
-                        <span class="h wr">4</span>
+                        <span id="count-notify" class="h wr"></span>
                     </a>
 
                 </li>
@@ -54,12 +54,7 @@
                 <li><a href="{{ route('auth.logout') }}">Выйти</a></li>
             </ul>
 
-            <ul class="nav navbar-notify hidden">
-                <li><a href=""{{ route('messages') }}>У вас есть новые сообщения!</a></li>
-                <li><a href="{{ route('profile', [3]) }}">Евгений</a> поставил вам лайк!</li>
-                <li><a href="{{ route('profile', [2]) }}">Алеся</a> подписалась на Вас</li>
-                <li><a href="{{ route('profile', [5]) }}">Пользователь</a> добавил Вас в друзья</li>
-            </ul>
+            <ul id="navbar-notify" class="nav navbar-notify hidden"></ul>
 
             <ul class="nav navbar-nav hidden">
                 <li><a href="{{ route('edit') }}">{{ Auth::user()->getName() }}</a></li>
