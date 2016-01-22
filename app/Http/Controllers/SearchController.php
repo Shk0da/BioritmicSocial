@@ -18,6 +18,7 @@ class SearchController extends MainController
 
         $name = $request->input('name');
         $location = $request->input('location');
+        $country = $request->input('country');
         $ideal = $request->input('ideal');
         $zodiac = $request->input('zodiac');
         $man = $request->input('man');
@@ -78,6 +79,11 @@ class SearchController extends MainController
             }
         }
         else {
+
+            if ($country) {
+                $profiles->whereIn('location', array_keys($user->getCityList($country)));
+                $form['country'] = $country;
+            }
 
             if ($location) {
                 $profiles->where('location', $location);
