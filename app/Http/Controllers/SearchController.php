@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ class SearchController extends MainController
     public function search(Request $request)
     {
         $view = $this->view;
+        $ids = [0];
+
         $user = $this->getUser();
 
         $name = $request->input('name');
@@ -20,6 +23,7 @@ class SearchController extends MainController
         $zodiac = $request->input('zodiac');
         $man = $request->input('man');
         $woman = $request->input('woman');
+
         $rhythms = [];
         $form = [];
 
@@ -34,53 +38,83 @@ class SearchController extends MainController
         }
 
         $result = User::where('id', '<>', $user->id);
+        $profiles = DB::table('users')
+            ->join('profiles', 'users.id', '=', 'profiles.user_id')
+            ->select(
+                'users.id',
+                'users.name',
+                'profiles.birthday',
+                'profiles.location',
+                'profiles.gender',
+                'profiles.zodiac'
+            );
 
-        if ($location) {
-            $result->whereIn('id', $this->findByLocation($location));
-            $form['location'] = $location;
-        }
+        $profiles->where('name', 'LIKE', "%{$name}%");
 
-        if ($man) {
-            $result->whereIn('id', $this->findByGender('man'));
-            $form['man'] = 'checked';
-        }
+        if ($ideal && $user->profile->birthday) {
 
-        if ($woman) {
-            $result->whereIn('id', $this->findByGender('woman'));
-            $form['woman'] = 'checked';
-        }
-
-        if ($user->profile->birthday) {
-            if ($ideal) {
-                $location = $user->profile->location;
-                $result->whereIn('id', $this->findIdealPartner($result));
-                $result->whereIn('id', $this->findByLocation($location));
+            if ($location = $user->profile->location) {
+                $profiles->where('location', $location);
                 $form['location'] = $location;
-                foreach ($filter_names as $rhythm) {
-                    $form[$rhythm] = 'checked';
-                }
-
-                if ($user->profile->gender == 1) {
-                    $result->whereIn('id', $this->findByGender('woman'));
-                    $form['woman'] = 'checked';
-                }
-
-                if ($user->profile->gender == 0) {
-                    $result->whereIn('id', $this->findByGender('man'));
-                    $form['man'] = 'checked';
-                }
             }
 
-            if (count($rhythms))
-                $result->whereIn('id', $this->findIdealPartner($result, $rhythms));
+            if ($user->profile->gender == 1) {
+                $profiles->where('gender', 0);
+                $form['woman'] = 'checked';
+            }
 
-            if ($zodiac) {
-                $result->whereIn('id', $this->findIdealHoro($result));
-                $form['zodiac'] = 'checked';
+            if ($user->profile->gender == 0) {
+                $profiles->where('gender', 1);
+                $form['man'] = 'checked';
+            }
+
+            foreach ($profiles->get() as $profile) {
+                $ids[] = $profile->id;
+            }
+            $result->whereIn('id', $ids);
+
+            $result->whereIn('id', $this->findIdealPartner($result));
+            foreach ($filter_names as $rhythm) {
+                $form[$rhythm] = 'checked';
+            }
+        }
+        else {
+
+            if ($location) {
+                $profiles->where('location', $location);
+                $form['location'] = $location;
+            }
+
+            if ($man && $woman) {
+                $profiles->whereIn('gender', [0, 1]);
+                $form['man'] = 'checked';
+                $form['woman'] = 'checked';
+            } elseif ($man) {
+                $profiles->where('gender', 1);
+                $form['man'] = 'checked';
+            } elseif ($woman) {
+                $profiles->where('gender', 0);
+                $form['woman'] = 'checked';
+            }
+
+            foreach ($profiles->get() as $profile) {
+                $ids[] = $profile->id;
+            }
+            $result->whereIn('id', $ids);
+
+            if ($user->profile->birthday) {
+
+                if (count($rhythms)) {
+                    $result->whereIn('id', $this->findIdealPartner($result, $rhythms));
+                }
+
+                if ($zodiac) {
+                    $result->whereIn('id', $this->findIdealHoro($result));
+                    $form['zodiac'] = 'checked';
+                }
             }
         }
 
-        $result->where('name', 'LIKE', "%{$name}%");
         $result = $result->paginate(15);
 
         $view->with('content', view('search.result')
