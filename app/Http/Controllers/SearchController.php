@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use DB;
-use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -158,35 +157,6 @@ class SearchController extends MainController
             $compare = BiorhythmController::instance()->horoCompare($user, $authUser);
             if ($compare)
                 $find[] = $user->id;
-        }
-
-        return $find;
-    }
-
-    protected function findByLocation($location)
-    {
-        $users = User::all();
-        $find = [0];
-
-        foreach ($users as $user) {
-            if ($user->profile->location && $user->profile->location == $location) {
-                $find[] = $user->id;
-            }
-        }
-
-        return $find;
-    }
-
-    protected function findByGender($gender)
-    {
-        $genders = ['woman' => 0, 'man' => 1];
-        $users = User::all();
-        $find = [0];
-
-        foreach ($users as $user) {
-            if (isset($user->profile->gender) && $user->profile->gender == $genders[$gender]) {
-                $find[] = $user->id;
-            }
         }
 
         return $find;
