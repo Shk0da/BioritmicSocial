@@ -20,7 +20,7 @@ class ProfileController extends MainController
 
         $userId = $this->getUser()->id;
         $file = $request->file('avatar_file');
-        $path = 'public/image/profile_image/'.$userId.'/';
+        $path = '/image/profile_image/'.$userId.'/';
         $ext = $file->getClientOriginalExtension();
         $fileName = md5_file($file->getRealPath());
         $file->move($path, $fileName);
@@ -45,7 +45,7 @@ class ProfileController extends MainController
     {
         $userId = $this->getUser()->id;
         $file = $request->file('background');
-        $path = 'public/image/background/'.$userId.'/';
+        $path = '/image/background/'.$userId.'/';
         $fileName = md5_file($file->getRealPath());
         $file->move($path, $fileName);
 

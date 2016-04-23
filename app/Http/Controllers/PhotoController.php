@@ -73,7 +73,7 @@ class PhotoController extends MainController
     {
         $userId = $this->getUser()->id;
         $file = $request->file('image');
-        $path = 'public/image/album/' . $userId . '/';
+        $path = '/image/album/' . $userId . '/';
         $fileName = md5_file($file->getRealPath());
         $file->move($path, $fileName);
 

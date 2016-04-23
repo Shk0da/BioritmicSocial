@@ -11,7 +11,7 @@
         <div class="qx">
             <h5 class="alc">Реклама</h5>
             <div>
-                <a href="//ya.ru" target="_blank"><img width="250" class="qi" src="/public/img/adv_temp.jpg"></a>
+                <a href="//ya.ru" target="_blank"><img width="250" class="qi" src="/img/adv_temp.jpg"></a>
             </div>
         </div>
     </div>

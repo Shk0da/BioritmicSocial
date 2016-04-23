@@ -129,7 +129,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         $image = Photo::find($this->profile->image_profile);
         if (!$image) {
-            $image = url(($this->profile->gender) ? '/public/img/no-image-male.jpg' : '/public/img/no-image-female.jpg');
+            $image = url(($this->profile->gender) ? '/img/no-image-male.jpg' : '/img/no-image-female.jpg');
             return $image;
         }
 
@@ -141,7 +141,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $image = Photo::find($this->profile->background);
 
         if (!$image) {
-            $image = '/public/img/iceland.jpg';
+            $image = '/img/iceland.jpg';
         } else {
             $image = $image->path;
         }
