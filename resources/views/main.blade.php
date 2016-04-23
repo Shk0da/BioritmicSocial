@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ $meta['description'] ?: '' }}">
     <meta name="keywords" content="{{ $meta['keywords'] ?: '' }}">
-    <link rel="shortcut icon" href="/public/favicon.jpg" type="image/png" />
-    <link href="/public/css/style.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/favicon.jpg" type="image/png" />
+    <link href="/css/style.css" rel="stylesheet">
 </head>
 <body class="anf">
     @yield('content')
