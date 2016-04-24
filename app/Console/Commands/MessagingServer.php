@@ -12,7 +12,7 @@ use App\Http\Controllers\Socket\MessagingSocket;
 class MessagingServer extends Command
 {
     const PORT = 8080;
-    const URL = $_SERVER['SERVER_NAME'];
+    const URL = 'bioritmic.herokuapp.com';
     const HOST = 'ws://' . MessagingServer::URL . ':' . MessagingServer::PORT;
     protected $signature = 'messaging:run';
     protected $description = 'Run MessagingServer';
