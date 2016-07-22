@@ -2,6 +2,6 @@
 @if (Auth::check())
     <script src="/js/application.js"></script>
     <script>
-        wsmessage('{{ \App\Console\Commands\MessagingServer::HOST }}', '{{ Auth::user()->getMessageKey() }}');
+        wsmessage('{{ \App\Console\Commands\MessagingServer::getHost() }}', '{{ Auth::user()->getMessageKey() }}');
     </script>
 @endif

@@ -10,15 +10,20 @@ use App\Http\Controllers\Socket\MessagingSocket;
 
 class MessagingServer extends Command
 {
-    const PORT = 8080;
-    const URL = 'bioritmic.app';
-    const HOST = 'ws://' . MessagingServer::URL . ':' . MessagingServer::PORT;
+
+    private static $port;
+    private static $host;
+    private static $url;
     protected $signature = 'messaging:run';
     protected $description = 'Run MessagingServer';
 
     public function __construct()
     {
         parent::__construct();
+
+        static::$port = static::getPort();
+        static::$url = static::getUrl();
+        static::$host = static::getHost();
     }
 
     public function handle()
@@ -27,7 +32,7 @@ class MessagingServer extends Command
             $msgSocket = new MessagingSocket();
             $wsServer = new WsServer($msgSocket);
             $httpServer = new HttpServer($wsServer);
-            $server = IoServer::factory($httpServer, MessagingServer::PORT);
+            $server = IoServer::factory($httpServer, static::$port);
 
             $this->info('Start MessagingServer');
             $server->run();
@@ -35,5 +40,20 @@ class MessagingServer extends Command
         } catch (\Exception $exception) {
             $this->info($exception);
         }
+    }
+
+    public static function getUrl()
+    {
+        return env('MESSAGE_URL', 'localhost');
+    }
+
+    public static function getPort()
+    {
+        return env('MESSAGE_PORT', '8080');
+    }
+
+    public static function getHost()
+    {
+        return 'ws://' . static::getUrl() . ':' . static::getPort();
     }
 }

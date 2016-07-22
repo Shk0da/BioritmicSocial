@@ -76,7 +76,7 @@ class MessageController extends MainController
                 'required' => 'Ваше сообщение пустое'
             ]);
 
-            $wsServer = @fsockopen(MessagingServer::URL, MessagingServer::PORT);
+            $wsServer = @fsockopen(MessagingServer::getUrl(), MessagingServer::getPort());
             if ($wsServer == false) {
                 $this->factoryMessage($fromUser->id, $toUser->id, $request->input('message'));
             } else {
