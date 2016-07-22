@@ -13,4 +13,9 @@ class UpdatePhotosTableTwo extends Migration
         });
     }
 
+    public function down()
+    {
+
+    }
+
 }

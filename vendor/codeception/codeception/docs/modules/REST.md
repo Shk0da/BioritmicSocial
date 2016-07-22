@@ -1,20 +1,11 @@
-
+# REST
 
 
 Module for testing REST WebService.
 
 This module can be used either with frameworks or PHPBrowser.
-It tries to guess the framework is is attached to.
-
-Whether framework is used it operates via standard framework modules.
-Otherwise sends raw HTTP requests to url via PHPBrowser.
-
-## Status
-
-* Maintainer: **tiger-seo**, **davert**
-* Stability: **stable**
-* Contact: codecept@davert.mail.ua
-* Contact: tiger.seo@gmail.com
+If a framework module is connected, the testing will occur in the application directly.
+Otherwise, a PHPBrowser should be specified as a dependency to send requests and receive responses from a server.
 
 ## Configuration
 
@@ -36,13 +27,18 @@ This module requires PHPBrowser or any of Framework modules enabled.
 * params - array of sent data
 * response - last response (string)
 
-
 ## Parts
 
 * Json - actions for validating Json responses (no Xml responses)
 * Xml - actions for validating XML responses (no Json responses)
 
+## Conflicts
 
+Conflicts with SOAP module
+
+
+
+## Actions
 
 ### amBearerAuthenticated
  
@@ -73,6 +69,25 @@ Adds HTTP authentication via username/password.
  * `[Part]` xml
 
 
+### deleteHeader
+ 
+Deletes the header with the passed name.  Subsequent requests
+will not have the deleted header in its request.
+
+Example:
+```php
+<?php
+$I->haveHttpHeader('X-Requested-With', 'Codeception');
+$I->sendGET('test-headers.php');
+// ...
+$I->deleteHeader('X-Requested-With');
+$I->sendPOST('some-other-page.php');
+?>
+```
+
+ * `param string` $name the name of the header to delete.
+
+
 ### dontSeeHttpHeader
  
 Checks over the given HTTP header and (optionally)
@@ -87,6 +102,14 @@ its value, asserting that are not there
 ### dontSeeResponseCodeIs
  
 Checks that response code is not equal to provided value.
+
+```php
+<?php
+$I->dontSeeResponseCodeIs(200);
+
+// preferred to use \Codeception\Util\HttpCode
+$I->dontSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+```
 
  * `[Part]` json
  * `[Part]` xml
@@ -156,13 +179,13 @@ Checks wheather XML response does not match XPath
 
 ```php
 <?php
-$I->dontSeeXmlResponseMatchesXpath('//root/user[ * `id=1]');`
+$I->dontSeeXmlResponseMatchesXpath('//root/user[ * `id=1]');` 
 ```
  * `[Part]` xml
  * `param` $xpath
 
 
-### grabAttributeFrom
+### grabAttributeFromXmlElement
  
 Finds and returns attribute of element.
 Element is matched by either CSS or XPath
@@ -179,13 +202,14 @@ Deprecated since 2.0.9 and removed since 2.1.0
 
  * `param` $path
  * `throws`  ModuleException
- * `deprecated`
+ * `deprecated` 
 
 
 ### grabDataFromResponseByJsonPath
  
 Returns data from the current JSON response using [JSONPath](http://goessner.net/articles/JsonPath/) as selector.
-JsonPath is XPath equivalent for querying Json structures. Try your JsonPath expressions [online](http://jsonpath.curiousconcept.com/).
+JsonPath is XPath equivalent for querying Json structures.
+Try your JsonPath expressions [online](http://jsonpath.curiousconcept.com/).
 Even for a single value an array is returned.
 
 This method **require [`flow/jsonpath` > 0.2](https://github.com/FlowCommunications/JSONPath/) library to be installed**.
@@ -250,7 +274,14 @@ Element is matched by either CSS or XPath
 
 ### haveHttpHeader
  
-Sets HTTP header
+Sets HTTP header valid for all next requests. Use `deleteHeader` to unset it
+
+```php
+<?php
+$I->haveHttpHeader('Content-Type', 'application/json');
+// all next requests will contain this header
+?>
+```
 
  * `param` $name
  * `param` $value
@@ -290,6 +321,14 @@ $I->seeHttpHeaderOnce('Cache-Control');
  
 Checks response code equals to provided value.
 
+```php
+<?php
+$I->seeResponseCodeIs(200);
+
+// preferred to use \Codeception\Util\HttpCode
+$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+```
+
  * `[Part]` json
  * `[Part]` xml
  * `param` $code
@@ -315,11 +354,11 @@ Examples:
 
 ``` php
 <?php
-// response: {name: john, email: john * `gmail.com}`
+// response: {name: john, email: john * `gmail.com}` 
 $I->seeResponseContainsJson(array('name' => 'john'));
 
 // response {user: john, profile: { email: john * `gmail.com`  }}
-$I->seeResponseContainsJson(array('email' => 'john * `gmail.com'));`
+$I->seeResponseContainsJson(array('email' => 'john * `gmail.com'));` 
 
 ?>
 ```
@@ -358,7 +397,8 @@ This is done with libxml_get_last_error function.
 ### seeResponseJsonMatchesJsonPath
  
 Checks if json structure in response matches [JsonPath](http://goessner.net/articles/JsonPath/).
-JsonPath is XPath equivalent for querying Json structures. Try your JsonPath expressions [online](http://jsonpath.curiousconcept.com/).
+JsonPath is XPath equivalent for querying Json structures.
+Try your JsonPath expressions [online](http://jsonpath.curiousconcept.com/).
 This assertion allows you to check the structure of response json.
 
 This method **require [`flow/jsonpath` > 0.2](https://github.com/FlowCommunications/JSONPath/) library to be installed**.
@@ -454,7 +494,7 @@ Basic example:
 ```php
 <?php
 // {'user_id': 1, 'name': 'davert', 'is_active': false}
-$I->seeResponseIsJsonType([
+$I->seeResponseMatchesJsonType([
      'user_id' => 'integer',
      'name' => 'string|null',
      'is_active' => 'boolean'
@@ -480,7 +520,7 @@ You can also use nested data type structures:
 ```php
 <?php
 // {'user_id': 1, 'name': 'davert', 'company': {'name': 'Codegyre'}}
-$I->seeResponseIsJsonType([
+$I->seeResponseMatchesJsonType([
      'user_id' => 'integer|string', // multiple types
      'company' => ['name' => 'string']
 ]);
@@ -494,20 +534,22 @@ Here is the list of possible filters:
 * `integer:>{val}` - checks that integer is greater than {val} (works with float and string types too).
 * `integer:<{val}` - checks that integer is lower than {val} (works with float and string types too).
 * `string:url` - checks that value is valid url.
+* `string:date` - checks that value is date in JavaScript format: https://weblog.west-wind.com/posts/2014/Jan/06/JavaScript-JSON-Date-Parsing-and-real-Dates
+* `string:email` - checks that value is a valid email according to http://emailregex.com/
 * `string:regex({val})` - checks that string matches a regex provided with {val}
 
 This is how filters can be used:
 
 ```php
 <?php
-// {'user_id': 1, 'email' => 'davert * `codeception.com'}`
-$I->seeResponseIsJsonType([
+// {'user_id': 1, 'email' => 'davert * `codeception.com'}` 
+$I->seeResponseMatchesJsonType([
      'user_id' => 'string:>0:<1000', // multiple filters can be used
      'email' => 'string:regex(~\ * `~)'`  // we just check that  * ``  char is included
 ]);
 
 // {'user_id': '1'}
-$I->seeResponseIsJsonType([
+$I->seeResponseMatchesJsonType([
      'user_id' => 'string:>0', // works with strings as well
 }
 ?>
@@ -519,6 +561,7 @@ See [JsonType reference](http://codeception.com/docs/reference/JsonType).
  * `[Part]` json
  * `Available since` 2.1.3
  * `param array` $jsonType
+ * `param string` $jsonPath
 
 
 ### seeXmlResponseEquals
@@ -547,6 +590,7 @@ $I->seeXmlResponseIncludes("<result>1</result>");
 ```
 
  * `param` $xml
+ * `[Part]` xml
 
 
 ### seeXmlResponseMatchesXpath
@@ -555,7 +599,7 @@ Checks wheather XML response matches XPath
 
 ```php
 <?php
-$I->seeXmlResponseMatchesXpath('//root/user[ * `id=1]');`
+$I->seeXmlResponseMatchesXpath('//root/user[ * `id=1]');` 
 ```
  * `[Part]` xml
  * `param` $xpath
@@ -601,7 +645,7 @@ Sends LINK request to given uri.
 
  * `link`  http://tools.ietf.org/html/rfc2068#section-19.6.2.4
 
- * `author`  samva.ua * `gmail.com`
+ * `author`  samva.ua * `gmail.com` 
  * `[Part]` json
  * `[Part]` xml
 
@@ -658,8 +702,34 @@ Sends UNLINK request to given uri.
  * `param`       $url
  * `param array` $linkEntries (entry is array with keys "uri" and "link-param")
  * `link`  http://tools.ietf.org/html/rfc2068#section-19.6.2.4
- * `author`  samva.ua * `gmail.com`
+ * `author`  samva.ua * `gmail.com` 
  * `[Part]` json
  * `[Part]` xml
 
-<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.1/src/Codeception/Module/REST.php">Help us to improve documentation. Edit module reference</a></div>
+
+### startFollowingRedirects
+ 
+Enables automatic redirects to be followed by the client
+
+```php
+<?php
+$I->startFollowingRedirects();
+```
+
+ * `[Part]` xml
+ * `[Part]` json
+
+
+### stopFollowingRedirects
+ 
+Prevents automatic redirects to be followed by the client
+
+```php
+<?php
+$I->stopFollowingRedirects();
+```
+
+ * `[Part]` xml
+ * `[Part]` json
+
+<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.2/src/Codeception/Module/REST.php">Help us to improve documentation. Edit module reference</a></div>

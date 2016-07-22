@@ -11,4 +11,9 @@ class UpdatePhotosTable extends Migration
             $table->text('path')->nullable();
         });
     }
+
+    public function down()
+    {
+
+    }
 }

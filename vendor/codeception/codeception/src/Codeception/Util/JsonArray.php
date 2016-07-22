@@ -146,7 +146,7 @@ class JsonArray
                 if ($return !== false && $return == $value1) {
                     $ret[$key1] = $return;
                     $matchedKeys[$key2] = true;
-                    continue;
+                    break;
                 }
 
                 if ($this->isEqualValue($value1, $value2)) {
@@ -205,13 +205,18 @@ class JsonArray
                 $subNode = $doc->createElement($node->nodeName);
                 $node->parentNode->appendChild($subNode);
             } else {
-                $subNode = $doc->createElement($key);
+                try {
+                    $subNode = $doc->createElement($key);
+                } catch (\Exception $e) {
+                    $key = $this->getValidTagNameForInvalidKey($key);
+                    $subNode = $doc->createElement($key);
+                }
                 $node->appendChild($subNode);
             }
             if (is_array($value)) {
                 $this->arrayToXml($doc, $subNode, $value);
             } else {
-                $subNode->nodeValue = (string)$value;
+                $subNode->nodeValue = htmlspecialchars((string)$value);
             }
         }
     }
@@ -227,5 +232,16 @@ class JsonArray
         }
 
         return $val1 === $val2;
+    }
+
+    private function getValidTagNameForInvalidKey($key)
+    {
+        static $map = [];
+        if (!isset($map[$key])) {
+            $tagName = 'invalidTag' . (count($map) + 1);
+            $map[$key] = $tagName;
+            codecept_debug($tagName . ' is "' . $key . '"');
+        }
+        return $map[$key];
     }
 }

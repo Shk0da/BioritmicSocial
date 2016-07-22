@@ -12,4 +12,9 @@ class UpdateUserTable extends Migration
             $table->text('remote_addr')->nullable();
         });
     }
+
+    public function down()
+    {
+
+    }
 }

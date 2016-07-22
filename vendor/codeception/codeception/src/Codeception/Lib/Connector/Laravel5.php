@@ -1,6 +1,7 @@
 <?php
 namespace Codeception\Lib\Connector;
 
+use Codeception\Lib\Connector\Laravel5\ExceptionHandlerDecorator;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
@@ -32,12 +33,32 @@ class Laravel5 extends Client
     /**
      * @var bool
      */
-    private $middlewareDisabled = false;
+    private $exceptionHandlingDisabled;
 
     /**
      * @var bool
      */
-    private $eventsDisabled = false;
+    private $middlewareDisabled;
+
+    /**
+     * @var bool
+     */
+    private $eventsDisabled;
+
+    /**
+     * @var array
+     */
+    private $bindings = [];
+
+    /**
+     * @var array
+     */
+    private $contextualBindings = [];
+
+    /**
+     * @var array
+     */
+    private $instances = [];
 
     /**
      * @var object
@@ -52,9 +73,17 @@ class Laravel5 extends Client
     public function __construct($module)
     {
         $this->module = $module;
+
+        $this->exceptionHandlingDisabled = $this->module->config['disable_exception_handling'];
+        $this->middlewareDisabled = $this->module->config['disable_middleware'];
+        $this->eventsDisabled = $this->module->config['disable_events'];
+
         $this->initialize();
 
         $components = parse_url($this->app['config']->get('app.url', 'http://localhost'));
+        if (array_key_exists('url', $this->module->config)) {
+            $components = parse_url($this->module->config['url']);
+        }
         $host = isset($components['host']) ? $components['host'] : 'localhost';
 
         parent::__construct($this->app, ['HTTP_HOST' => $host]);
@@ -93,7 +122,7 @@ class Laravel5 extends Client
         // Store a reference to the database object
         // so the database connection can be reused during tests
         $this->oldDb = null;
-        if ($this->app['db'] && $this->app['db']->connection()) {
+        if (isset($this->app['db']) && $this->app['db']->connection()) {
             $this->oldDb = $this->app['db'];
         }
 
@@ -124,6 +153,12 @@ class Laravel5 extends Client
             $this->triggeredEvents[] = $this->normalizeEvent($this->app['events']->firing());
         });
 
+        // Replace the Laravel exception handler with our decorated exception handler,
+        // so exceptions can be intercepted for the disable_exception_handling functionality.
+        $decorator = new ExceptionHandlerDecorator($this->app['Illuminate\Contracts\Debug\ExceptionHandler']);
+        $decorator->exceptionHandlingDisabled($this->exceptionHandlingDisabled);
+        $this->app->instance('Illuminate\Contracts\Debug\ExceptionHandler', $decorator);
+
         if ($this->module->config['disable_middleware'] || $this->middlewareDisabled) {
             $this->app->instance('middleware.disable', true);
         }
@@ -131,6 +166,10 @@ class Laravel5 extends Client
         if ($this->module->config['disable_events'] || $this->eventsDisabled) {
             $this->mockEventDispatcher();
         }
+
+        $this->applyBindings();
+        $this->applyContextualBindings();
+        $this->applyInstances();
 
         $this->module->setApplication($this->app);
     }
@@ -162,6 +201,8 @@ class Laravel5 extends Client
         // So to record the triggered events we have to catch the calls to the fire method of the event dispatcher mock.
         $callback = function ($event) {
             $this->triggeredEvents[] = $this->normalizeEvent($event);
+
+            return [];
         };
         $mock->expects(new \PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount)
             ->method('fire')
@@ -192,6 +233,40 @@ class Laravel5 extends Client
         return $segments[0];
     }
 
+    /**
+     * Apply the registered Laravel service container bindings.
+     */
+    private function applyBindings()
+    {
+        foreach ($this->bindings as $abstract => $binding) {
+            list($concrete, $shared) = $binding;
+
+            $this->app->bind($abstract, $concrete, $shared);
+        }
+    }
+
+    /**
+     * Apply the registered Laravel service container contextual bindings.
+     */
+    private function applyContextualBindings()
+    {
+        foreach ($this->contextualBindings as $concrete => $bindings) {
+            foreach ($bindings as $abstract => $implementation) {
+                $this->app->addContextualBinding($concrete, $abstract, $implementation);
+            }
+        }
+    }
+
+    /**
+     * Apply the registered Laravel service container instance bindings.
+     */
+    private function applyInstances()
+    {
+        foreach ($this->instances as $abstract => $instance) {
+            $this->app->instance($abstract, $instance);
+        }
+    }
+
     //======================================================================
     // Public methods called by module
     //======================================================================
@@ -216,6 +291,24 @@ class Laravel5 extends Client
     }
 
     /**
+     * Disable Laravel exception handling.
+     */
+    public function disableExceptionHandling()
+    {
+        $this->exceptionHandlingDisabled = true;
+        $this->app['Illuminate\Contracts\Debug\ExceptionHandler']->exceptionHandlingDisabled(true);
+    }
+
+    /**
+     * Enable Laravel exception handling.
+     */
+    public function enableExceptionHandling()
+    {
+        $this->exceptionHandlingDisabled = false;
+        $this->app['Illuminate\Contracts\Debug\ExceptionHandler']->exceptionHandlingDisabled(false);
+    }
+
+    /**
      * Disable events.
      */
     public function disableEvents()
@@ -231,5 +324,47 @@ class Laravel5 extends Client
     {
         $this->middlewareDisabled = true;
         $this->app->instance('middleware.disable', true);
+    }
+
+    /**
+     * Register a Laravel service container binding that should be applied
+     * after initializing the Laravel Application object.
+     *
+     * @param $abstract
+     * @param $concrete
+     * @param bool $shared
+     */
+    public function haveBinding($abstract, $concrete, $shared = false)
+    {
+        $this->bindings[$abstract] = [$concrete, $shared];
+    }
+
+    /**
+     * Register a Laravel service container contextual binding that should be applied
+     * after initializing the Laravel Application object.
+     *
+     * @param $concrete
+     * @param $abstract
+     * @param $implementation
+     */
+    public function haveContextualBinding($concrete, $abstract, $implementation)
+    {
+        if (! isset($this->contextualBindings[$concrete])) {
+            $this->contextualBindings[$concrete] = [];
+        }
+
+        $this->contextualBindings[$concrete][$abstract] = $implementation;
+    }
+
+    /**
+     * Register a Laravel service container instance binding that should be applied
+     * after initializing the Laravel Application object.
+     *
+     * @param $abstract
+     * @param $instance
+     */
+    public function haveInstance($abstract, $instance)
+    {
+        $this->instances[$abstract] = $instance;
     }
 }

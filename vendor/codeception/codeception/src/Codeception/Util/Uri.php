@@ -29,6 +29,12 @@ class Uri
             return $uri;
         }
 
+        if (isset($parts['host'])) {
+            $base = $base->withHost($parts['host']);
+            $base = $base->withPath('');
+            $base = $base->withQuery('');
+            $base = $base->withFragment('');
+        }
         if (isset($parts['path'])) {
             $path = $parts['path'];
             if ($base->getPath() && (strpos($path, '/') !== 0) && !empty($path)) {
@@ -42,18 +48,18 @@ class Uri
                 }
             }
             $base = $base->withPath($path);
-        }
-        if (isset($parts['scheme'])) {
-            $base = $base->withScheme($parts['scheme']);
+            $base = $base->withQuery('');
+            $base = $base->withFragment('');
         }
         if (isset($parts['query'])) {
             $base = $base->withQuery($parts['query']);
+            $base = $base->withFragment('');
         }
         if (isset($parts['fragment'])) {
             $base = $base->withFragment($parts['fragment']);
         }
-        return (string) $base;
 
+        return (string) $base;
     }
 
     /**
@@ -68,7 +74,6 @@ class Uri
             ->withPath($uri->getPath())
             ->withQuery($uri->getQuery())
             ->withFragment($uri->getFragment());
-
     }
 
     public static function retrieveHost($url)

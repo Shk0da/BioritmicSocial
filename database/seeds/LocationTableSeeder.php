@@ -33,8 +33,6 @@ class LocationTableSeeder extends Seeder
                 DB::table('locations')->insert([
                     'country' => $name,
                     'city' => $item,
-                    'created_at' => time(),
-                    'updated_at' => time(),
                 ]);
             }
         }

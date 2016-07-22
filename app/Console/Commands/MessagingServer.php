@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use PhpSpec\Exception\Exception;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
@@ -12,7 +11,7 @@ use App\Http\Controllers\Socket\MessagingSocket;
 class MessagingServer extends Command
 {
     const PORT = 8080;
-    const URL = 'bioritmic.herokuapp.com';
+    const URL = 'bioritmic.app';
     const HOST = 'ws://' . MessagingServer::URL . ':' . MessagingServer::PORT;
     protected $signature = 'messaging:run';
     protected $description = 'Run MessagingServer';
@@ -33,7 +32,7 @@ class MessagingServer extends Command
             $this->info('Start MessagingServer');
             $server->run();
 
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->info($exception);
         }
     }

@@ -3,10 +3,10 @@ namespace Codeception\Module;
 
 use Codeception\Module as CodeceptionModule;
 use Codeception\Exception\ModuleException as ModuleException;
-use Codeception\TestCase;
+use Codeception\TestInterface;
 use Exception;
 use PhpAmqpLib\Channel\AMQPChannel;
-use PhpAmqpLib\Connection\AMQPConnection;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Exception\AMQPProtocolChannelException;
 
@@ -50,7 +50,7 @@ use PhpAmqpLib\Exception\AMQPProtocolChannelException;
  *
  * ## Public Properties
  *
- * * connection - AMQPConnection - current connection
+ * * connection - AMQPStreamConnection - current connection
  *
  * @since 1.1.2
  * @author tiger.seo@gmail.com
@@ -68,7 +68,7 @@ class AMQP extends CodeceptionModule
     ];
 
     /**
-     * @var AMQPConnection
+     * @var AMQPStreamConnection
      */
     public $connection;
 
@@ -88,13 +88,13 @@ class AMQP extends CodeceptionModule
         $vhost = $this->config['vhost'];
 
         try {
-            $this->connection = new AMQPConnection($host, $port, $username, $password, $vhost);
+            $this->connection = new AMQPStreamConnection($host, $port, $username, $password, $vhost);
         } catch (Exception $e) {
             throw new ModuleException(__CLASS__, $e->getMessage() . ' while establishing connection to MQ server');
         }
     }
 
-    public function _before(TestCase $test)
+    public function _before(TestInterface $test)
     {
         if ($this->config['cleanup']) {
             $this->cleanup();
@@ -104,7 +104,7 @@ class AMQP extends CodeceptionModule
     /**
      * Sends message to exchange by sending exchange name, message
      * and (optionally) a routing key
-     * 
+     *
      * ``` php
      * <?php
      * $I->pushToExchange('exchange.emails', 'thanks');

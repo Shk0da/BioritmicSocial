@@ -28,11 +28,15 @@ if (!class_exists('RemoteWebDriver') and class_exists('Facebook\WebDriver\Remote
     interface WebDriverElement extends Facebook\WebDriver\WebDriverElement {};
 }
 
-@include_once __DIR__ . DIRECTORY_SEPARATOR . 'symfony-shim.php';
+include_once __DIR__ . DIRECTORY_SEPARATOR . 'shim.php';
 // compat
 if (PHP_MAJOR_VERSION < 7) {
-    interface Throwable {};
-    class ParseError extends \Exception {}
+    if (false === interface_exists('Throwable', false)) {
+        interface Throwable {};
+    }
+    if (false === class_exists('ParseError', false)) {
+        class ParseError extends \Exception {};
+    }
 }
 // @codingStandardsIgnoreEnd
 

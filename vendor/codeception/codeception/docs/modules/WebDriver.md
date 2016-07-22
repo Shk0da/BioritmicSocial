@@ -1,30 +1,105 @@
-
+# WebDriver
 
 
 New generation Selenium WebDriver module.
 
-## Selenium Installation
+## Local Testing
+
+### Selenium
 
 1. Download [Selenium Server](http://docs.seleniumhq.org/download/)
 2. Launch the daemon: `java -jar selenium-server-standalone-2.xx.xxx.jar`
+3. Configure this module (in acceptance.suite.yml) by setting url and browser:
 
+```yaml
+    modules:
+       enabled:
+          - WebDriver:
+             url: 'http://localhost/'
+             browser: firefox
+```
 
-## PhantomJS Installation
+### PhantomJS
 
-PhantomJS is a headless alternative to Selenium Server that implements [the WebDriver protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol).
+PhantomJS is a headless alternative to Selenium Server that implements
+[the WebDriver protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol).
 It allows you to run Selenium tests on a server without a GUI installed.
 
 1. Download [PhantomJS](http://phantomjs.org/download.html)
 2. Run PhantomJS in WebDriver mode: `phantomjs --webdriver=4444`
+3. Configure this module (in acceptance.suite.yml) by setting url and `phantomjs` as browser:
 
+```yaml
+    modules:
+       enabled:
+          - WebDriver:
+             url: 'http://localhost/'
+             browser: phantomjs
+```
 
-## Status
+## Cloud Testing
 
-* Maintainer: **davert**
-* Stability: **stable**
-* Contact: davert.codecept@mailican.com
-* Based on [facebook php-webdriver](https://github.com/facebook/php-webdriver)
+Cloud Testing services can run your WebDriver tests in the cloud.
+In case you want to test a local site or site behind a firewall
+you should use a tunnel application provided by a service.
 
+### SauceLabs
+
+1. Create an account at [SauceLabs.com](http://SauceLabs.com) to get your username and access key
+2. In the module configuration use the format `username`:`access_key`@ondemand.saucelabs.com' for `host`
+3. Configure `platform` under `capabilities` to define the [Operating System](https://docs.saucelabs.com/reference/platforms-configurator/#/)
+4. run a tunnel app if your site can't be accessed from Internet
+
+```yaml
+    modules:
+       enabled:
+          - WebDriver:
+             url: http://mysite.com
+             host: '<username>:<access key>@ondemand.saucelabs.com'
+             port: 80
+             browser: chrome
+             capabilities:
+                 platform: 'Windows 10'
+```
+
+### BrowserStack
+
+1. Create an account at [BrowserStack](https://www.browserstack.com/) to get your username and access key
+2. In the module configuration use the format `username`:`access_key`@hub.browserstack.com' for `host`
+3. Configure `os` and `os_version` under `capabilities` to define the operating System
+4. If your site is available only locally or via VPN you should use a tunnel app. In this case add `browserstack.local` capability and set it to true.
+
+```yaml
+    modules:
+       enabled:
+          - WebDriver:
+             url: http://mysite.com
+             host: '<username>:<access key>@hub.browserstack.com'
+             port: 80
+             browser: chrome
+             capabilities:
+                 os: Windows
+                 os_version: 10
+                 browserstack.local: true # for local testing
+```
+### TestingBot
+
+1. Create an account at [TestingBot](https://testingbot.com/) to get your key and secret
+2. In the module configuration use the format `key`:`secret`@hub.testingbot.com' for `host`
+3. Configure `platform` under `capabilities` to define the [Operating System](https://testingbot.com/support/getting-started/browsers.html)
+4. Run [TestingBot Tunnel](https://testingbot.com/support/other/tunnel) if your site can't be accessed from Internet
+
+```yaml
+    modules:
+       enabled:
+          - WebDriver:
+             url: http://mysite.com
+             host: '<key>:<secret>@hub.testingbot.com'
+             port: 80
+             browser: chrome
+             capabilities:
+                 platform: Windows 10
+```
 
 ## Configuration
 
@@ -36,44 +111,44 @@ It allows you to run Selenium tests on a server without a GUI installed.
 * `window_size` - Initial window size. Set to `maximize` or a dimension in the format `640x480`.
 * `clear_cookies` - Set to false to keep cookies, or set to true (default) to delete all cookies between tests.
 * `wait` - Implicit wait (default 0 seconds).
-* `capabilities` - Sets Selenium2 [desired capabilities](http://code.google.com/p/selenium/wiki/DesiredCapabilities). Should be a key-value array.
+* `capabilities` - Sets Selenium2 [desired capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities). Should be a key-value array.
 * `connection_timeout` - timeout for opening a connection to remote selenium server (30 seconds by default).
 * `request_timeout` - timeout for a request to return something from remote selenium server (30 seconds by default).
 * `http_proxy` - sets http proxy server url for testing a remote server.
 * `http_proxy_port` - sets http proxy server port
+* `debug_log_entries` - how many selenium entries to print with `debugWebDriverLogs` or on fail (15 by default).
 
-### Example (`acceptance.suite.yml`)
+Example (`acceptance.suite.yml`)
 
+```yaml
     modules:
        enabled:
           - WebDriver:
              url: 'http://localhost/'
              browser: firefox
              window_size: 1024x768
-             wait: 10
              capabilities:
                  unexpectedAlertBehaviour: 'accept'
-                 firefox_profile: '/Users/paul/Library/Application Support/Firefox/Profiles/codeception-profile.zip.b64'
+                 firefox_profile: '~/firefox-profiles/codeception-profile.zip.b64'
+```
 
+### Status
 
+Stability: **stable**
+Based on [facebook php-webdriver](https://github.com/facebook/php-webdriver)
 
-## SauceLabs.com Integration
+## Usage
 
-SauceLabs can run your WebDriver tests in the cloud, you can also create a tunnel
-enabling you to test locally hosted sites from their servers.
+### Locating Elements
 
-1. Create an account at [SauceLabs.com](http://SauceLabs.com) to get your username and access key
-2. In the module configuration use the format `username`:`access_key`@ondemand.saucelabs.com' for `host`
-3. Configure `platform` under `capabilities` to define the [Operating System](https://docs.saucelabs.com/reference/platforms-configurator/#/)
+Most methods in this module that operate on a DOM element (e.g. `click`) accept a locator as the first argument,
+which can be either a string or an array.
 
-[CodeCeption and SauceLabs example](https://github.com/Codeception/Codeception/issues/657#issuecomment-28122164)
-
-
-## Locating Elements
-
-Most methods in this module that operate on a DOM element (e.g. `click`) accept a locator as the first argument, which can be either a string or an array.
-
-If the locator is an array, it should have a single element, with the key signifying the locator type (`id`, `name`, `css`, `xpath`, `link`, or `class`) and the value being the locator itself. This is called a "strict" locator. Examples:
+If the locator is an array, it should have a single element,
+with the key signifying the locator type (`id`, `name`, `css`, `xpath`, `link`, or `class`)
+and the value being the locator itself.
+This is called a "strict" locator.
+Examples:
 
 * `['id' => 'foo']` matches `<div id="foo">`
 * `['name' => 'foo']` matches `<div name="foo">`
@@ -82,16 +157,25 @@ If the locator is an array, it should have a single element, with the key signif
 * `['link' => 'Click here']` matches `<a href="google.com">Click here</a>`
 * `['class' => 'foo']` matches `<div class="foo">`
 
-Writing good locators can be tricky. The Mozilla team has written an excellent guide titled [Writing reliable locators for Selenium and WebDriver tests](https://blog.mozilla.org/webqa/2013/09/26/writing-reliable-locators-for-selenium-and-webdriver-tests/).
+Writing good locators can be tricky.
+The Mozilla team has written an excellent guide titled [Writing reliable locators for Selenium and WebDriver tests](https://blog.mozilla.org/webqa/2013/09/26/writing-reliable-locators-for-selenium-and-webdriver-tests/).
 
-If you prefer, you may also pass a string for the locator. This is called a "fuzzy" locator. In this case, Codeception uses a a variety of heuristics (depending on the exact method called) to determine what element you're referring to. For example, here's the heuristic used for the `submitForm` method:
+If you prefer, you may also pass a string for the locator. This is called a "fuzzy" locator.
+In this case, Codeception uses a a variety of heuristics (depending on the exact method called) to determine what element you're referring to.
+For example, here's the heuristic used for the `submitForm` method:
 
 1. Does the locator look like an ID selector (e.g. "#foo")? If so, try to find a form matching that ID.
 2. If nothing found, check if locator looks like a CSS selector. If so, run it.
 3. If nothing found, check if locator looks like an XPath expression. If so, run it.
 4. Throw an `ElementNotFound` exception.
 
-Be warned that fuzzy locators can be significantly slower than strict locators. If speed is a concern, it's recommended you stick with explicitly specifying the locator type via the array syntax.
+Be warned that fuzzy locators can be significantly slower than strict locators.
+Especially if you use Selenium WebDriver with `wait` (aka implicit wait) option.
+In the example above if you set `wait` to 5 seconds and use XPath string as fuzzy locator,
+`submitForm` method will wait for 5 seconds at each step.
+That means 5 seconds finding the form by ID, another 5 seconds finding by CSS
+until it finally tries to find the form by XPath).
+If speed is a concern, it's recommended you stick with explicitly specifying the locator type via the array syntax.
 
 ## Public Properties
 
@@ -102,8 +186,9 @@ Be warned that fuzzy locators can be significantly slower than strict locators. 
 $this->getModule('WebDriver')->webDriver->getKeyboard()->sendKeys('hello, webdriver');
 ```
 
-## Methods
 
+
+## Actions
 
 ### _findElements
 
@@ -173,7 +258,8 @@ $this->getModule('WebDriver')->_saveScreenshot(codecept_output_dir().'screenshot
 ### acceptPopup
  
 Accepts the active JavaScript native popup window, as created by `window.alert`|`window.confirm`|`window.prompt`.
-Don't confuse popups with modal windows, as created by [various libraries](http://jster.net/category/windows-modals-popups).
+Don't confuse popups with modal windows,
+as created by [various libraries](http://jster.net/category/windows-modals-popups).
 
 
 ### amOnPage
@@ -186,7 +272,6 @@ Opens the page for the given relative URI.
 $I->amOnPage('/');
 // opens /register page
 $I->amOnPage('/register');
-?>
 ```
 
  * `param` $page
@@ -316,18 +401,36 @@ Performs contextual click with the right mouse button on an element.
  * `throws`  \Codeception\Exception\ElementNotFound
 
 
+### debugWebDriverLogs
+ 
+Print out latest Selenium Logs in debug mode
+
+
 ### dontSee
  
-Checks that the current page doesn't contain the text specified.
+Checks that the current page doesn't contain the text specified (case insensitive).
 Give a locator as the second parameter to match a specific region.
 
 ```php
 <?php
-$I->dontSee('Login'); // I can suppose user is already logged in
-$I->dontSee('Sign Up','h1'); // I can suppose it's not a signup page
-$I->dontSee('Sign Up','//body/h1'); // with XPath
-?>
+$I->dontSee('Login');                    // I can suppose user is already logged in
+$I->dontSee('Sign Up','h1');             // I can suppose it's not a signup page
+$I->dontSee('Sign Up','//body/h1');      // with XPath
 ```
+
+Note that the search is done after stripping all HTML tags from the body,
+so `$I->dontSee('strong')` will fail on strings like:
+
+  - `<p>I am Stronger than thou</p>`
+  - `<script>document.createElement('strong');</script>`
+
+But will ignore strings like:
+
+  - `<strong>Home</strong>`
+  - `<div class="strong">Home</strong>`
+  - `<!-- strong -->`
+
+For checking the raw source code, use `seeInSource()`.
 
  * `param`      $text
  * `param null` $selector
@@ -494,6 +597,19 @@ Checks that the page source doesn't contain the given string.
  * `param` $text
 
 
+### dontSeeInSource
+ 
+Checks that the current page contains the given string in its
+raw source code.
+
+```php
+<?php
+$I->dontSeeInSource('<h1>Green eggs &amp; ham</h1>');
+```
+
+ * `param`      $raw
+
+
 ### dontSeeInTitle
  
 Checks that the page title does not contain the given string.
@@ -561,12 +677,13 @@ Low-level API method.
 If Codeception commands are not enough, this allows you to use Selenium WebDriver methods directly:
 
 ``` php
-$I->executeInSelenium(function(\Facebook\WebDriver\RemoteWebDriver $webdriver) {
+$I->executeInSelenium(function(\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
   $webdriver->get('http://google.com');
 });
 ```
 
-This runs in the context of the [RemoteWebDriver class](https://github.com/facebook/php-webdriver/blob/master/lib/remote/RemoteWebDriver.php).
+This runs in the context of the
+[RemoteWebDriver class](https://github.com/facebook/php-webdriver/blob/master/lib/remote/RemoteWebDriver.php).
 Try not to use this command on a regular basis.
 If Codeception lacks a feature you need, please implement it and submit a patch.
 
@@ -624,7 +741,7 @@ $I->grabAttributeFrom('#tooltip', 'title');
 
  * `param` $cssOrXpath
  * `param` $attribute
- * `internal param` $element
+
 
 
 ### grabCookie
@@ -651,7 +768,6 @@ $uri = $I->grabFromCurrentUrl();
 
  * `param null` $uri
 
- * `internal param` $url
 
 
 ### grabMultiple
@@ -683,7 +799,8 @@ $aLinks = $I->grabMultiple('a', 'href');
 ### grabTextFrom
  
 Finds and returns the text contents of the given element.
-If a fuzzy locator is used, the element is found using CSS, XPath, and by matching the full page source by regular expression.
+If a fuzzy locator is used, the element is found using CSS, XPath,
+and by matching the full page source by regular expression.
 
 ``` php
 <?php
@@ -754,7 +871,8 @@ Moves forward in history.
 ### moveMouseOver
  
 Move mouse over the first element matched by the given locator.
-If the second and third parameters are given, then the mouse is moved to an offset of the element's top-left corner.
+If the second and third parameters are given,
+then the mouse is moved to an offset of the element's top-left corner.
 Otherwise, the mouse is moved to the center of the element.
 
 ``` php
@@ -775,7 +893,8 @@ $I->moveMouseOver(['css' => '.checkout'], 20, 50);
 Pauses test execution in debug mode.
 To proceed test press "ENTER" in console.
 
-This method is useful while writing tests, since it allows you to inspect the current page in the middle of a test case.
+This method is useful while writing tests,
+since it allows you to inspect the current page in the middle of a test case.
 
 
 ### pressKey
@@ -835,18 +954,50 @@ $I->resizeWindow(800, 600);
  * `param string` $name
 
 
-### see
+### scrollTo
  
-Checks that the current page contains the given string.
-Specify a locator as the second parameter to match a specific region.
+Move to the middle of the given element matched by the given locator.
+Extra shift, calculated from the top-left corner of the element,
+can be set by passing $offsetX and $offsetY parameters.
 
 ``` php
 <?php
-$I->see('Logout'); // I can suppose user is logged in
-$I->see('Sign Up','h1'); // I can suppose it's a signup page
-$I->see('Sign Up','//body/h1'); // with XPath
+$I->scrollTo(['css' => '.checkout'], 20, 50);
 ?>
 ```
+
+ * `param` $selector
+ * `param int` $offsetX
+ * `param int` $offsetY
+
+
+### see
+ 
+Checks that the current page contains the given string (case insensitive).
+
+You can specify a specific HTML element (via CSS or XPath) as the second
+parameter to only search within that element.
+
+``` php
+<?php
+$I->see('Logout');                 // I can suppose user is logged in
+$I->see('Sign Up', 'h1');          // I can suppose it's a signup page
+$I->see('Sign Up', '//body/h1');   // with XPath
+```
+
+Note that the search is done after stripping all HTML tags from the body,
+so `$I->see('strong')` will return true for strings like:
+
+  - `<p>I am Stronger than thou</p>`
+  - `<script>document.createElement('strong');</script>`
+
+But will *not* be true for strings like:
+
+  - `<strong>Home</strong>`
+  - `<div class="strong">Home</strong>`
+  - `<!-- strong -->`
+
+For checking the raw source code, use `seeInSource()`.
 
  * `param`      $text
  * `param null` $selector
@@ -1059,9 +1210,23 @@ $I->seeInPageSource('<link rel="apple-touch-icon"');
 
 ### seeInPopup
  
-Checks that the active JavaScript popup, as created by `window.alert`|`window.confirm`|`window.prompt`, contains the given string.
+Checks that the active JavaScript popup,
+as created by `window.alert`|`window.confirm`|`window.prompt`, contains the given string.
 
  * `param` $text
+
+
+### seeInSource
+ 
+Checks that the current page contains the given string in its
+raw source code.
+
+``` php
+<?php
+$I->seeInSource('<h1>Green eggs &amp; ham</h1>');
+```
+
+ * `param`      $raw
 
 
 ### seeInTitle
@@ -1149,6 +1314,15 @@ $I->selectOption('Which OS do you use?', array('Windows','Linux'));
 ?>
 ```
 
+Or provide an associative array for the second argument to specifically define which selection method should be used:
+
+``` php
+<?php
+$I->selectOption('Which OS do you use?', array('text' => 'Windows')); // Only search by text 'Windows'
+$I->selectOption('Which OS do you use?', array('value' => 'windows')); // Only search by value 'windows'
+?>
+```
+
  * `param` $select
  * `param` $option
 
@@ -1156,7 +1330,7 @@ $I->selectOption('Which OS do you use?', array('Windows','Linux'));
 ### setCookie
  
 Sets a cookie with the given name and value.
-You can set additional cookie params like `domain`, `path`, `expire`, `secure` in array passed as last argument.
+You can set additional cookie params like `domain`, `path`, `expires`, `secure` in array passed as last argument.
 
 ``` php
 <?php
@@ -1286,7 +1460,7 @@ $I->submitForm('#my-form', [
 Mixing string and boolean values for a checkbox's value is not supported
 and may produce unexpected results.
 
-Field names ending in "[]" must be passed without the trailing square 
+Field names ending in "[]" must be passed without the trailing square
 bracket characters, and must contain an array for its value.  This allows
 submitting multiple values with the same name, consider:
 
@@ -1360,7 +1534,7 @@ If the window has no name, the only way to access it is via the `executeInSeleni
 
 ``` php
 <?php
-$I->executeInSelenium(function (\Facebook\WebDriver\RemoteWebDriver $webdriver) {
+$I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
      $handles=$webdriver->getWindowHandles();
      $last_window = end($handles);
      $webdriver->switchTo()->window($last_window);
@@ -1423,7 +1597,8 @@ $I->click('#agree_button');
 ### waitForElementChange
  
 Waits up to $timeout seconds for the given element to change.
-Element "change" is determined by a callback function which is called repeatedly until the return value evaluates to true.
+Element "change" is determined by a callback function which is called repeatedly
+until the return value evaluates to true.
 
 ``` php
 <?php
@@ -1507,4 +1682,4 @@ $I->waitForText('foo', 30, '.title'); // secs
  * `param null` $selector
  * `throws`  \Exception
 
-<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.1/src/Codeception/Module/WebDriver.php">Help us to improve documentation. Edit module reference</a></div>
+<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.2/src/Codeception/Module/WebDriver.php">Help us to improve documentation. Edit module reference</a></div>

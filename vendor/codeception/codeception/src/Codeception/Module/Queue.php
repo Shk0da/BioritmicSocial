@@ -2,7 +2,7 @@
 namespace Codeception\Module;
 
 use Codeception\Module as CodeceptionModule;
-use Codeception\TestCase;
+use Codeception\TestInterface;
 use Codeception\Exception\ModuleConfigException;
 use Codeception\Lib\Driver\AmazonSQS;
 use Codeception\Lib\Driver\Beanstalk;
@@ -23,7 +23,7 @@ use Codeception\Lib\Driver\Iron;
  *
  * The following dependencies are needed for the listed queue servers:
  *
- * * Beanstalkd: pda/pheanstalk ~2.0
+ * * Beanstalkd: pda/pheanstalk ~3.0
  * * Amazon SQS: aws/aws-sdk-php
  * * IronMQ: iron-io/iron_mq
  *
@@ -50,6 +50,22 @@ use Codeception\Lib\Driver\Iron;
  * * project - Iron.io project ID.
  * * key - AWS access key ID.
  * * secret - AWS secret access key.
+ *      Warning:
+ *          Hard-coding your credentials can be dangerous, because it is easy to accidentally commit your credentials
+ *          into an SCM repository, potentially exposing your credentials to more people than intended.
+ *          It can also make it difficult to rotate credentials in the future.
+ * * profile - AWS credential profile
+ *           - it should be located in ~/.aws/credentials file
+ *           - eg:  [default]
+ *                  aws_access_key_id = YOUR_AWS_ACCESS_KEY_ID
+ *                  aws_secret_access_key = YOUR_AWS_SECRET_ACCESS_KEY
+ *                  [project1]
+ *                  aws_access_key_id = YOUR_AWS_ACCESS_KEY_ID
+ *                  aws_secret_access_key = YOUR_AWS_SECRET_ACCESS_KEY
+ *          - Note: Using IAM roles is the preferred technique for providing credentials
+ *                  to applications running on Amazon EC2
+ *                  http://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/credentials.html?highlight=credentials
+ *
  * * region - A region parameter is also required for AWS, refer to the AWS documentation for possible values list.
  *
  * ### Example
@@ -86,6 +102,25 @@ use Codeception\Lib\Driver\Iron;
  *              'secret' => 'your-secret-key',
  *              'region' => 'us-west-2'
  *
+ * #### Example AWS SQS using profile credentials
+ *
+ *     modules:
+ *        enabled: [Queue]
+ *        config:
+ *           Queue:
+ *              'type' => 'aws',
+ *              'profile' => 'project1', //see documentation
+ *              'region' => 'us-west-2'
+ *
+ * #### Example AWS SQS running on Anazon EC2 instance
+ *
+ *     modules:
+ *        enabled: [Queue]
+ *        config:
+ *           Queue:
+ *              'type' => 'aws',
+ *              'region' => 'us-west-2'
+ *
  */
 class Queue extends CodeceptionModule
 {
@@ -97,9 +132,9 @@ class Queue extends CodeceptionModule
     /**
      * Setup connection and open/setup the connection with config settings
      *
-     * @param \Codeception\TestCase $test
+     * @param \Codeception\TestInterface $test
      */
-    public function _before(TestCase $test)
+    public function _before(TestInterface $test)
     {
         $this->queueDriver->openConnection($this->config);
     }

@@ -3,7 +3,6 @@ namespace Codeception;
 
 use Codeception\Lib\Actor\Shared\Comment;
 use Codeception\Lib\Actor\Shared\Friend;
-use Codeception\Scenario;
 use Codeception\Step\Executor;
 
 abstract class Actor
@@ -19,7 +18,6 @@ abstract class Actor
     public function __construct(Scenario $scenario)
     {
         $this->scenario = $scenario;
-        $this->scenario->stopIfBlocked();
     }
 
     /**
@@ -37,7 +35,7 @@ abstract class Actor
 
     public function wantTo($text)
     {
-        $this->scenario->setFeature(mb_strtolower($text));
+        $this->scenario->setFeature(mb_strtolower($text, 'utf-8'));
     }
 
     public function __call($method, $arguments)

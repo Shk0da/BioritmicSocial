@@ -1,5 +1,167 @@
 # Changelog
 
+#### 2.2.2
+
+* Parameters can be applied to global `codeception.yml` config. See #3255 Thanks to @LeRondPoint
+* Fixed loading of parameters from `.env.*` files. See #3224. By @smotesko
+* Better failure diff messages by @k0pernikus
+* UTF-8 improvements (replaced with custom `ucfirst`, `strtoupper` => `mb_strtoupper`) by @Naktibalda. See #3211
+* Print execution time of non-successful tests by @Naktibalda. Fixes #3274
+* [WebDriver][PhpBrowser][Frameworks] Fixed created files on failure. Fixes #3207
+* [Frameworks][PhpBrowser] Adjacent forms submit improvements by @dizzy7. Fixes #2331
+* [WebDriver] Fixed adjacent `selectOption` with similar options by @eXorus. Fixes #3246
+* [DataFactory] fixed loading factories from relative paths. Fixes #3208
+* *Test\Gherkin* Added JUnit reporter #3273
+* *Test\Unit* Dependencies can pass and receive values the same way as it is done in PHPUnit. Fixes #3213
+* [Symfony] Fixed failing tests when the profiler is disabled by @dizzy7. See #3223
+* [REST] Added `Codecepion\Util\HttpCode` util class with HTTP code constants. See [class reference](https://github.com/Codeception/Codeception/blob/2.2/docs/reference/HttpCode.md)
+* [REST] Support simple key-value format for file uploads. See #3244
+* Bugfix with duplicate instances in the modules container #3219 by @dizzy7
+* [REST] Added `deleteHeader` method by @Naktibalda. Fixes #3161
+* [Yii1] `init` part added to avoid conflicts with `WebDriver`
+* `generate:snippets` can accept second parameter to generate snippets from a specific file or folder.
+* [Db] Added `grabNumRecords` method by @tocsick. See #3175
+* Fixed group events fire twice #3112. By @jstaudenmaier
+* [ZF2] Added services part which can be used to `grabServiceFromContainer` when conflicting module is used by @Naktibalda.
+* Improved Examples to be Traversable; Fixed console output for complex data structures.
+* [Laravel5] Added `haveBinding`, `haveSingleton`, `haveContextualBinding` and `haveInstance` methods. By @janhenkgerritsen. See #2904.
+* + changes from 2.1.11
+
+#### 2.2.1
+
+* PHPUnit 5.4 and PHPUnit/php-code-coverage 4.0 compatibility.
+
+#### 2.2.0
+
+* **Gherkin format support**. [Announcement](https://github.com/Codeception/Codeception/pull/2750#issue-129899745)
+* **Core Test Format Refactorings** Codeception becomes true multiformat testing platform. Format requires a [Loader](https://github.com/Codeception/Codeception/blob/master/src/Codeception/Test/Loader/LoaderInterface.php) and class extending [Test](https://github.com/Codeception/Codeception/blob/master/src/Codeception/Test/Test.php) class, implementing [TestInterface](https://github.com/Codeception/Codeception/blob/master/src/Codeception/TestInterface.php).
+    * *Breaking* `Codeception\TestCase` replaced with `Codeception\TestInterface` in code and in module signatures.
+    * *Breaking* Cept/Cest classes are no longer extending `PHPUnit_Framework_TestCase`, so they don't have `expectException`, `getMock`, etc.
+    * Reduced stack trace for scenario-driven test formats. Codeception tests implement `PHPUnit_Framework_Test` instead of extending heavy `PHPUnit_Framework_TestCase` class.
+* *Breaking* **Conflicts API implemented** Frameworks + PhpBrowser + WebDriver can't be used together unless only non-conflicting part is used. [Announcement](http://codeception.com/03-05-2016/codeception-2.2.-upcoming-features.html#conflicts)
+* **Examples** as an alternative to Data Providers. [Announcement](http://codeception.com/03-10-2016/even-more-features-of-codeception.html#examples)
+* **Params** loading from yml, env files or environment. [Announcement](http://codeception.com/03-05-2016/codeception-2.2.-upcoming-features.html#params)
+* **Test dependencies** with `@depends` annotation. [Announcement](http://codeception.com/03-05-2016/codeception-2.2.-upcoming-features.html#test-dependencies)
+* **Custom Commands** inject your own commands as as simple as extension. [Announcement](http://codeception.com/03-10-2016/even-more-features-of-codeception.html#custom-commands)
+* `codecept dry-run` command added to show scenario steps without executing them.
+* *Breaking* [Dbh] module removed
+* *Breaking* [Laravel4] module removed. See #2866
+* *Breaking* [Laravel5] Removed `createModel` method, use `have` method instead. See #2866
+* *Breaking* [Laravel5] Removed `makeModel` method. See #2866
+* *Breaking* [Laravel5] Renamed `haveModel` method to `have`. See #2866
+* *Breaking* [Symfony] public property `container` removed
+* *Breaking* [Asserts] removed deprecated `assertLessThen` and `assertGreaterThen`
+* *Breaking* mocks created with `Codeception\Util\Stub` are not verified in Cests. See #3005
+* *Breaking* [REST] `grabAttributeFrom` renamed to `grabAttributeFromXmlElement` to avoid conflicts
+* [WebDriver] allows getting current browser and capabilities in test. [Announcement](http://codeception.com/03-10-2016/even-more-features-of-codeception.html#Getting-current-browser-and-capabilities-in-tests)
+* [AngularJS] module added. Extends WebDriver module for AngularJS testing. [Announcement](http://codeception.com/03-10-2016/even-more-features-of-codeception.html#angularjs)
+* [DataFactory] module added. Performs data generation using FactoryMuffin library [Announcement](http://codeception.com/03-10-2016/even-more-features-of-codeception.html#datafactory)
+* [Redis] Module rewritten using Predis library as driver by @marcverney
+* [Laravel5] Added a `haveMultiple` method to create more than one model per call. See #2866
+* [Laravel5] [Lumen] The `haveRecord`, `seeRecord`, `dontSeeRecord` and `grabRecord` methods now also accept Eloquent model class names instead of only database table names. See #2866
+* [Symfony] module Symfony2 renamed to Symfony
+* [Phalcon] Merged `Phalcon1` and `Phalcon2` modules into one `Phalcon` due the fact that Phalcon Framework v1.3.x no longer supported at all
+* [Asserts] More `assert*` methods from PHPUnit added
+* [Asserts] Added `expectException` method
+* [WebDriver][Frameworks][PhpBrowser] `selectOption` can receive option as strict locator to exactly match option by text or by value. Use `['value' => 'myvalue']` or `['text' => 'optiontext']` to select a proper option. By @gdscei and @davertmik See #3003
+* Added config option to disable modules using `modules: disabled:`.
+* [Sequence] Changed the prefix value. Generated sequences to include id inside a prefix: `sq('user1') => 'user1_876asd8as87a'. Added `prefix` config option.
+* Deprecation errors won't fail tests but will be printed.
+* Official [Docker image](https://hub.docker.com/r/codeception/codeception/) introduced by @schmunk42
+
+#### 2.1.11
+
+* [Yii1] Improved Yii connector. AR metadata is cleaned up between requests. `regenerateId` of session is disabled.
+* [REST][InnerBrowser] redirect is not triggered when Location header is set but response code is not 3xx. By @Naktibalda. Fixes #3171.
+* [PhpBrowser][Frameworks] checkboxes can be located by label by @dizzy7. See #3237
+* [PhpBrowser][Frameworks] field can be matched by its trimmed label value. See #3209. By @dizzy7
+* [WebDriver] fixed URL matching in WebDriver::seeLink
+* [WebDriver][InnerBrowser] Improved error messages of `seeLink` and `dontSeeLink`
+
+#### 2.1.10
+
+* PHPUnit version locked to <5.4
+* [Db] Added missing support for LIKE condition to SqlSrv driver
+
+#### 2.1.9
+
+* PHPUnit 5.4 compatibility for creating mocks using `Codeception\Util\Stub` by @davertmik. See #3093 and #3080
+* Updated dependencies to support Symfony 3.1
+* [Laravel5] Fixed issue where non-existing services were called in _before and _after methods. See #3028.
+* Fix self-update command to update only to stable versions by @MAXakaWIZARD
+* Added `settings: backup_global` to config, to disable backup_global option of PHPUnit by @mkeasling. See #3045. Fixes #3044
+* [PhpBrowser][Frameworks] `see` matches UTF-8 text case-insensitively by @Naktibalda. Fixes #3114
+* Fixed page object generation with namespaces by @eugene-manuilov and @Naktibalda. See #3126 Fixes #3012
+* `--steps` will not disable code coverage. By @Naktibalda. Fixes #2620
+* Suppress console coverage report with `--quiet` by @EspadaV8. See #2370
+* Improved multibyte output in console by @kt81. See #3130
+* [Lumen] Fixed: `initializeLumen()` method has been called twice on start by @kt81. See #3124 #2607
+* [Db] Allow INT Parameter SQL Binding by @davidcochrum . Fixes #3118
+* [Db] Support LIKE conditions in assertions.
+* [Db] Improved regex for parsing comments by @dima-stefantsov. See #3138
+* [Dbh] Fix `seeInDatabase` and `dontSeeInDatabase` with empty criteria. Closes #3116
+* [Symfony] Improve fail messages on seeInCurrentRoute and seeCurrentRouteIs
+* [Symfony] Improve route comparison on seeInCurrentRoute and seeCurrentRouteIs
+* [WebDriver] multi session testing with friends improved by @eXorus. Webdriver sessions are finished correctly; `leave()` method added to Friend class. See #3068
+* [PhpBrowser] added `handler` and `middleware` config options to customize Guzzle handlers and middleware
+* Added full support of phpunit-bridge features.
+* [Laravel] Fixed issue where non-existing services were called in _before and _after methods. See #3028.
+* [WebDriver] fixed using `saveSessionSnapshot` with codecoverage. Closes #2923
+* [ZF2] create new instance of Application for each request
+
+#### 2.1.8
+
+* `Util\Locator` added methods to create locators to match element at their position: `elementAt`, `firstElement`, `lastElement`
+* [Symfony] Refactor to unify service retrieval, avoid memleaks and reduce memory footprint. Closes #2938 and #2954.
+* [Symfony] New optoin `rebootable_client` that reboots client's kernel before each request.
+* [WebDriver] fixed `seeInField` for textarea with whitespaces before and after string. Closes #2921
+* [Symfony] Deprecated `grabServiceFromContainer` use `grabService` instead. For consistency with other frameworks.
+* [Asserts] More `assert*` methods from PHPUnit added
+* [Asserts] Added `expectException` method
+* `codecept self-update` works with proxy by @gr1ev0us
+* [Phalcon1 add params support for method amOnRoute by @MelnykDmitro
+
+#### 2.1.7
+
+* **PHPUnit 5.x support**
+* Global Bootstrap, Suite Bootstrap, Module Initialization happens before test loading. Fixes issues of autoloading TestCase classes introduced in 2.1.5, see #2872
+* Added option to skip PHP files validation in `codeception.yml` - `settings: lint: false`
+* [Facebook] Updated to  facebook/php-sdk-v4 version 5 by @orhan-swe and @tigerseo #2828 #2415
+* [WebDriver] Added `scrollTo` action by @javigomez and @davertmik #2844
+* Fix encoding problems in PHP prior to 5.6 by @pejaycz. See #2831
+* [Queue] Fixed `clearQueue` for AmazonSQS by @mikitu #2805
+* [Db] Fixed loading files in Sqlite @mcustiel See #2812
+* [PhpBrowser] `amHttpAuthenticated` allows null, null as parameters to unset authentication. #2896
+* `Util\Locator` added `contains` method to easily locate any element containing a text.
+* [Laravel5] Added `guard` parameters to `seeAuthentication` and `dontSeeAuthentication` methods. By @janhenkgerritsen. See #2876
+* [Laravel5] Added functionality to disable/enable Laravel's exception handling. By @janhenkgerritsen. See #2763
+* [Laravel5] Authentication now persists between requests when calling `amLoggedAs` with an instance of `Authenticable`. See #2795
+* [REST] Fixed dontSeeXmlResponseMatchesXpath method #2825 by @mangust404
+* [ZF2] Fixed POST parameters #2814 by @Naktibalda
+* [ZF1] Call Zend_Registry::_unsetInstance in _after #2863 by @Naktibalda
+
+#### 2.1.6
+
+* Starting from 2.1.6 you can **download PHP 5.4 compatible phar build** at http://codeception.com/php54/codecept.phar by @Naktibalda. See [installation guide](http://codeception.com/install).
+* [WebDriver] Fixed uploading files with **PhantomJS** #1823 by @DavertMik and @Naktibalda. Please specify your browser name as `phantom` in WebDriver config in order to use PhantomJS-specific hooks.
+* Fixed parsing PHP files with spaces in name on PHP<7 by @acuthbert. Fixes #2647
+* [WebDriver] Fixed proxy error when using with Chrome #2651 by @vaikla
+* [Laravel5] Allow Laravel5 application URL to be set through config. By @gmhenderson. See #2676
+* [Laravel5] Mocked events should also return an array. Fix by @devinfd
+* Fixed using codecoverage with environments #2634
+* Various HHVM improvements by @Naktibalda, for instance, Asserts module issues has been fixed.
+* [REST] Fixes #2775 `seeResponseJsonMatchesXpath` when JSON contains ampersand. By @Naktibalda.
+* [Filesystem] Added `seeNumberNewLines` method to check the number of new lines in opened file. By @sergeyklay
+* [Symfony2] Added `seeCurrentRouteMatches` action by @laszlo-karpati See #2665
+* [Sequence] Added `sqs` function to generate unique sequences per suite. #2766 by @johnatannvmd
+* [FTP] Fixed various bugs by @k-serenade. See #2755
+* [Frameworks][PhpBrowser] Fixed #2733: `seeOptionIsSelected` sees first option as selected if none is selected by @Naktibalda
+* [Symfony2] Removed 'localhost' from getInternalDomains by @Naktibalda. Fixed #2717
+* Bugfix for using groups by directory on Windows by @tortuetorche See #2550 and #2551
+* [REST] Fixed failed message for `seeHttpHeader` and `dontSeeHttpHeader` from null to expected value #2697 by @zondor
+* [REST] Added methods to control redirect: `stopFollowingRedirects` and `startFollowingRedirects` by @brutuscat
+* [Recorder Extension] Added `animate_slides` config to disable left-right sliding animation between screenshots by @vml-rmott
+
 #### 2.1.5
 
 * **PHP7 support**
@@ -29,7 +191,6 @@
 * [Laravel5] Fix bug for `seeCurrentRouteIs` when routes don't match. See #2593. By @maddhatter
 * [PhpBrowser] Set curl options for Guzzle6 correctly. See #2533. By @Naktibalda
 * Fixed usage of GroupObject by unit tests. GroupObjects can skip tests by @davetmik. See #2617
-
 
 #### 2.1.4
 

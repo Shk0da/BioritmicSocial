@@ -66,9 +66,9 @@ class redirect_interval {
     }
 }
 
-class redirect_self {
+class redirect_meta_refresh {
     function GET() {
-        include __DIR__.'/view/redirect_self.php';
+        include __DIR__.'/view/redirect_meta_refresh.php';
     }
 }
 
@@ -88,6 +88,12 @@ class redirect_base_uri_has_path {
 class redirect_base_uri_has_path_302 {
     function GET() {
         header('Location: /somepath/info', true, 302);
+    }
+}
+
+class location_201 {
+    function GET() {
+        header('Location: /info', true, 201);
     }
 }
 
@@ -164,9 +170,12 @@ class form {
     }
 
     function POST() {
+        data::set('query', $_GET);
         data::set('form', $_POST);
         data::set('files', $_FILES);
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) data::set('ajax','post');
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            data::set('ajax','post');
+        }
 
         $notice = 'Thank you!';
         include __DIR__.'/view/index.php';

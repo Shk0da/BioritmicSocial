@@ -9,7 +9,7 @@ use Symfony\Component\BrowserKit\Request as BrowserKitRequest;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Response as ZendResponse;
 use Zend\Expressive\Application;
-use GuzzleHttp\Psr7\Uri;
+use Zend\Diactoros\UploadedFile;
 
 class ZendExpressive extends Client
 {
@@ -73,7 +73,7 @@ class ZendExpressive extends Client
 
         $zendRequest = new ServerRequest(
             $serverParams,
-            $request->getFiles(),
+            $this->convertFiles($request->getFiles()),
             $request->getUri(),
             $request->getMethod(),
             $inputStream,
@@ -101,16 +101,29 @@ class ZendExpressive extends Client
         );
     }
 
+    private function convertFiles(array $files)
+    {
+        $fileObjects = [];
+        foreach ($files as $fieldName => $file) {
+            if (!isset($file['tmp_name']) && !isset($file['name'])) {
+                $fileObjects[$fieldName] = $this->convertFiles($file);
+            } else {
+                $fileObjects[$fieldName] = new UploadedFile(
+                    $file['tmp_name'],
+                    $file['size'],
+                    $file['error'],
+                    $file['name'],
+                    $file['type']
+                );
+            }
+        }
+        return $fileObjects;
+    }
+
     private function extractHeaders(BrowserKitRequest $request)
     {
         $headers = [];
         $server = $request->getServer();
-        $uri                 = new Uri($request->getUri());
-        $server['HTTP_HOST'] = $uri->getHost();
-        $port                = $uri->getPort();
-        if ($port !== null && $port !== 443 && $port != 80) {
-            $server['HTTP_HOST'] .= ':' . $port;
-        }
 
         $contentHeaders = array('Content-Length' => true, 'Content-Md5' => true, 'Content-Type' => true);
         foreach ($server as $header => $val) {

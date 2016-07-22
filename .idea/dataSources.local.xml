@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="PostgreSQL - homestead@localhost" uuid="46c15823-6336-45ed-a5e2-249687a1b843">
+      <secret-storage>master_key</secret-storage>
+      <user-name>homestead</user-name>
+      <introspection-scope>homestead:public,pg_catalog,homestead</introspection-scope>
+      <resolve-scope>homestead:public,homestead</resolve-scope>
+    </data-source>
+  </component>
+</project>

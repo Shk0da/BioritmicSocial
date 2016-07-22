@@ -13,4 +13,9 @@ class UpdateProfileTable extends Migration
         });
     }
 
+    public function down()
+    {
+
+    }
+
 }

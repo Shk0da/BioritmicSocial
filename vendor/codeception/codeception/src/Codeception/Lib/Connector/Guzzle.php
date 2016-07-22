@@ -1,7 +1,6 @@
 <?php
 namespace Codeception\Lib\Connector;
 
-use GuzzleHttp\Psr7\Uri as Psr7Uri;
 use Codeception\Util\Uri;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Message\Response;
@@ -82,6 +81,10 @@ class Guzzle extends Client
 
     public function setAuth($username, $password)
     {
+        if (!$username) {
+            unset($this->requestOptions['auth']);
+            return;
+        }
         $this->requestOptions['auth'] = [$username, $password];
     }
 
@@ -114,7 +117,7 @@ class Guzzle extends Client
             $matches = [];
 
             $matchesMeta = preg_match(
-                '/\<meta[^\>]+http-equiv="refresh" content="(\d*)\s*;?\s*url=(.*?)"/i',
+                '/\<meta[^\>]+http-equiv="refresh" content="\s*(\d*)\s*;\s*url=(.*?)"/i',
                 $response->getBody(true),
                 $matches
             );
@@ -122,7 +125,7 @@ class Guzzle extends Client
             if (!$matchesMeta) {
                 // match by header
                 preg_match(
-                    '~(\d*);?url=(.*)~',
+                    '/^\s*(\d*)\s*;\s*url=(.*)/i',
                     (string)$response->getHeader('Refresh'),
                     $matches
                 );
@@ -206,13 +209,6 @@ class Guzzle extends Client
         $headers = [];
         $server = $request->getServer();
 
-        $uri                 = Url::fromString($request->getUri());
-        $server['HTTP_HOST'] = $uri->getHost();
-        $port                = $uri->getPort();
-        if ($port !== null && $port !== 443 && $port != 80) {
-            $server['HTTP_HOST'] .= ':' . $port;
-        }
-
         $contentHeaders = ['Content-Length' => true, 'Content-Md5' => true, 'Content-Type' => true];
         foreach ($server as $header => $val) {
             $header = implode('-', array_map('ucfirst', explode('-', strtolower(str_replace('_', '-', $header)))));
@@ -227,7 +223,7 @@ class Guzzle extends Client
 
     protected function extractBody(BrowserKitRequest $request)
     {
-        if (in_array(strtoupper($request->getMethod()), ['GET','HEAD'])) {
+        if (in_array(strtoupper($request->getMethod()), ['GET', 'HEAD'])) {
             return null;
         }
         if ($request->getContent() !== null) {
@@ -235,7 +231,7 @@ class Guzzle extends Client
         } else {
             return $request->getParameters();
         }
-}
+    }
 
     protected function extractFiles(BrowserKitRequest $request)
     {

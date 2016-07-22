@@ -1,4 +1,4 @@
-
+# Lumen
 
 
 
@@ -28,6 +28,8 @@ Please try it and leave your feedback.
 
 
 
+## Actions
+
 ### _findElements
 
 *hidden API method, expected to be used from Helper classes*
@@ -54,6 +56,27 @@ PhpBrowser and Framework modules return `Symfony\Component\DomCrawler\Crawler` i
 
  * `param` $locator
  * `return` array of interactive elements
+
+
+### _getResponseContent
+
+*hidden API method, expected to be used from Helper classes*
+ 
+Returns content of the last response
+Use it in Helpers when you want to retrieve response of request performed by another module.
+
+```php
+<?php
+// in Helper class
+public function seeResponseContains($text)
+{
+   $this->assertContains($text, $this->getModule('Lumen')->_getResponseContent(), "response contains");
+}
+?>
+```
+
+ * `return` string
+ * `throws`  ModuleException
 
 
 ### _loadPage
@@ -153,7 +176,6 @@ Opens the page for the given relative URI.
 $I->amOnPage('/');
 // opens /register page
 $I->amOnPage('/register');
-?>
 ```
 
  * `param` $page
@@ -234,18 +256,50 @@ $I->click(['link' => 'Login']);
  * `param` $context
 
 
+### deleteHeader
+ 
+Deletes the header with the passed name.  Subsequent requests
+will not have the deleted header in its request.
+
+Example:
+```php
+<?php
+$I->haveHttpHeader('X-Requested-With', 'Codeception');
+$I->amOnPage('test-headers.php');
+// ...
+$I->deleteHeader('X-Requested-With');
+$I->amOnPage('some-other-page.php');
+?>
+```
+
+ * `param string` $name the name of the header to delete.
+
+
 ### dontSee
  
-Checks that the current page doesn't contain the text specified.
+Checks that the current page doesn't contain the text specified (case insensitive).
 Give a locator as the second parameter to match a specific region.
 
 ```php
 <?php
-$I->dontSee('Login'); // I can suppose user is already logged in
-$I->dontSee('Sign Up','h1'); // I can suppose it's not a signup page
-$I->dontSee('Sign Up','//body/h1'); // with XPath
-?>
+$I->dontSee('Login');                    // I can suppose user is already logged in
+$I->dontSee('Sign Up','h1');             // I can suppose it's not a signup page
+$I->dontSee('Sign Up','//body/h1');      // with XPath
 ```
+
+Note that the search is done after stripping all HTML tags from the body,
+so `$I->dontSee('strong')` will fail on strings like:
+
+  - `<p>I am Stronger than thou</p>`
+  - `<script>document.createElement('strong');</script>`
+
+But will ignore strings like:
+
+  - `<strong>Home</strong>`
+  - `<div class="strong">Home</strong>`
+  - `<!-- strong -->`
+
+For checking the raw source code, use `seeInSource()`.
 
  * `param`      $text
  * `param null` $selector
@@ -403,6 +457,19 @@ $I->dontSeeInFormFields('#form-id', [
  * `param` $params
 
 
+### dontSeeInSource
+ 
+Checks that the current page contains the given string in its
+raw source code.
+
+```php
+<?php
+$I->dontSeeInSource('<h1>Green eggs &amp; ham</h1>');
+```
+
+ * `param`      $raw
+
+
 ### dontSeeInTitle
  
 Checks that the page title does not contain the given string.
@@ -445,15 +512,32 @@ $I->dontSeeOptionIsSelected('#form input[name=payment]', 'Visa');
 ### dontSeeRecord
  
 Checks that record does not exist in database.
+You can pass the name of a database table or the class name of an Eloquent model as the first argument.
 
 ``` php
 <?php
 $I->dontSeeRecord('users', array('name' => 'davert'));
+$I->dontSeeRecord('App\User', array('name' => 'davert'));
 ?>
 ```
 
- * `param` $tableName
+ * `param string` $table
  * `param array` $attributes
+ * `[Part]` orm
+
+
+### dontSeeResponseCodeIs
+ 
+Checks that response code is equal to value provided.
+
+```php
+<?php
+$I->dontSeeResponseCodeIs(200);
+
+// recommended \Codeception\Util\HttpCode
+$I->dontSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+```
+ * `param` $code
 
 
 ### fillField
@@ -492,7 +576,7 @@ $I->grabAttributeFrom('#tooltip', 'title');
 
  * `param` $cssOrXpath
  * `param` $attribute
- * `internal param` $element
+
 
 
 ### grabCookie
@@ -519,7 +603,6 @@ $uri = $I->grabFromCurrentUrl();
 
  * `param null` $uri
 
- * `internal param` $url
 
 
 ### grabMultiple
@@ -551,15 +634,20 @@ $aLinks = $I->grabMultiple('a', 'href');
 ### grabRecord
  
 Retrieves record from database
+If you pass the name of a database table as the first argument, this method returns an array.
+You can also pass the class name of an Eloquent model, in that case this method returns an Eloquent model.
 
 ``` php
 <?php
-$category = $I->grabRecord('users', array('name' => 'davert'));
+$record = $I->grabRecord('users', array('name' => 'davert')); // returns array
+$record = $I->grabRecord('App\User', array('name' => 'davert')); // returns Eloquent model
 ?>
 ```
 
- * `param` $tableName
+ * `param string` $table
  * `param array` $attributes
+ * `return` array|EloquentModel
+ * `[Part]` orm
 
 
 ### grabService
@@ -588,7 +676,8 @@ $service = $I->grabService('foo');
 ### grabTextFrom
  
 Finds and returns the text contents of the given element.
-If a fuzzy locator is used, the element is found using CSS, XPath, and by matching the full page source by regular expression.
+If a fuzzy locator is used, the element is found using CSS, XPath,
+and by matching the full page source by regular expression.
 
 ``` php
 <?php
@@ -609,23 +698,53 @@ $value = $I->grabTextFrom('~<input value=(.*?)]~sgi'); // match with a regex
  * `return` array|mixed|null|string
 
 
-### haveRecord
+### haveHttpHeader
  
-Inserts record into the database.
+Sets the HTTP header to the passed value - which is used on
+subsequent HTTP requests through PhpBrowser.
 
-``` php
+Example:
+```php
 <?php
-$user_id = $I->haveRecord('users', array('name' => 'Davert'));
+$I->setHeader('X-Requested-With', 'Codeception');
+$I->amOnPage('test-headers.php');
 ?>
 ```
 
- * `param` $tableName
+ * `param string` $name the name of the request header
+ * `param string` $value the value to set it to for subsequent
+       requests
+
+
+### haveRecord
+ 
+Inserts record into the database.
+If you pass the name of a database table as the first argument, this method returns an integer ID.
+You can also pass the class name of an Eloquent model, in that case this method returns an Eloquent model.
+
+``` php
+<?php
+$user_id = $I->haveRecord('users', array('name' => 'Davert')); // returns integer
+$user = $I->haveRecord('App\User', array('name' => 'Davert')); // returns Eloquent model
+?>
+```
+
+ * `param string` $table
  * `param array` $attributes
+ * `return` integer|EloquentModel
+ * `[Part]` orm
 
 
 ### logout
  
 Logs user out
+
+
+### moveBack
+ 
+Moves back in history.
+
+ * `param int` $numberOfSteps (default value 1)
 
 
 ### resetCookie
@@ -640,16 +759,31 @@ You can set additional cookie params like `domain`, `path` in array passed as la
 
 ### see
  
-Checks that the current page contains the given string.
-Specify a locator as the second parameter to match a specific region.
+Checks that the current page contains the given string (case insensitive).
+
+You can specify a specific HTML element (via CSS or XPath) as the second
+parameter to only search within that element.
 
 ``` php
 <?php
-$I->see('Logout'); // I can suppose user is logged in
-$I->see('Sign Up','h1'); // I can suppose it's a signup page
-$I->see('Sign Up','//body/h1'); // with XPath
-?>
+$I->see('Logout');                 // I can suppose user is logged in
+$I->see('Sign Up', 'h1');          // I can suppose it's a signup page
+$I->see('Sign Up', '//body/h1');   // with XPath
 ```
+
+Note that the search is done after stripping all HTML tags from the body,
+so `$I->see('strong')` will return true for strings like:
+
+  - `<p>I am Stronger than thou</p>`
+  - `<script>document.createElement('strong');</script>`
+
+But will *not* be true for strings like:
+
+  - `<strong>Home</strong>`
+  - `<div class="strong">Home</strong>`
+  - `<!-- strong -->`
+
+For checking the raw source code, use `seeInSource()`.
 
  * `param`      $text
  * `param null` $selector
@@ -849,6 +983,19 @@ Assert that the session has a given list of values.
  * `return` void
 
 
+### seeInSource
+ 
+Checks that the current page contains the given string in its
+raw source code.
+
+``` php
+<?php
+$I->seeInSource('<h1>Green eggs &amp; ham</h1>');
+```
+
+ * `param`      $raw
+
+
 ### seeInTitle
  
 Checks that the page title contains the given string.
@@ -918,21 +1065,33 @@ Asserts that current page has 404 response status code.
 ### seeRecord
  
 Checks that record exists in database.
+You can pass the name of a database table or the class name of an Eloquent model as the first argument.
 
 ``` php
+<?php
 $I->seeRecord('users', array('name' => 'davert'));
+$I->seeRecord('App\User', array('name' => 'davert'));
+?>
 ```
 
- * `param` $tableName
+ * `param string` $table
  * `param array` $attributes
+ * `[Part]` orm
 
 
 ### seeResponseCodeIs
  
 Checks that response code is equal to value provided.
 
- * `param` $code
+```php
+<?php
+$I->seeResponseCodeIs(200);
 
+// recommended \Codeception\Util\HttpCode
+$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+```
+
+ * `param` $code
 
 
 ### seeSessionHasValues
@@ -960,6 +1119,15 @@ Provide an array for the second argument to select multiple options:
 ``` php
 <?php
 $I->selectOption('Which OS do you use?', array('Windows','Linux'));
+?>
+```
+
+Or provide an associative array for the second argument to specifically define which selection method should be used:
+
+``` php
+<?php
+$I->selectOption('Which OS do you use?', array('text' => 'Windows')); // Only search by text 'Windows'
+$I->selectOption('Which OS do you use?', array('value' => 'windows')); // Only search by value 'windows'
 ?>
 ```
 
@@ -1023,7 +1191,7 @@ $I->sendAjaxRequest('PUT', '/posts/7', array('title' => 'new title'));
 ### setCookie
  
 Sets a cookie with the given name and value.
-You can set additional cookie params like `domain`, `path`, `expire`, `secure` in array passed as last argument.
+You can set additional cookie params like `domain`, `path`, `expires`, `secure` in array passed as last argument.
 
 ``` php
 <?php
@@ -1040,15 +1208,28 @@ $I->setCookie('PHPSESSID', 'el4ukv0kqbvoirg7nkp4dncpk3');
 ### submitForm
  
 Submits the given form on the page, optionally with the given form
-values.  Give the form fields values as an array.
+values.  Pass the form field's values as an array in the second
+parameter.
 
-Skipped fields will be filled by their values from the page.
+Although this function can be used as a short-hand version of
+`fillField()`, `selectOption()`, `click()` etc. it has some important
+differences:
+
+ * Only field *names* may be used, not CSS/XPath selectors nor field labels
+ * If a field is sent to this function that does *not* exist on the page,
+   it will silently be added to the HTTP request.  This is helpful for testing
+   some types of forms, but be aware that you will *not* get an exception
+   like you would if you called `fillField()` or `selectOption()` with
+   a missing field.
+
+Fields that are not provided will be filled by their values from the page,
+or from any previous calls to `fillField()`, `selectOption()` etc.
 You don't need to click the 'Submit' button afterwards.
 This command itself triggers the request to form's action.
 
-You can optionally specify what button's value to include
-in the request with the last parameter as an alternative to
-explicitly setting its value in the second parameter, as
+You can optionally specify which button's value to include
+in the request with the last parameter (as an alternative to
+explicitly setting its value in the second parameter), as
 button values are not otherwise included in the request.
 
 Examples:
@@ -1122,7 +1303,8 @@ $I->submitForm(
 );
 ```
 
-Pair this with seeInFormFields for quick testing magic.
+This function works well when paired with `seeInFormFields()`
+for quickly testing CRUD interfaces and form validation logic.
 
 ``` php
 <?php
@@ -1132,15 +1314,14 @@ $form = [
      'checkbox1' => true,
      // ...
 ];
-$I->submitForm('//form[ * `id=my-form]',`  $form, 'submitButton');
+$I->submitForm('#my-form', $form, 'submitButton');
 // $I->amOnPage('/path/to/form-page') may be needed
-$I->seeInFormFields('//form[ * `id=my-form]',`  $form);
-?>
+$I->seeInFormFields('#my-form', $form);
 ```
 
 Parameter values can be set to arrays for multiple input fields
 of the same name, or multi-select combo boxes.  For checkboxes,
-either the string value can be used, or boolean values which will
+you can use either the string value or boolean `true`/`false` which will
 be replaced by the checkbox's value in the DOM.
 
 ``` php
@@ -1149,7 +1330,7 @@ $I->submitForm('#my-form', [
      'field1' => 'value',
      'checkbox' => [
          'value of first checkbox',
-         'value of second checkbox,
+         'value of second checkbox',
      ],
      'otherCheckboxes' => [
          true,
@@ -1161,27 +1342,29 @@ $I->submitForm('#my-form', [
          'second option value'
      ]
 ]);
-?>
 ```
 
 Mixing string and boolean values for a checkbox's value is not supported
 and may produce unexpected results.
 
-Field names ending in "[]" must be passed without the trailing square 
+Field names ending in `[]` must be passed without the trailing square
 bracket characters, and must contain an array for its value.  This allows
 submitting multiple values with the same name, consider:
 
 ```php
+<?php
+// This will NOT work correctly
 $I->submitForm('#my-form', [
     'field[]' => 'value',
-    'field[]' => 'another value', // 'field[]' is already a defined key
+    'field[]' => 'another value',  // 'field[]' is already a defined key
 ]);
 ```
 
 The solution is to pass an array value:
 
 ```php
-// this way both values are submitted
+<?php
+// This way both values are submitted
 $I->submitForm('#my-form', [
     'field' => [
         'value',
@@ -1225,4 +1408,4 @@ $I->uncheckOption('#notify');
 
  * `param` $option
 
-<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.1/src/Codeception/Module/Lumen.php">Help us to improve documentation. Edit module reference</a></div>
+<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.2/src/Codeception/Module/Lumen.php">Help us to improve documentation. Edit module reference</a></div>

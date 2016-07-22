@@ -1,12 +1,16 @@
 <?php
 namespace Codeception\Lib\Connector;
 
+use Codeception\Exception\ConfigurationException;
+use Codeception\Exception\ModuleConfigException;
 use Codeception\Util\Uri;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Handler\CurlHandler;
+use GuzzleHttp\Handler\StreamHandler;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use GuzzleHttp\Psr7\Response as Psr7Response;
 use GuzzleHttp\Psr7\Uri as Psr7Uri;
@@ -80,6 +84,10 @@ class Guzzle6 extends Client
 
     public function setAuth($username, $password)
     {
+        if (!$username) {
+            unset($this->requestOptions['auth']);
+            return;
+        }
         $this->requestOptions['auth'] = [$username, $password];
     }
 
@@ -116,7 +124,7 @@ class Guzzle6 extends Client
             $matches = [];
 
             $matchesMeta = preg_match(
-                '/\<meta[^\>]+http-equiv="refresh" content="(\d*)\s*;?\s*url=(.*?)"/i',
+                '/\<meta[^\>]+http-equiv="refresh" content="\s*(\d*)\s*;\s*url=(.*?)"/i',
                 $body,
                 $matches
             );
@@ -124,7 +132,7 @@ class Guzzle6 extends Client
             if (!$matchesMeta && isset($headers['Refresh'])) {
                 // match by header
                 preg_match(
-                    '~(\d*);?url=(.*)~',
+                    '/^\s*(\d*)\s*;\s*url=(.*)/i',
                     (string) reset($headers['Refresh']),
                     $matches
                 );
@@ -200,13 +208,6 @@ class Guzzle6 extends Client
     {
         $headers = [];
         $server = $request->getServer();
-
-        $uri = new Psr7Uri($request->getUri());
-        $server['HTTP_HOST'] = $uri->getHost();
-        $port = $uri->getPort();
-        if ($port !== null && $port !== 443 && $port != 80) {
-            $server['HTTP_HOST'] .= ':' . $port;
-        }
 
         $contentHeaders = ['Content-Length' => true, 'Content-Md5' => true, 'Content-Type' => true];
         foreach ($server as $header => $val) {
@@ -316,5 +317,22 @@ class Guzzle6 extends Client
             $jar[] = $setCookie;
         }
         return new CookieJar(false, $jar);
+    }
+    
+    public static function createHandler($handler)
+    {
+        if ($handler === 'curl') {
+            return HandlerStack::create(new CurlHandler());
+        }
+        if ($handler === 'stream') {
+            return HandlerStack::create(new StreamHandler());
+        }
+        if (class_exists($handler)) {
+            return HandlerStack::create(new $handler);
+        }
+        if (is_callable($handler)) {
+            return HandlerStack::create($handler);
+        }
+        return HandlerStack::create();
     }
 }

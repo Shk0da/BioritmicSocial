@@ -42,7 +42,7 @@ class LocalServer extends SuiteSubscriber
      */
     protected $module;
 
-    static $events = [
+    public static $events = [
         Events::SUITE_BEFORE => 'beforeSuite',
         Events::TEST_BEFORE  => 'beforeTest',
         Events::STEP_AFTER   => 'afterStep',
@@ -87,7 +87,6 @@ class LocalServer extends SuiteSubscriber
             return;
         }
         $this->startCoverageCollection($e->getTest()->getName());
-
     }
 
     public function afterStep(StepEvent $e)
@@ -103,15 +102,21 @@ class LocalServer extends SuiteSubscriber
         if (!$this->isEnabled()) {
             return;
         }
+        $coverageFile = Configuration::outputDir() . 'c3tmp/codecoverage.serialized';
 
-        if (!file_exists(Configuration::outputDir() . 'c3tmp/codecoverage.serialized')) {
+        $retries = 5;
+        while (!file_exists($coverageFile) && --$retries >= 0) {
+            usleep(0.5 * 1000000); // 0.5 sec
+        }
+
+        if (!file_exists($coverageFile)) {
             if (file_exists(Configuration::outputDir() . 'c3tmp/error.txt')) {
                 throw new \RuntimeException(file_get_contents(Configuration::outputDir() . 'c3tmp/error.txt'));
             }
             return;
         }
 
-        $contents = file_get_contents(Configuration::outputDir() . 'c3tmp/codecoverage.serialized');
+        $contents = file_get_contents($coverageFile);
         $coverage = @unserialize($contents);
         if ($coverage === false) {
             return;
