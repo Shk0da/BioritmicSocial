@@ -113,7 +113,7 @@ class PostController extends MainController
         $attach = [];
         $files = $request->file('attach');
         foreach ($files as $file) {
-            $path = '/image/album/'.$this->getUser()->id.'/';
+            $path = 'storage/album/'.$this->getUser()->id.'/';
             $fileName = md5_file($file->getRealPath());
             $file->move($path, $fileName);
 
