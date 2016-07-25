@@ -18,5 +18,4 @@ return array(
     'Evenement' => array($vendorDir . '/evenement/evenement/src'),
     'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib'),
     'Cron' => array($vendorDir . '/mtdowling/cron-expression/src'),
-    'Behat\\Gherkin' => array($vendorDir . '/behat/gherkin/src'),
 );
