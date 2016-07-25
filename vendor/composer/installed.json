@@ -4296,17 +4296,17 @@
     },
     {
         "name": "codeception/codeception",
-        "version": "2.2.2",
-        "version_normalized": "2.2.2.0",
+        "version": "2.2.3",
+        "version_normalized": "2.2.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Codeception/Codeception.git",
-            "reference": "8d80bb4ec7470e8df5de0e4c401785bc3fa1f4f6"
+            "reference": "34c268ae5872105c0c218296487650ab08e3991b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Codeception/Codeception/zipball/8d80bb4ec7470e8df5de0e4c401785bc3fa1f4f6",
-            "reference": "8d80bb4ec7470e8df5de0e4c401785bc3fa1f4f6",
+            "url": "https://api.github.com/repos/Codeception/Codeception/zipball/34c268ae5872105c0c218296487650ab08e3991b",
+            "reference": "34c268ae5872105c0c218296487650ab08e3991b",
             "shasum": ""
         },
         "require": {
@@ -4351,7 +4351,7 @@
             "phpseclib/phpseclib": "for SFTP option in FTP Module",
             "symfony/phpunit-bridge": "For phpunit-bridge support"
         },
-        "time": "2016-06-29 00:59:28",
+        "time": "2016-07-24 19:31:22",
         "bin": [
             "codecept"
         ],

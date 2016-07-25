@@ -1,5 +1,31 @@
 # Changelog
 
+#### 2.2.3
+
+* [Yii2] Improvements:
+    * Added `init` part to initialize Yii app for unit and acceptance testing.
+    * added `entryScript` and `entryUrl` config values for acceptance testing.
+    * Fixtures support: `haveFixtures`, `grabFixtures` methods.
+    * Yii logs to be printed in debug mode.
+    * added `amOnRoute` method.
+    * added `amloggedInAs` method.
+    * added `grabComponent` method.
+    * added `seeEmailIsSent`, `grabLastSentEmail`, etc and email part.
+    * assetManager disabled for unit/functional tests.
+* Fixed `@example` to `@group` defined in group files. By @eXorus. Fixes #3278
+* Fixed timing values in output. Closes #3331
+* Fixed merging module configs. Closes #3292
+* [Recorder Extension] Fixes saving of files on windows and with using examples.
+* [DataFactory] Fixed loading factories twice by @samusenkoiv. See #3314
+* [Laravel5] Added `run_database_migrations` configuration option. By @janhenkgerritsen.
+* [Laravel5] Added `callArtisan` method. By @janhenkgerritsen.
+* [Laravel5] Added `disableModelEvents()` method and `disable_model_events` configuration option. Fixes #2897.
+* [REST] Allow objects in files array #3298
+* [ZF2] Added addServiceToContainer method
+* [ZendExpressive] allow instances of UploadedFile in files array
+* [ZF2] Added addServiceToContainer method
+* Don't fail test validation when exec function is disabled by @Naktialda
+
 #### 2.2.2
 
 * Parameters can be applied to global `codeception.yml` config. See #3255 Thanks to @LeRondPoint
@@ -12,6 +38,7 @@
 * [WebDriver] Fixed adjacent `selectOption` with similar options by @eXorus. Fixes #3246
 * [DataFactory] fixed loading factories from relative paths. Fixes #3208
 * *Test\Gherkin* Added JUnit reporter #3273
+* *Test\Gherkin* Added support for multiple languages by @dizzy7. See #3203
 * *Test\Unit* Dependencies can pass and receive values the same way as it is done in PHPUnit. Fixes #3213
 * [Symfony] Fixed failing tests when the profiler is disabled by @dizzy7. See #3223
 * [REST] Added `Codecepion\Util\HttpCode` util class with HTTP code constants. See [class reference](https://github.com/Codeception/Codeception/blob/2.2/docs/reference/HttpCode.md)
@@ -46,6 +73,7 @@
 * `codecept dry-run` command added to show scenario steps without executing them.
 * *Breaking* [Dbh] module removed
 * *Breaking* [Laravel4] module removed. See #2866
+* *Breaking* [Laravel5] Minimum supported Laravel version is 5.1. See [#3243](https://github.com/Codeception/Codeception/issues/3243#issuecomment-227078266)
 * *Breaking* [Laravel5] Removed `createModel` method, use `have` method instead. See #2866
 * *Breaking* [Laravel5] Removed `makeModel` method. See #2866
 * *Breaking* [Laravel5] Renamed `haveModel` method to `have`. See #2866
