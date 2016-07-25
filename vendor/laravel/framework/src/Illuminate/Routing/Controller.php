@@ -24,17 +24,13 @@ abstract class Controller
     /**
      * Register middleware on the controller.
      *
-     * @param  array|string  $middleware
+     * @param  string  $middleware
      * @param  array   $options
-     * @return \Illuminate\Routing\ControllerMiddlewareOptions
+     * @return void
      */
     public function middleware($middleware, array $options = [])
     {
-        foreach ((array) $middleware as $middlewareName) {
-            $this->middleware[$middlewareName] = &$options;
-        }
-
-        return new ControllerMiddlewareOptions($options);
+        $this->middleware[$middleware] = $options;
     }
 
     /**

@@ -27,47 +27,17 @@ class Filesystem
      * Get the contents of a file.
      *
      * @param  string  $path
-     * @param  bool  $lock
      * @return string
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function get($path, $lock = false)
+    public function get($path)
     {
         if ($this->isFile($path)) {
-            return $lock ? $this->sharedGet($path) : file_get_contents($path);
+            return file_get_contents($path);
         }
 
         throw new FileNotFoundException("File does not exist at path {$path}");
-    }
-
-    /**
-     * Get contents of a file with shared access.
-     *
-     * @param  string  $path
-     * @return string
-     */
-    public function sharedGet($path)
-    {
-        $contents = '';
-
-        $handle = fopen($path, 'rb');
-
-        if ($handle) {
-            try {
-                if (flock($handle, LOCK_SH)) {
-                    clearstatcache(true, $path);
-
-                    $contents = fread($handle, $this->size($path) ?: 1);
-
-                    flock($handle, LOCK_UN);
-                }
-            } finally {
-                fclose($handle);
-            }
-        }
-
-        return $contents;
     }
 
     /**
@@ -200,28 +170,6 @@ class Filesystem
     }
 
     /**
-     * Extract the trailing name component from a file path.
-     *
-     * @param  string  $path
-     * @return string
-     */
-    public function basename($path)
-    {
-        return pathinfo($path, PATHINFO_BASENAME);
-    }
-
-    /**
-     * Extract the parent directory from a file path.
-     *
-     * @param  string  $path
-     * @return string
-     */
-    public function dirname($path)
-    {
-        return pathinfo($path, PATHINFO_DIRNAME);
-    }
-
-    /**
      * Extract the file extension from a file path.
      *
      * @param  string  $path
@@ -347,12 +295,11 @@ class Filesystem
      * Get all of the files from the given directory (recursive).
      *
      * @param  string  $directory
-     * @param  bool  $hidden
      * @return array
      */
-    public function allFiles($directory, $hidden = false)
+    public function allFiles($directory)
     {
-        return iterator_to_array(Finder::create()->files()->ignoreDotFiles(! $hidden)->in($directory), false);
+        return iterator_to_array(Finder::create()->files()->in($directory), false);
     }
 
     /**
@@ -388,29 +335,6 @@ class Filesystem
         }
 
         return mkdir($path, $mode, $recursive);
-    }
-
-    /**
-     * Move a directory.
-     *
-     * @param  string  $from
-     * @param  string  $to
-     * @param  bool  $overwrite
-     * @return bool
-     */
-    public function moveDirectory($from, $to, $overwrite = false)
-    {
-        if ($overwrite && $this->isDirectory($to)) {
-            $this->deleteDirectory($to);
-
-            $this->copyDirectory($from, $to);
-
-            $this->deleteDirectory($from);
-
-            return true;
-        }
-
-        return @rename($from, $to) === true;
     }
 
     /**

@@ -26,10 +26,6 @@ trait RegistersUsers
      */
     public function showRegistrationForm()
     {
-        if (property_exists($this, 'registerView')) {
-            return view($this->registerView);
-        }
-
         return view('auth.register');
     }
 
@@ -60,18 +56,8 @@ trait RegistersUsers
             );
         }
 
-        Auth::guard($this->getGuard())->login($this->create($request->all()));
+        Auth::login($this->create($request->all()));
 
         return redirect($this->redirectPath());
-    }
-
-    /**
-     * Get the guard to be used during registration.
-     *
-     * @return string|null
-     */
-    protected function getGuard()
-    {
-        return property_exists($this, 'guard') ? $this->guard : null;
     }
 }

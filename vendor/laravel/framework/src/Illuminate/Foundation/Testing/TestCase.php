@@ -10,7 +10,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     use Concerns\InteractsWithContainer,
         Concerns\MakesHttpRequests,
         Concerns\ImpersonatesUsers,
-        Concerns\InteractsWithAuthentication,
         Concerns\InteractsWithConsole,
         Concerns\InteractsWithDatabase,
         Concerns\InteractsWithSession,
@@ -38,7 +37,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     protected $beforeApplicationDestroyedCallbacks = [];
 
     /**
-     * Indicates if we have made it through the base setUp function.
+     * Indicates if we have made it throught the base setUp function.
      *
      * @var bool
      */
@@ -58,13 +57,11 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    protected function setUp()
+    public function setUp()
     {
         if (! $this->app) {
             $this->refreshApplication();
         }
-
-        $this->setUpTraits();
 
         foreach ($this->afterApplicationCreatedCallbacks as $callback) {
             call_user_func($callback);
@@ -86,38 +83,16 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Boot the testing helper traits.
-     *
-     * @return void
-     */
-    protected function setUpTraits()
-    {
-        $uses = array_flip(class_uses_recursive(static::class));
-
-        if (isset($uses[DatabaseTransactions::class])) {
-            $this->beginDatabaseTransaction();
-        }
-
-        if (isset($uses[DatabaseMigrations::class])) {
-            $this->runDatabaseMigrations();
-        }
-
-        if (isset($uses[WithoutMiddleware::class])) {
-            $this->disableMiddlewareForAllTests();
-        }
-
-        if (isset($uses[WithoutEvents::class])) {
-            $this->disableEventsForAllTests();
-        }
-    }
-
-    /**
      * Clean up the testing environment before the next test.
      *
      * @return void
      */
-    protected function tearDown()
+    public function tearDown()
     {
+        if (class_exists('Mockery')) {
+            Mockery::close();
+        }
+
         if ($this->app) {
             foreach ($this->beforeApplicationDestroyedCallbacks as $callback) {
                 call_user_func($callback);
@@ -132,10 +107,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
         if (property_exists($this, 'serverVariables')) {
             $this->serverVariables = [];
-        }
-
-        if (class_exists('Mockery')) {
-            Mockery::close();
         }
 
         $this->afterApplicationCreatedCallbacks = [];

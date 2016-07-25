@@ -5,33 +5,16 @@ namespace Illuminate\Foundation\Testing;
 trait DatabaseTransactions
 {
     /**
-     * Handle database transactions on the specified connections.
-     *
-     * @return void
+     * @before
      */
     public function beginDatabaseTransaction()
     {
-        $database = $this->app->make('db');
-
-        foreach ($this->connectionsToTransact() as $name) {
-            $database->connection($name)->beginTransaction();
-        }
-
-        $this->beforeApplicationDestroyed(function () use ($database) {
-            foreach ($this->connectionsToTransact() as $name) {
-                $database->connection($name)->rollBack();
-            }
+        $this->afterApplicationCreated(function () {
+            $this->app->make('db')->beginTransaction();
         });
-    }
 
-    /**
-     * The database connections that should have transactions.
-     *
-     * @return array
-     */
-    protected function connectionsToTransact()
-    {
-        return property_exists($this, 'connectionsToTransact')
-                            ? $this->connectionsToTransact : [null];
+        $this->beforeApplicationDestroyed(function () {
+            $this->app->make('db')->rollBack();
+        });
     }
 }

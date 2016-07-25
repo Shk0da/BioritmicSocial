@@ -7,7 +7,6 @@ use Illuminate\Queue\Console\TableCommand;
 use Illuminate\Auth\Console\MakeAuthCommand;
 use Illuminate\Foundation\Console\UpCommand;
 use Illuminate\Foundation\Console\DownCommand;
-use Illuminate\Auth\Console\ClearResetsCommand;
 use Illuminate\Foundation\Console\ServeCommand;
 use Illuminate\Cache\Console\CacheTableCommand;
 use Illuminate\Queue\Console\FailedTableCommand;
@@ -55,7 +54,6 @@ class ArtisanServiceProvider extends ServiceProvider
      */
     protected $commands = [
         'ClearCompiled' => 'command.clear-compiled',
-        'ClearResets' => 'command.auth.resets.clear',
         'ConfigCache' => 'command.config.cache',
         'ConfigClear' => 'command.config.clear',
         'Down' => 'command.down',
@@ -108,7 +106,9 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->registerCommands($this->commands);
 
-        $this->registerCommands($this->devCommands);
+        //if (! $this->app->environment('production')) {
+            $this->registerCommands($this->devCommands);
+        //}
     }
 
     /**
@@ -173,18 +173,6 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton('command.clear-compiled', function () {
             return new ClearCompiledCommand;
-        });
-    }
-
-    /**
-     * Register the command.
-     *
-     * @return void
-     */
-    protected function registerClearResetsCommand()
-    {
-        $this->app->singleton('command.auth.resets.clear', function () {
-            return new ClearResetsCommand;
         });
     }
 

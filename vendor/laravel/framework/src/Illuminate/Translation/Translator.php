@@ -40,13 +40,6 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
     protected $loaded = [];
 
     /**
-     * The message selector.
-     *
-     * @var \Symfony\Component\Translation\MessageSelector
-     */
-    protected $selector;
-
-    /**
      * Create a new translator instance.
      *
      * @param  \Illuminate\Translation\LoaderInterface  $loader
@@ -91,7 +84,7 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
      * @param  array   $replace
      * @param  string|null  $locale
      * @param  bool  $fallback
-     * @return string|array|null
+     * @return string
      */
     public function get($key, array $replace = [], $locale = null, $fallback = true)
     {
@@ -158,8 +151,8 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
 
         foreach ($replace as $key => $value) {
             $line = str_replace(
-                [':'.$key, ':'.Str::upper($key), ':'.Str::ucfirst($key)],
-                [$value, Str::upper($value), Str::ucfirst($value)],
+                [':'.Str::upper($key), ':'.Str::ucfirst($key), ':'.$key],
+                [Str::upper($value), Str::ucfirst($value), $value],
                 $line
             );
         }
@@ -184,7 +177,7 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
      * Get a translation according to an integer value.
      *
      * @param  string  $key
-     * @param  int|array|\Countable  $number
+     * @param  int     $number
      * @param  array   $replace
      * @param  string  $locale
      * @return string
@@ -192,10 +185,6 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
     public function choice($key, $number, array $replace = [], $locale = null)
     {
         $line = $this->get($key, $replace, $locale = $locale ?: $this->locale ?: $this->fallback);
-
-        if (is_array($number) || $number instanceof \Countable) {
-            $number = count($number);
-        }
 
         $replace['count'] = $number;
 
@@ -209,7 +198,7 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
      * @param  array   $parameters
      * @param  string  $domain
      * @param  string  $locale
-     * @return string|array|null
+     * @return string
      */
     public function trans($id, array $parameters = [], $domain = 'messages', $locale = null)
     {
@@ -220,7 +209,7 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
      * Get a translation according to an integer value.
      *
      * @param  string  $id
-     * @param  int|array|\Countable  $number
+     * @param  int     $number
      * @param  array   $parameters
      * @param  string  $domain
      * @param  string  $locale
@@ -303,7 +292,11 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
      */
     protected function parseLocale($locale)
     {
-        return array_filter([$locale ?: $this->locale, $this->fallback]);
+        if (! is_null($locale)) {
+            return array_filter([$locale, $this->fallback]);
+        }
+
+        return array_filter([$this->locale, $this->fallback]);
     }
 
     /**

@@ -7,16 +7,16 @@ use Exception;
 trait WithoutMiddleware
 {
     /**
-     * Prevent all middleware from being executed for this test class.
-     *
-     * @throws \Exception
+     * @before
      */
     public function disableMiddlewareForAllTests()
     {
-        if (method_exists($this, 'withoutMiddleware')) {
-            $this->withoutMiddleware();
-        } else {
-            throw new Exception('Unable to disable middleware. CrawlerTrait not used.');
-        }
+        $this->afterApplicationCreated(function () {
+            if (method_exists($this, 'withoutMiddleware')) {
+                $this->withoutMiddleware();
+            } else {
+                throw new Exception('Unable to disable middleware. CrawlerTrait not used.');
+            }
+        });
     }
 }

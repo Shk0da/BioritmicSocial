@@ -103,7 +103,7 @@ class ControllerDispatcher
      * @param  string  $method
      * @return array
      */
-    public function getMiddleware($instance, $method)
+    protected function getMiddleware($instance, $method)
     {
         $results = new Collection;
 

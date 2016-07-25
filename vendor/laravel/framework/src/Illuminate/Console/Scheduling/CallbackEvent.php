@@ -28,19 +28,17 @@ class CallbackEvent extends Event
      * @param  string  $callback
      * @param  array  $parameters
      * @return void
-     *
-     * @throws \InvalidArgumentException
      */
     public function __construct($callback, array $parameters = [])
     {
-        if (! is_string($callback) && ! is_callable($callback)) {
+        $this->callback = $callback;
+        $this->parameters = $parameters;
+
+        if (! is_string($this->callback) && ! is_callable($this->callback)) {
             throw new InvalidArgumentException(
                 'Invalid scheduled callback event. Must be string or callable.'
             );
         }
-
-        $this->callback = $callback;
-        $this->parameters = $parameters;
     }
 
     /**
@@ -84,8 +82,6 @@ class CallbackEvent extends Event
      * Do not allow the event to overlap each other.
      *
      * @return $this
-     *
-     * @throws \LogicException
      */
     public function withoutOverlapping()
     {

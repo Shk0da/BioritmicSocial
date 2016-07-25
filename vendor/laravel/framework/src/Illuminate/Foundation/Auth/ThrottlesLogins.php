@@ -4,7 +4,6 @@ namespace Illuminate\Foundation\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Cache\RateLimiter;
-use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Lang;
 
 trait ThrottlesLogins
@@ -44,10 +43,11 @@ trait ThrottlesLogins
      */
     protected function retriesLeft(Request $request)
     {
-        return app(RateLimiter::class)->retriesLeft(
-            $this->getThrottleKey($request),
-            $this->maxLoginAttempts()
+        $attempts = app(RateLimiter::class)->attempts(
+            $this->getThrottleKey($request)
         );
+
+        return $this->maxLoginAttempts() - $attempts + 1;
     }
 
     /**
@@ -58,7 +58,9 @@ trait ThrottlesLogins
      */
     protected function sendLockoutResponse(Request $request)
     {
-        $seconds = $this->secondsRemainingOnLockout($request);
+        $seconds = app(RateLimiter::class)->availableIn(
+            $this->getThrottleKey($request)
+        );
 
         return redirect()->back()
             ->withInput($request->only($this->loginUsername(), 'remember'))
@@ -78,19 +80,6 @@ trait ThrottlesLogins
         return Lang::has('auth.throttle')
             ? Lang::get('auth.throttle', ['seconds' => $seconds])
             : 'Too many login attempts. Please try again in '.$seconds.' seconds.';
-    }
-
-    /**
-     * Get the lockout seconds.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return int
-     */
-    protected function secondsRemainingOnLockout(Request $request)
-    {
-        return app(RateLimiter::class)->availableIn(
-            $this->getThrottleKey($request)
-        );
     }
 
     /**
@@ -135,16 +124,5 @@ trait ThrottlesLogins
     protected function lockoutTime()
     {
         return property_exists($this, 'lockoutTime') ? $this->lockoutTime : 60;
-    }
-
-    /**
-     * Fire an event when a lockout occurs.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
-     */
-    protected function fireLockoutEvent(Request $request)
-    {
-        event(new Lockout($request));
     }
 }

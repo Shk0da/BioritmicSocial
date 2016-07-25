@@ -95,7 +95,6 @@ class AppNameCommand extends Command
     {
         $files = Finder::create()
                             ->in($this->laravel['path'])
-                            ->contains($this->currentRoot)
                             ->name('*.php');
 
         foreach ($files as $file) {
@@ -154,7 +153,7 @@ class AppNameCommand extends Command
     protected function setComposerNamespace()
     {
         $this->replaceIn(
-            $this->getComposerPath(), str_replace('\\', '\\\\', $this->currentRoot).'\\\\', str_replace('\\', '\\\\', $this->argument('name')).'\\\\'
+            $this->getComposerPath(), $this->currentRoot.'\\\\', str_replace('\\', '\\\\', $this->argument('name')).'\\\\'
         );
     }
 
@@ -248,7 +247,7 @@ class AppNameCommand extends Command
      */
     protected function getBootstrapPath()
     {
-        return $this->laravel->bootstrapPath().'/app.php';
+        return $this->laravel->basePath().'/bootstrap/app.php';
     }
 
     /**

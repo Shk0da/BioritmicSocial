@@ -80,27 +80,15 @@ class FormRequest extends Request implements ValidatesWhenResolved
         }
 
         return $factory->make(
-            $this->validationData(), $this->container->call([$this, 'rules']), $this->messages(), $this->attributes()
+            $this->all(), $this->container->call([$this, 'rules']), $this->messages(), $this->attributes()
         );
-    }
-
-    /**
-     * Get data to be validated from the request.
-     *
-     * @return array
-     */
-    protected function validationData()
-    {
-        return $this->all();
     }
 
     /**
      * Handle a failed validation attempt.
      *
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
-     * @return void
-     *
-     * @throws \Illuminate\Http\Exception\HttpResponseException
+     * @return mixed
      */
     protected function failedValidation(Validator $validator)
     {
@@ -126,9 +114,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
     /**
      * Handle a failed authorization attempt.
      *
-     * @return void
-     *
-     * @throws \Illuminate\Http\Exception\HttpResponseException
+     * @return mixed
      */
     protected function failedAuthorization()
     {
@@ -143,7 +129,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
      */
     public function response(array $errors)
     {
-        if (($this->ajax() && ! $this->pjax()) || $this->wantsJson()) {
+        if ($this->ajax() || $this->wantsJson()) {
             return new JsonResponse($errors, 422);
         }
 
@@ -197,7 +183,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
      * Set the Redirector instance.
      *
      * @param  \Illuminate\Routing\Redirector  $redirector
-     * @return $this
+     * @return \Illuminate\Foundation\Http\FormRequest
      */
     public function setRedirector(Redirector $redirector)
     {
@@ -220,7 +206,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
     }
 
     /**
-     * Get custom messages for validator errors.
+     * Set custom messages for validator errors.
      *
      * @return array
      */
@@ -230,7 +216,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
     }
 
     /**
-     * Get custom attributes for validator errors.
+     * Set custom attributes for validator errors.
      *
      * @return array
      */

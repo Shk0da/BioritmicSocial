@@ -30,7 +30,6 @@ class IlluminateCaster
         'langPath',
         'publicPath',
         'storagePath',
-        'bootstrapPath',
     ];
 
     /**

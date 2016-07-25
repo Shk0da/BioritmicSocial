@@ -27,11 +27,8 @@ trait AuthenticatesUsers
      */
     public function showLoginForm()
     {
-        $view = property_exists($this, 'loginView')
-                    ? $this->loginView : 'auth.authenticate';
-
-        if (view()->exists($view)) {
-            return view($view);
+        if (view()->exists('auth.authenticate')) {
+            return view('auth.authenticate');
         }
 
         return view('auth.login');
@@ -56,46 +53,37 @@ trait AuthenticatesUsers
      */
     public function login(Request $request)
     {
-        $this->validateLogin($request);
+        $this->validate($request, [
+            $this->loginUsername() => 'required', 'password' => 'required',
+        ]);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
         $throttles = $this->isUsingThrottlesLoginsTrait();
 
-        if ($throttles && $lockedOut = $this->hasTooManyLoginAttempts($request)) {
-            $this->fireLockoutEvent($request);
-
+        if ($throttles && $this->hasTooManyLoginAttempts($request)) {
             return $this->sendLockoutResponse($request);
         }
 
         $credentials = $this->getCredentials($request);
 
-        if (Auth::guard($this->getGuard())->attempt($credentials, $request->has('remember'))) {
+        if (Auth::attempt($credentials, $request->has('remember'))) {
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
-        if ($throttles && ! $lockedOut) {
+        if ($throttles) {
             $this->incrementLoginAttempts($request);
         }
 
-        return $this->sendFailedLoginResponse($request);
-    }
-
-    /**
-     * Validate the user login request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
-     */
-    protected function validateLogin(Request $request)
-    {
-        $this->validate($request, [
-            $this->loginUsername() => 'required', 'password' => 'required',
-        ]);
+        return redirect()->back()
+            ->withInput($request->only($this->loginUsername(), 'remember'))
+            ->withErrors([
+                $this->loginUsername() => $this->getFailedLoginMessage(),
+            ]);
     }
 
     /**
@@ -112,25 +100,21 @@ trait AuthenticatesUsers
         }
 
         if (method_exists($this, 'authenticated')) {
-            return $this->authenticated($request, Auth::guard($this->getGuard())->user());
+            return $this->authenticated($request, Auth::user());
         }
 
         return redirect()->intended($this->redirectPath());
     }
 
     /**
-     * Get the failed login response instance.
+     * Get the needed authorization credentials from the request.
      *
-     * @param \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
-    protected function sendFailedLoginResponse(Request $request)
+    protected function getCredentials(Request $request)
     {
-        return redirect()->back()
-            ->withInput($request->only($this->loginUsername(), 'remember'))
-            ->withErrors([
-                $this->loginUsername() => $this->getFailedLoginMessage(),
-            ]);
+        return $request->only($this->loginUsername(), 'password');
     }
 
     /**
@@ -143,17 +127,6 @@ trait AuthenticatesUsers
         return Lang::has('auth.failed')
                 ? Lang::get('auth.failed')
                 : 'These credentials do not match our records.';
-    }
-
-    /**
-     * Get the needed authorization credentials from the request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    protected function getCredentials(Request $request)
-    {
-        return $request->only($this->loginUsername(), 'password');
     }
 
     /**
@@ -173,19 +146,9 @@ trait AuthenticatesUsers
      */
     public function logout()
     {
-        Auth::guard($this->getGuard())->logout();
+        Auth::logout();
 
         return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
-    }
-
-    /**
-     * Get the guest middleware for the application.
-     */
-    public function guestMiddleware()
-    {
-        $guard = $this->getGuard();
-
-        return $guard ? 'guest:'.$guard : 'guest';
     }
 
     /**
@@ -206,17 +169,7 @@ trait AuthenticatesUsers
     protected function isUsingThrottlesLoginsTrait()
     {
         return in_array(
-            ThrottlesLogins::class, class_uses_recursive(static::class)
+            ThrottlesLogins::class, class_uses_recursive(get_class($this))
         );
-    }
-
-    /**
-     * Get the guard to be used during authentication.
-     *
-     * @return string|null
-     */
-    protected function getGuard()
-    {
-        return property_exists($this, 'guard') ? $this->guard : null;
     }
 }

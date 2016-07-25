@@ -76,29 +76,13 @@ class Repository implements CacheContract, ArrayAccess
 
         switch ($event) {
             case 'hit':
-                if (count($payload) == 2) {
-                    $payload[] = [];
-                }
-
-                return $this->events->fire(new Events\CacheHit($payload[0], $payload[1], $payload[2]));
+                return $this->events->fire(new Events\CacheHit($payload[0], $payload[1]));
             case 'missed':
-                if (count($payload) == 1) {
-                    $payload[] = [];
-                }
-
-                return $this->events->fire(new Events\CacheMissed($payload[0], $payload[1]));
+                return $this->events->fire(new Events\CacheMissed($payload[0]));
             case 'delete':
-                if (count($payload) == 1) {
-                    $payload[] = [];
-                }
-
-                return $this->events->fire(new Events\KeyForgotten($payload[0], $payload[1]));
+                return $this->events->fire(new Events\KeyForgotten($payload[0]));
             case 'write':
-                if (count($payload) == 3) {
-                    $payload[] = [];
-                }
-
-                return $this->events->fire(new Events\KeyWritten($payload[0], $payload[1], $payload[2], $payload[3]));
+                return $this->events->fire(new Events\KeyWritten($payload[0], $payload[1], $payload[2]));
         }
     }
 
@@ -340,6 +324,19 @@ class Repository implements CacheContract, ArrayAccess
         $this->fireCacheEvent('delete', [$key]);
 
         return $success;
+    }
+
+    /**
+     * Begin executing a new tags operation if the store supports it.
+     *
+     * @param  string  $name
+     * @return \Illuminate\Cache\TaggedCache
+     *
+     * @deprecated since version 5.1. Use tags instead.
+     */
+    public function section($name)
+    {
+        return $this->tags($name);
     }
 
     /**

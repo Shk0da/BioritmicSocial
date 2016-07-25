@@ -9,10 +9,9 @@ use GuzzleHttp\Client as HttpClient;
 use Swift_SmtpTransport as SmtpTransport;
 use Swift_MailTransport as MailTransport;
 use Illuminate\Mail\Transport\LogTransport;
-use Illuminate\Mail\Transport\SesTransport;
 use Illuminate\Mail\Transport\MailgunTransport;
 use Illuminate\Mail\Transport\MandrillTransport;
-use Illuminate\Mail\Transport\SparkPostTransport;
+use Illuminate\Mail\Transport\SesTransport;
 use Swift_SendmailTransport as SendmailTransport;
 
 class TransportManager extends Manager
@@ -44,10 +43,6 @@ class TransportManager extends Manager
             $transport->setUsername($config['username']);
 
             $transport->setPassword($config['password']);
-        }
-
-        if (isset($config['stream'])) {
-            $transport->setStreamOptions($config['stream']);
         }
 
         return $transport;
@@ -104,10 +99,9 @@ class TransportManager extends Manager
     {
         $config = $this->app['config']->get('services.mailgun', []);
 
-        return new MailgunTransport(
-            $this->getHttpClient($config),
-            $config['secret'], $config['domain']
-        );
+        $client = new HttpClient(Arr::get($config, 'guzzle', []));
+
+        return new MailgunTransport($client, $config['secret'], $config['domain']);
     }
 
     /**
@@ -119,25 +113,9 @@ class TransportManager extends Manager
     {
         $config = $this->app['config']->get('services.mandrill', []);
 
-        return new MandrillTransport(
-            $this->getHttpClient($config), $config['secret']
-        );
-    }
+        $client = new HttpClient(Arr::get($config, 'guzzle', []));
 
-    /**
-     * Create an instance of the SparkPost Swift Transport driver.
-     *
-     * @return \Illuminate\Mail\Transport\SparkPostTransport
-     */
-    protected function createSparkPostDriver()
-    {
-        $config = $this->app['config']->get('services.sparkpost', []);
-
-        return new SparkPostTransport(
-            $this->getHttpClient($config),
-            $config['secret'],
-            Arr::get($config, 'options', [])
-        );
+        return new MandrillTransport($client, $config['secret']);
     }
 
     /**
@@ -151,20 +129,7 @@ class TransportManager extends Manager
     }
 
     /**
-     * Get a fresh Guzzle HTTP client instance.
-     *
-     * @param  array  $config
-     * @return HttpClient
-     */
-    protected function getHttpClient($config)
-    {
-        $guzzleConfig = Arr::get($config, 'guzzle', []);
-
-        return new HttpClient(Arr::add($guzzleConfig, 'connect_timeout', 60));
-    }
-
-    /**
-     * Get the default mail driver name.
+     * Get the default cache driver name.
      *
      * @return string
      */
@@ -174,7 +139,7 @@ class TransportManager extends Manager
     }
 
     /**
-     * Set the default mail driver name.
+     * Set the default cache driver name.
      *
      * @param  string  $name
      * @return void
