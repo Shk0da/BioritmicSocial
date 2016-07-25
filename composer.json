@@ -7,8 +7,7 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
-        "cboden/ratchet": "0.3.*",
-        "codeception/codeception": "*"
+        "cboden/ratchet": "0.3.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
