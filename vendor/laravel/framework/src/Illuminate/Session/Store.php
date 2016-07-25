@@ -283,7 +283,11 @@ class Store implements SessionInterface
     protected function addBagDataToSession()
     {
         foreach (array_merge($this->bags, [$this->metaBag]) as $bag) {
-            $this->put($bag->getStorageKey(), $this->bagData[$bag->getStorageKey()]);
+            $key = $bag->getStorageKey();
+
+            if (isset($this->bagData[$key])) {
+                $this->put($key, $this->bagData[$key]);
+            }
         }
     }
 
@@ -306,7 +310,15 @@ class Store implements SessionInterface
      */
     public function has($name)
     {
-        return ! is_null($this->get($name));
+        $keys = is_array($name) ? $name : func_get_args();
+
+        foreach ($keys as $value) {
+            if (is_null($this->get($value))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -399,6 +411,34 @@ class Store implements SessionInterface
         $array[] = $value;
 
         $this->put($key, $array);
+    }
+
+    /**
+     * Increment the value of an item in the session.
+     *
+     * @param  string  $key
+     * @param  int  $amount
+     * @return mixed
+     */
+    public function increment($key, $amount = 1)
+    {
+        $value = $this->get($key, 0) + $amount;
+
+        $this->put($key, $value);
+
+        return $value;
+    }
+
+    /**
+     * Decrement the value of an item in the session.
+     *
+     * @param  string  $key
+     * @param  int  $amount
+     * @return int
+     */
+    public function decrement($key, $amount = 1)
+    {
+        return $this->increment($key, $amount * -1);
     }
 
     /**
