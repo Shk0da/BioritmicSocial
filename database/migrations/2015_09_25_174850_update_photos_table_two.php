@@ -9,7 +9,7 @@ class UpdatePhotosTableTwo extends Migration
     public function up()
     {
         Schema::table('photos', function (Blueprint $table) {
-            $table->integer('album_id')->nullable();
+            $table->string('album_id')->nullable();
         });
     }
 
