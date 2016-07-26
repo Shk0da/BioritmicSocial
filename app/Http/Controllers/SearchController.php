@@ -49,7 +49,9 @@ class SearchController extends MainController
                 'profiles.zodiac'
             );
 
-        $profiles->where('name', 'LIKE', "%{$name}%");
+        if (trim($name) != '') {
+            $profiles->where('name', 'LIKE', "%{$name}%");
+        }
 
         if ($ideal && $user->profile->birthday) {
 
@@ -102,6 +104,8 @@ class SearchController extends MainController
                 $form['woman'] = 'checked';
             }
 
+            $profiles->take(15000);
+
             foreach ($profiles->get() as $profile) {
                 $ids[] = $profile->id;
             }
@@ -127,6 +131,7 @@ class SearchController extends MainController
             ->with('filters', $filters)
             ->with('form', $form)
             ->with('result', $result));
+
         return $view;
     }
 
