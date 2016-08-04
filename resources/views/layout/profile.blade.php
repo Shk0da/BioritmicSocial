@@ -17,7 +17,7 @@
                     <small>·</small> {{ $user->getLocation() }}
                 </p>
 
-                @if ($authUser <> $user)
+                @if ($authUser->id <> $user->id)
                     <a class="btn cg ts fx"
                        @if ($authUser->isFriendWith($user))
                        href="{{ route('friend.remove', $user) }}">

@@ -5,7 +5,7 @@
     </div>
 
     <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+        <div class="ava_dialog">
             <div class="modal-content">
                 <form class="avatar-form" action="{{ route('user.save.image') }}" enctype="multipart/form-data" method="post">
                     <div class="modal-header">
@@ -25,13 +25,8 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-9">
+                                <div class="col-md-12">
                                     <div class="avatar-wrapper"></div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="avatar-preview preview-lg cu"></div>
-                                    <div class="avatar-preview preview-md qi cu"></div>
-                                    <div class="avatar-preview preview-sm cu"></div>
                                 </div>
                             </div>
 

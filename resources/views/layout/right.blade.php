@@ -66,7 +66,7 @@
 
     <div class="qw rd aoj">
         <div class="qx">
-            © 2015 <a href="#">Bioritmic</a>
+            © 2015 Bioritmic
         </div>
     </div>
 </div>
