@@ -15,7 +15,6 @@ class SearchController extends MainController
         $ids = [0];
 
         $user = $this->getUser();
-
         $name = $request->input('name');
         $location = $request->input('location');
         $country = $request->input('country');
@@ -35,6 +34,15 @@ class SearchController extends MainController
                 $rhythms[] = $rhythm;
                 $form[$rhythm] = 'checked';
             }
+        }
+
+        if (!$user->profile->birthday) {
+            $view->with('content', view('search.nothing')
+                ->with('user', $user)
+                ->with('filters', $filters)
+            );
+
+            return $view;
         }
 
         $result = User::where('id', '<>', $user->id);
@@ -79,8 +87,7 @@ class SearchController extends MainController
             foreach ($filter_names as $rhythm) {
                 $form[$rhythm] = 'checked';
             }
-        }
-        else {
+        } else {
 
             if ($country) {
                 $profiles->whereIn('location', array_keys($user->getCityList($country)));

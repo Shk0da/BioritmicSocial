@@ -9,9 +9,11 @@
 
     <div class="qw rd alt st">
         <div class="qx">
-            <h5 class="alc">Реклама</h5>
+            <h5 class="alc">Beta</h5>
             <div>
-                <a href="//ya.ru" target="_blank"><img width="250" class="qi" src="/img/adv_temp.jpg"></a>
+                Спасибо за то что, приняли участие в тестировании Bioritmic! <br>
+                Если вы нашли ошибку, или у вас есть пожелание по функционалу, пишите на
+                <a href="mailto:{{ 'alxndrwhite@gmail.com' }}">{{ 'alxndrwhite@gmail.com' }}</a>
             </div>
         </div>
     </div>

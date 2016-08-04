@@ -1,6 +1,16 @@
 $.ajaxSetup({headers: {'X-CSRF-Token': $('input[name=_token]').val()}});
 
-+function (t) {
+$(document).on("click", "[data-action=growl]", function (o) {
+    o.preventDefault(), $("#app-growl").append('<div class="alert alert-dark alert-dismissible fade in" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><p>Click the x on the upper right to dismiss this little thing. Or click growl again to show more growls.</p></div>')
+}), $(document).on("focus", '[data-action="grow"]', function () {
+    $(window).width() > 1e3 && $(this).animate({width: 300})
+}), $(document).on("blur", '[data-action="grow"]', function () {
+    if ($(window).width() > 1e3) {
+        $(this).animate({width: 180})
+    }
+})
+
++ function (t) {
     "use strict";
     function e() {
         var t = document.createElement("bootstrap"), e = {
@@ -1250,11 +1260,7 @@ $.ajaxSetup({headers: {'X-CSRF-Token': $('input[name=_token]').val()}});
                     $this.one(EVENT_LOAD, $.proxy(this.start, this));
                 }
             } else {
-                $clone.
-                one(EVENT_LOAD, $.proxy(this.start, this)).
-                one(EVENT_ERROR, $.proxy(this.stop, this)).
-                addClass(CLASS_HIDE).
-                insertAfter($this);
+                $clone.one(EVENT_LOAD, $.proxy(this.start, this)).one(EVENT_ERROR, $.proxy(this.stop, this)).addClass(CLASS_HIDE).insertAfter($this);
             }
         },
 
@@ -1906,9 +1912,7 @@ $.ajaxSetup({headers: {'X-CSRF-Token': $('input[name=_token]').val()}});
                 $cropper.on(EVENT_DBLCLICK, $.proxy(this.dblclick, this));
             }
 
-            $document.
-            on(EVENT_MOUSE_MOVE, (this._cropMove = proxy(this.cropMove, this))).
-            on(EVENT_MOUSE_UP, (this._cropEnd = proxy(this.cropEnd, this)));
+            $document.on(EVENT_MOUSE_MOVE, (this._cropMove = proxy(this.cropMove, this))).on(EVENT_MOUSE_UP, (this._cropEnd = proxy(this.cropEnd, this)));
 
             if (options.responsive) {
                 $window.on(EVENT_RESIZE, (this._resize = proxy(this.resize, this)));
@@ -1950,9 +1954,7 @@ $.ajaxSetup({headers: {'X-CSRF-Token': $('input[name=_token]').val()}});
                 $cropper.off(EVENT_DBLCLICK, this.dblclick);
             }
 
-            $document.
-            off(EVENT_MOUSE_MOVE, this._cropMove).
-            off(EVENT_MOUSE_UP, this._cropEnd);
+            $document.off(EVENT_MOUSE_MOVE, this._cropMove).off(EVENT_MOUSE_UP, this._cropEnd);
 
             if (options.responsive) {
                 $window.off(EVENT_RESIZE, this._resize);
@@ -2725,7 +2727,7 @@ $.ajaxSetup({headers: {'X-CSRF-Token': $('input[name=_token]').val()}});
                 }
 
                 if (ratio < 0) {
-                    ratio =  1 / (1 - ratio);
+                    ratio = 1 / (1 - ratio);
                 } else {
                     ratio = 1 + ratio;
                 }
@@ -3180,18 +3182,12 @@ $.ajaxSetup({headers: {'X-CSRF-Token': $('input[name=_token]').val()}});
                 movable = options.movable && mode === ACTION_MOVE;
                 mode = (croppable || movable) ? mode : ACTION_NONE;
 
-                this.$dragBox.
-                data('action', mode).
-                toggleClass(CLASS_CROP, croppable).
-                toggleClass(CLASS_MOVE, movable);
+                this.$dragBox.data('action', mode).toggleClass(CLASS_CROP, croppable).toggleClass(CLASS_MOVE, movable);
 
                 if (!options.cropBoxMovable) {
 
                     // Sync drag mode to crop box when it is not movable(#300)
-                    this.$face.
-                    data('action', mode).
-                    toggleClass(CLASS_CROP, croppable).
-                    toggleClass(CLASS_MOVE, movable);
+                    this.$face.data('action', mode).toggleClass(CLASS_CROP, croppable).toggleClass(CLASS_MOVE, movable);
                 }
             }
         }
@@ -3565,8 +3561,14 @@ $('#add_photo').change(function () {
 
         initPreview: function () {
             var url = this.$avatar.attr('src');
-            //this.$avatarWrapper.html('<img src="' + url + '_original">');
-            this.$avatarPreview.html('<img class="cu" src="' + url + '">');
+
+            if (url) {
+                this.$avatarWrapper.html('<img style="margin: auto;max-height: 100%;" src="' + url + '_original">');
+                this.$avatarWrapper.css('background', 'none');
+                this.$avatarWrapper.css('max-height', '100%');
+            }
+
+            this.$avatarPreview.html('<img class="cu" style="margin: auto;max-height: 100%;" src="' + url + '">');
         },
 
         initIframe: function () {
@@ -3577,7 +3579,7 @@ $('#add_photo').change(function () {
             });
             var _this = this;
 
-              $iframe.one('load', function () {
+            $iframe.one('load', function () {
 
                 $iframe.on('load', function () {
                     var data;
@@ -3951,7 +3953,12 @@ function wsmessage(host, key) {
         var data = JSON.parse(e.data);
         if (data.from && data.to && data.message) {
 
-            var fromName = $.ajax({type: 'POST', url: '/api/getUserFrom', async: false, data: {from: data.from}}).responseText;
+            var fromName = $.ajax({
+                type: 'POST',
+                url: '/api/getUserFrom',
+                async: false,
+                data: {from: data.from}
+            }).responseText;
             var countNotify = $('#count-notify');
             var navbarNotify = $('#navbar-notify');
 
@@ -3960,23 +3967,23 @@ function wsmessage(host, key) {
             if (!inArray(data.message, ['invite', 'reinvite', 'liketo'])) {
                 updateChat(data.from, data.to);
                 if (navbarNotify) {
-                    navbarNotify.prepend('<li><a id="from'+data.from+'" href="/messages/chat/'+data.from+'">'+fromName+'</a> оставил вам сообщение</li>');
+                    navbarNotify.prepend('<li><a id="from' + data.from + '" href="/messages/chat/' + data.from + '">' + fromName + '</a> оставил вам сообщение</li>');
                     countNotify.text(navbarNotify.children().length);
                 }
             }
 
             if (data.message == 'invite' && navbarNotify) {
-                navbarNotify.prepend('<li><a href="/id'+data.from+'">'+fromName+'</a> подписалась на Вас</li>');
+                navbarNotify.prepend('<li><a href="/id' + data.from + '">' + fromName + '</a> подписалась на Вас</li>');
                 countNotify.text(navbarNotify.children().length);
             }
 
             if (data.message == 'reinvite' && navbarNotify) {
-                navbarNotify.prepend('<li><a href="/id'+data.from+'">'+fromName+'</a> отписался от Вас</li>');
+                navbarNotify.prepend('<li><a href="/id' + data.from + '">' + fromName + '</a> отписался от Вас</li>');
                 countNotify.text(navbarNotify.children().length);
             }
 
             if (data.message == 'liketo' && navbarNotify) {
-                navbarNotify.prepend('<li><a href="/id'+data.from+'">'+fromName+'</a> поставил вам лайк!</li>');
+                navbarNotify.prepend('<li><a href="/id' + data.from + '">' + fromName + '</a> поставил вам лайк!</li>');
                 countNotify.text(navbarNotify.children().length);
             }
         }
@@ -4056,8 +4063,8 @@ $(function () {
 
 function inArray(needle, haystack) {
     var length = haystack.length;
-    for(var i = 0; i < length; i++) {
-        if(haystack[i] == needle) return true;
+    for (var i = 0; i < length; i++) {
+        if (haystack[i] == needle) return true;
     }
     return false;
 }
@@ -4096,4 +4103,3 @@ function previewFiles(input, preview) {
     }
 }
 
-var $input=$('<div class="modal-body"><input type="text" class="form-control" placeholder="Message"></div>');$(document).on("click",".js-msgGroup",function(){$(".js-msgGroup, .js-newMsg").addClass("hide"),$(".js-conversation").removeClass("hide"),$(".modal-title").html('<a href="#" class="js-gotoMsgs">Back</a>'),$input.insertBefore(".js-modalBody")}),$(function(){function o(){return $(window).width()-($('[data-toggle="popover"]').offset().left+$('[data-toggle="popover"]').outerWidth())}$(window).on("resize",function(){var t=$('[data-toggle="popover"]').data("bs.popover");t&&(t.options.viewport.padding=o())}),$('[data-toggle="popover"]').popover({template:'<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-content p-x-0"></div></div>',title:"",html:!0,trigger:"manual",placement:"bottom",viewport:{selector:"body",padding:o()},content:function(){var o=$(".app-navbar .navbar-nav:last-child").clone();return'<div class="nav nav-stacked" style="width: 200px">'+o.html()+"</div>"}}),$('[data-toggle="popover"]').on("click",function(o){o.stopPropagation(),$('[data-toggle="popover"]').data("bs.popover").tip().hasClass("in")?($('[data-toggle="popover"]').popover("hide"),$(document).off("click.app.popover")):($('[data-toggle="popover"]').popover("show"),setTimeout(function(){$(document).one("click.app.popover",function(){$('[data-toggle="popover"]').popover("hide")})},1))})}),$(document).on("click",".js-gotoMsgs",function(){$input.remove(),$(".js-conversation").addClass("hide"),$(".js-msgGroup, .js-newMsg").removeClass("hide"),$(".modal-title").html("Messages")}),$(document).on("click","[data-action=growl]",function(o){o.preventDefault(),$("#app-growl").append('<div class="alert alert-dark alert-dismissible fade in" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><p>Click the x on the upper right to dismiss this little thing. Or click growl again to show more growls.</p></div>')}),$(document).on("focus",'[data-action="grow"]',function(){$(window).width()>1e3&&$(this).animate({width:300})}),$(document).on("blur",'[data-action="grow"]',function(){if($(window).width()>1e3){$(this).animate({width:180})}}),$(function(){function o(){$(window).scrollTop()>$(window).height()?$(".docs-top").fadeIn():$(".docs-top").fadeOut()}$(".docs-top").length&&(o(),$(window).on("scroll",o))}),$(function(){function o(){i.width()>768?e():t()}function t(){i.off("resize.theme.nav"),i.off("scroll.theme.nav"),n.css({position:"",left:"",top:""})}function e(){function o(){e.containerTop=$(".docs-content").offset().top-40,e.containerRight=$(".docs-content").offset().left+$(".docs-content").width()+45,t()}function t(){var o=i.scrollTop(),t=Math.max(o-e.containerTop,0);return t?void n.css({position:"fixed",left:e.containerRight,top:40}):($(n.find("li")[1]).addClass("active"),n.css({position:"",left:"",top:""}))}var e={};o(),$(window).on("resize.theme.nav",o).on("scroll.theme.nav",t),$("body").scrollspy({target:"#markdown-toc",selector:"li > a"}),setTimeout(function(){$("body").scrollspy("refresh")},1e3)}var n=$("#markdown-toc"),i=$(window);n[0]&&(o(),i.on("resize",o))});
